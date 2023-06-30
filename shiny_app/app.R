@@ -488,7 +488,7 @@ ui <- dashboardPage( skin="black",
 server <- function(input, output, session) {
   
   ## updating inputs to speed up program
-  updateSelectizeInput(session, 'usc_classes', choices = unique(classes$courseID), selected = "ENST-150", server = TRUE)
+  updateSelectizeInput(session, 'usc_classes', choices = recent_courses %>% filter(all_goals != "") %>% select(courseID) %>% distinct() %>% pull(), selected = "ENST-150", server = TRUE)
   # map classes in ascending order
   updateSelectizeInput(session, 'user_classes', choices = unique(sustainability_related$courseID) %>% sort(), server = TRUE)
   
