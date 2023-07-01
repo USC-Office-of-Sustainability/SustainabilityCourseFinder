@@ -1,7 +1,7 @@
 # adding school
 library(dplyr)
 usc_courses_cleaned <- read.csv("usc_courses_updated.csv")
-fulldata <- read.csv("cleaning_raw_data/raw_usc_data/combined_data.csv")
+fulldata <- read.csv("01_cleaning_raw_data/00_raw_usc_data/combined_data.csv")
 fulldata_select <- fulldata %>%
   select("COURSE_CODE", "COURSE_TITLE", "SECTION", "DEPARTMENT", "SCHOOL", 
          "DEPTOWNERNAME", "origin", "INSTRUCTOR_NAME")

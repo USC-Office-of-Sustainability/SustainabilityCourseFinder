@@ -718,6 +718,7 @@ goal,keyword,color
 3,pregnancy complications,#4C9F38
 3,pregnancy complication,#4C9F38
 3,health outcome,#4C9F38
+3,health-enhancing ,#4C9F38
 3,healthy pregnancy,#4C9F38
 3,healthy baby,#4C9F38
 3,environmental health,#4C9F38
@@ -787,6 +788,8 @@ goal,keyword,color
 3,fetal weight,#4C9F38
 3,healthy body,#4C9F38
 3,healthy diet,#4C9F38
+3,healthy environments,#4C9F38
+3,healthy environment,#4C9F38
 3,healthy lifestyle,#4C9F38
 3,heavy metal poisoning,#4C9F38
 3,heavy metal exposure,#4C9F38
@@ -1630,6 +1633,8 @@ goal,keyword,color
 7,electric generator,#FCC30B
 7,electric generators,#FCC30B
 7,electric grid,#FCC30B
+7,energy methods,#FCC30B
+7,electronic components,#FCC30B
 7,electricity,#FCC30B
 7,electrification,#FCC30B
 7,electrify the grid,#FCC30B
@@ -1638,6 +1643,8 @@ goal,keyword,color
 7,energy production,#FCC30B
 7,energy agency,#FCC30B
 7,energy concepts,#FCC30B
+7,thermodynamics,#FCC30B
+7,thermodynamic,#FCC30B
 7,efficient thermoelectric,#FCC30B
 7,energy efficiency,#FCC30B
 7,energy resources,#FCC30B
@@ -1807,7 +1814,6 @@ goal,keyword,color
 8,economist,#A21942
 8,economists,#A21942
 8,economy,#A21942
-8,emerging markets,#A21942
 8,employee,#A21942
 8,employees,#A21942
 8,employer,#A21942
@@ -1895,7 +1901,6 @@ goal,keyword,color
 8,market,#A21942
 8,marketing,#A21942
 8,markets,#A21942
-8,medium enterprises,#A21942
 8,microfinance,#A21942
 8,monetary,#A21942
 8,monetization,#A21942
@@ -1920,6 +1925,7 @@ goal,keyword,color
 8,privatization,#A21942
 8,product demand,#A21942
 8,productive activities,#A21942
+8,for profit,#A21942
 8,profitability,#A21942
 8,profits,#A21942
 8,purchasers,#A21942
@@ -1951,7 +1957,6 @@ goal,keyword,color
 8,subsidies,#A21942
 8,supply and demand,#A21942
 8,supply disruption,#A21942
-8,supply-chain,#A21942
 8,tax analytics,#A21942
 8,tax planning,#A21942
 8,taxes,#A21942
@@ -2016,6 +2021,7 @@ goal,keyword,color
 9,communication system,#FD6925
 9,communication systems,#FD6925
 9,companies,#FD6925
+9,material properties,#FD6925
 9,composite materials,#FD6925
 9,computer,#FD6925
 9,computers,#FD6925
@@ -2070,6 +2076,12 @@ goal,keyword,color
 9,infrastructures,#FD6925
 9,innovate,#FD6925
 9,innovating,#FD6925
+9,material science,#FD6925
+9,electrochemistry,#FD6925
+9,supersonic speed,#FD6925
+9,aerodynamic,#FD6925
+9,aerodynamics,#FD6925
+9,flight vehicle,#FD6925
 9,innovation,#FD6925
 9,innovations,#FD6925
 9,innovative,#FD6925
@@ -2997,7 +3009,6 @@ goal,keyword,color
 12,locally produced,#BF8B2E
 12,management of chemicals,#BF8B2E
 12,manure management,#BF8B2E
-12,material science,#BF8B2E
 12,methane,#BF8B2E
 12,microplastic,#BF8B2E
 12,mulch,#BF8B2E
@@ -3133,7 +3144,8 @@ goal,keyword,color
 12,toxic products,#BF8B2E
 12,toxic substances,#BF8B2E
 12,toxic waste,#BF8B2E
-12,toxins,#BF8B2E
+12,chemical toxin,#BF8B2E
+12,chemical toxins,#BF8B2E
 12,trash,#BF8B2E
 12,trash bin,#BF8B2E
 12,vendor,#BF8B2E
@@ -3337,7 +3349,6 @@ goal,keyword,color
 14,Arctic,#0A97D9
 14,artificial island,#0A97D9
 14,artisinal fishery,#0A97D9
-14,atlantic,#0A97D9
 14,bait,#0A97D9
 14,barracuda,#0A97D9
 14,barrier islands,#0A97D9
@@ -3528,7 +3539,6 @@ goal,keyword,color
 14,nitrogen cycle,#0A97D9
 14,nitrogen fixation,#0A97D9
 14,nonhuman world,#0A97D9
-14,pacific,#0A97D9
 14,ocean,#0A97D9
 14,oceanic,#0A97D9
 14,oceanographer,#0A97D9
@@ -3536,7 +3546,8 @@ goal,keyword,color
 14,oceanography,#0A97D9
 14,oceans,#0A97D9
 14,octopus,#0A97D9
-14,offshore,#0A97D9
+14,offshore development,#0A97D9
+14,offshore drilling,#0A97D9
 14,oil spill,#0A97D9
 14,otter,#0A97D9
 14,otters,#0A97D9
@@ -3692,6 +3703,7 @@ goal,keyword,color
 15,bee,#56C02B
 15,bees,#56C02B
 15,biodiversity,#56C02B
+15,evolution and biology,#56C02B
 15,biology and evolution,#56C02B
 15,biome,#56C02B
 15,biomes,#56C02B
@@ -3768,6 +3780,8 @@ goal,keyword,color
 15,elephants,#56C02B
 15,elk,#56C02B
 15,endangered species,#56C02B
+15,healthy environment,#56C02B
+15,healthy environments,#56C02B
 15,environment and life study,#56C02B
 15,environmental conservation,#56C02B
 15,environmental contaminant,#56C02B
@@ -3813,7 +3827,6 @@ goal,keyword,color
 15,flood plain,#56C02B
 15,floodplain,#56C02B
 15,floods,#56C02B
-15,flora,#56C02B
 15,flower,#56C02B
 15,flowers,#56C02B
 15,forest,#56C02B
@@ -4333,6 +4346,7 @@ goal,keyword,color
 16,network security,#00689D
 16,non-discriminatory,#00689D
 16,nonprofit organization,#00689D
+16,non profit,#00689D
 16,nonprofit organizations,#00689D
 16,oppressive,#00689D
 16,organizational change,#00689D

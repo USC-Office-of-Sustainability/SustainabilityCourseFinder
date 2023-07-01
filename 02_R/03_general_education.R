@@ -9,8 +9,8 @@ data = data %>% rename(courseID = RCA_COURSE, course_title = RCA_TITLE, geID = R
 # fix PHIL-288 course title
 grep(";", data$course_title)
 data$course_title <- gsub(";", " ", data$course_title)
-data$course_title[which(data$courseID == "PHIL-288")] <- trimws(data$course_title[which(data$courseID == "PHIL-288")])
-
+# clean course title extra spaces
+data$course_title <- trimws(data$course_title)
 
 # want to go through and split off the categories for a class into new rows
 data = data %>% mutate(id = strsplit(as.character(geID), ";")) %>% unnest(id) %>% select(-geID)

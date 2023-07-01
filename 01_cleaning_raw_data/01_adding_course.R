@@ -17,4 +17,10 @@ pm = c("PM-599", "Data Science Methods for Climate Change Health Research", "SP2
 data_new = rbind(data, geol)
 data_new = rbind(data_new, pm)
 
+# update all_semesters
+data_new <- data_new %>%
+  group_by(courseID) %>%
+  mutate(all_semesters = paste(unique(semester), collapse = ", ")) %>%
+  ungroup()
+
 write.csv(data_new, "usc_courses_updated.csv", row.names=F)

@@ -1,7 +1,7 @@
 library(dplyr)
 
 # cleaning keywords
-usc_pwg_keywords <- read.csv("USC_PWG-E_2023Keywords_06_29_23.csv")
+usc_pwg_keywords <- read.csv("USC_PWG-E_2023Keywords_06_30_23.csv")
 
 # check color
 usc_pwg_keywords %>% select(goal, color) %>% distinct()
