@@ -68,33 +68,17 @@ The way in which we map course descriptions to the SDGs is through keyword lists
 
 Some of the lists have weights associated with every keyword based on their relevance to the SDG, while some do not. Also note that some of these keyword lists do not have keywords for SDG 17. In prior versions of this project, we attempted to mimic CMU's method and use various Python and R packages to assign weights but in our current version we do not use weights.
 
-```{r, echo=FALSE, example}
-sdg_table <- data.frame(
-  "Source" = c("[USC Keywords (Work in Progress)](https://www.president.usc.edu/sustainability-pwg/){target='_blank'}",
-               "[Core Elsevier (Work in Progress)](https://data.mendeley.com/datasets/87txkw7khs/1){target='_blank'}", 
-               "[Improved Elsevier Top 100](https://data.mendeley.com/datasets/9sxdykm8s4/2){target='_blank'}", 
-               "[SDSN](https://ap-unsdsn.org/regional-initiatives/universities-sdgs/){target='_blank'}", 
-               "[CMU Top 250 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
-               "[CMU Top 500 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
-               "[CMU Top 1000 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
-               "[University of Auckland (Work in Progress)](https://www.sdgmapping.auckland.ac.nz/){target='_blank'}", "[University of Toronto (Work in Progress)](https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/){target='_blank'}"),
-  "Dataset" = c("`usc_keywords`",
-              "`elsevier_keywords`",
-             "`elsevier100_keywords`",
-             "`sdsn_keywords`",
-             "`cmu250_keywords`",
-             "`cmu500_keywords`",
-             "`cmu1000_keywords`",
-             "`auckland_keywords`",
-             "`toronto_keywords`"),
-  "CSV" = c("[Link](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv){target='_blank'}",
-    "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv){target='_blank'}", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv){target='_blank'}", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv){target='_blank'}", 
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv){target='_blank'}",
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv){target='_blank'}",
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv){target='_blank'}", "", "")
-)
-kable(sdg_table)
-```
+Source | Dataset | CSV
+---|---|---
+<a href="https://www.president.usc.edu/sustainability-pwg/" target="_blank">USC Keywords (Work in Progress)</a> | `usc_keywords` | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a>
+<a href="https://data.mendeley.com/datasets/87txkw7khs/1" target="_blank">Core Elsevier (Work in Progress)</a> | `elsevier_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a> | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a> | `sdsn_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a> | `cmu250_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 500 Words</a> | `cmu500_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 1000 Words</a> | `cmu1000_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` |
+<a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` | 
 
 The first few rows of the USC keyword table, which has over 4250 keywords, are shown below.
 
