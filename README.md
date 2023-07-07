@@ -46,8 +46,9 @@ view, and edit all files in this repository.
 Open RStudio and click on the button in the top right to open the
 project file `SustainabilityCourseFinder.Rproj`. This will automatically
 set the working directory as the project directory. For more information
-about Projects
-[here](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects#:~:text=Opening%20Projects,Rproj).){target=“\_blank”}.
+about Projects <a
+href="https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects#:~:text=Opening%20Projects,Rproj"
+target="_blank">here</a>.
 
 ``` r
 # check current directory
