@@ -1,13 +1,43 @@
+USC Sustainability Course Finder
+================
 
-# USC Sustainability Course Finder
+- <a href="#introduction" id="toc-introduction">Introduction</a>
+- <a href="#installation" id="toc-installation">Installation</a>
+- <a href="#keyword-list" id="toc-keyword-list">Keyword List</a>
+- <a href="#cleaning-course-data" id="toc-cleaning-course-data">Cleaning
+  Course Data</a>
+- <a href="#cleaning-course-descriptions"
+  id="toc-cleaning-course-descriptions">Cleaning Course Descriptions</a>
+- <a href="#mapping-course-descriptions-with-text2sdg"
+  id="toc-mapping-course-descriptions-with-text2sdg">Mapping Course
+  Descriptions with text2sdg</a>
+- <a href="#sustainability-related-courses"
+  id="toc-sustainability-related-courses">Sustainability Related
+  Courses</a>
+- <a href="#general-education" id="toc-general-education">General
+  Education</a>
+- <a href="#creating-shiny-app" id="toc-creating-shiny-app">Creating Shiny
+  App</a>
+- <a href="#creating-a-github-repo"
+  id="toc-creating-a-github-repo">Creating a Github Repo</a>
+- <a href="#creating-a-readme" id="toc-creating-a-readme">Creating a
+  Readme</a>
+- <a href="#updating-data-and-shiny-app"
+  id="toc-updating-data-and-shiny-app">Updating Data and Shiny App</a>
+- <a href="#questions" id="toc-questions">Questions?</a>
+
+<!-- # USC Sustainability Course Finder -->
+
+## Introduction
 
 Peter Wu at Carnegie Mellon wrote the initial code that inspired this
 project, and his original R package can be found on
 <a href="https://github.com/pwu97/SDGmapR" target="_blank">Github</a>.
 At USC, Brian Tinsley, Alison Chen and Dr. Julie Hopper in the Office of
-Sustainability switched to using the new <a href="https://www.text2sdg.io" target="_blank">text2sdg</a> package to
-raise sustainability awareness in higher education by mapping USC course
-descriptions to the
+Sustainability switched to using the new
+<a href="https://www.text2sdg.io/" target="_blank">text2sdg</a> package
+to raise sustainability awareness in higher education by mapping USC
+course descriptions to the
 <a href="https://sdgs.un.org/goals" target="_blank">United Nations
 Sustainability Development Goals</a>.
 
@@ -17,21 +47,6 @@ target="_blank">Sustainability Course Finder</a> to see the the product
 of our work! Also find an article about our web app <a
 href="https://news.usc.edu/207748/new-usc-sustainability-course-finder/"
 target="_blank">here</a>!
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Keyword List](#keyword-list)
-- [Cleaning Course Data](#cleaning-course-data)
-- [Mapping Course Descriptions with
-  text2sdg](#mapping-course-descriptions-with-text2sdg)
-- [Sustainability Related Courses](#sustainability-related-courses)
-- [General Education](#general-education)
-- [Creating Shiny App](#creating-shiny-app)
-- [Creating a Github Repo](#creating-a-github-repo)
-- [Creating a Readme](#creating-a-readme)
-- [Updating Data and Shiny App](#updating-data-and-shiny-app)
-- [Questions?](#questions)
 
 ## Installation
 
@@ -83,44 +98,17 @@ of this project, we attempted to mimic CMU’s method and use various
 Python and R packages to assign weights but in our current version we do
 not use weights.
 
-| Source                                                                                                              | Dataset                | CSV                                                                                                                    |
-|:--------------------------------------------------------------------------------------------------------------------|:-----------------------|:-----------------------------------------------------------------------------------------------------------------------|
-| <a href="https://www.president.usc.edu/sustainability-pwg/"                                                         
- target="_blank">USC Keywords (Work in Progress)</a>                                                                  | `usc_keywords`         | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv"  
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a href="https://data.mendeley.com/datasets/87txkw7khs/1"                                                           
- target="_blank">Core Elsevier (Work in Progress)</a>                                                                 | `elsevier_keywords`    | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv"                                
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2"                                                           
- target="_blank">Improved Elsevier Top 100</a>                                                                        | `elsevier100_keywords` | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv"                             
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/"                                             
- target="_blank">SDSN</a>                                                                                             | `sdsn_keywords`        | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv"                                    
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a                                                                                                                  
- href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html"  
- target="_blank">CMU Top 250 Words</a>                                                                                | `cmu250_keywords`      | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv"                                  
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a                                                                                                                  
- href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html"  
- target="_blank">CMU Top 500 Words</a>                                                                                | `cmu500_keywords`      | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv"                                  
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a                                                                                                                  
- href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html"  
- target="_blank">CMU Top 1000 Words</a>                                                                               | `cmu1000_keywords`     | <a                                                                                                                     
-                                                                                                                                                href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv"                                 
-                                                                                                                                                target="_blank">Link</a>                                                                                                |
-| <a href="https://www.sdgmapping.auckland.ac.nz/"                                                                    
- target="_blank">University of Auckland (Work in Progress)</a>                                                        | `auckland_keywords`    |                                                                                                                        |
-| <a                                                                                                                  
- href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/"                        
- target="_blank">University of Toronto (Work in Progress)</a>                                                         | `toronto_keywords`     |                                                                                                                        |
+| Source                                                                                                                                                        | Dataset                | CSV                                                                                                                                                |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| <a href="https://www.president.usc.edu/sustainability-pwg/" target="_blank">USC Keywords (Work in Progress)</a>                                               | `usc_keywords`         | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a> |
+| <a href="https://data.mendeley.com/datasets/87txkw7khs/1" target="_blank">Core Elsevier (Work in Progress)</a>                                                | `elsevier_keywords`    | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv" target="_blank">Link</a>                               |
+| <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a>                                                       | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a>                            |
+| <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a>                                                              | `sdsn_keywords`        | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a>                                   |
+| <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a>  | `cmu250_keywords`      | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a>                                 |
+| <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 500 Words</a>  | `cmu500_keywords`      | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv" target="_blank">Link</a>                                 |
+| <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 1000 Words</a> | `cmu1000_keywords`     | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv" target="_blank">Link</a>                                |
+| <a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a>                                                | `auckland_keywords`    |                                                                                                                                                    |
+| <a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords`     |                                                                                                                                                    |
 
 The first few rows of the USC keyword table, which has over 4250
 keywords, are shown below.
@@ -457,9 +445,9 @@ general education page.
 
 ## Creating Shiny App
 
-We can assure you that anyone using this github
-repository can replicate the shiny app with little to no coding
-experience. To learn the basics, refer to
+We can assure that anyone using this github repository can replicate the
+shiny app with little to no coding experience. To learn the basics,
+refer to
 <a href="https://rstudio.github.io/shinydashboard/" target="_blank">this
 tutorial</a>.
 
@@ -467,17 +455,17 @@ If you follow along with the code in the `app.R` file in the “shiny_app”
 directory, you will understand the structure and functionality of a
 shiny app.
 
-One important tip for making various plots in the
-dashboard is that it is often helpful to create a new R script to
-generate a dataframe that is easier to work with for the purposes of
-that plot / function. In the `02_R` directory, the file
-`sustainability_related_classes.R` containts code to generate
-`classes_by_sdgs.csv` which is used for one of the barcharts in the
-dashboard. We found it helpful to write code to generate
-plots in another file so you can quickly go through trial and error
-instead of opening the dashboard every time. Lastly, **Google, ChatGPT and
-stackOverflow are your coding friends**… Plenty of people out there are
-struggling with the same things you struggle with in R and Rshiny.
+One important tip for making various plots in the dashboard is that it
+is often helpful to create a new R script to generate a dataframe that
+is easier to work with for the purposes of that plot / function. In the
+`02_R` directory, the file `sustainability_related_classes.R` containts
+code to generate `classes_by_sdgs.csv` which is used for one of the
+barcharts in the dashboard. We found it incredibly helpful to write code
+to generate plots in another file so you can quickly go through trial
+and error instead of opening the dashboard every time. Lastly, **Google,
+ChatGPT and stackOverflow are your coding friends**… Plenty of people
+out there are struggling with the same things you struggle with in R and
+Rshiny.
 
 ## Creating a Github Repo
 
@@ -498,16 +486,19 @@ target="_blank">R Markdown</a>. In `.Rmd` (R Markdown) files, you can
 specify the `output` of the document to be a `github_document` and when
 you “knit” the `.Rmd` file, it will automatically generate a `.md`
 (markdown) file in the directory which will be displayed on your github
-page! You can also refer to the README.Rmd file to see how Brian Tinsley created this original
-readme file.
+page! You can find more information
+[here](https://rmarkdown.rstudio.com/github_document_format.html). You
+can also refer to the README.Rmd file to see how Brian Tinsley created
+this original readme file.
 
 ## Updating Data and Shiny App
 
 When the keywords or course data are updated, the way we have been
 updating the shiny app is by rerunning all of the files in order with
-the new data. When doing so, we remove the old files from the `Data` folder
-and the `shiny_app` folder, but we recommend storing them in a backup
-folder elsewhere in the case that the new code doesn’t work.
+the new data. When doing so, we remove the old files from the `Data`
+folder and the `shiny_app` folder, but we recommend storing them in a
+backup folder elsewhere in the case that the new run of code doesn’t
+work.
 
 Which files you will have to rerun is determined by what data you are
 updating. If the raw course data is updated, you will need to start from
@@ -523,6 +514,7 @@ starting at the mapping of course descriptions (starting at
 
 ## Questions?
 
-We are very grateful to the developers that responded to our emails and helped us
-along the way. If you have any questions, comments, or concerns, please reach out to Brian
-Tinsley: <btinsley@usc.edu> or to Julie Hopper <juliehop@usc.edu
+We are very grateful to the developers that responded to our emails and
+helped us along the way. If you have any questions, comments, or
+concerns, please reach out to Brian Tinsley: <btinsley@usc.edu> or Julie
+Hopper <juliehop@usc.edu>

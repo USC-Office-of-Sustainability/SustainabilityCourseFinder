@@ -1,5 +1,8 @@
 ---
-output: github_document
+title: "USC Sustainability Course Finder"
+output: 
+  github_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
@@ -7,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-# USC Sustainability Course Finder
+<!-- # USC Sustainability Course Finder -->
 
 ```{r, warning=FALSE,message=FALSE,echo=FALSE}
 # load all packages
@@ -15,24 +18,12 @@ library(tidyverse)
 library(knitr)
 ```
 
+## Introduction
+
 Peter Wu at Carnegie Mellon wrote the initial code that inspired this project, and his original R package can be found on [Github](https://github.com/pwu97/SDGmapR){target='_blank'}. 
-At USC, myself (Brian Tinsley) and Dr. Julie Hopper in the Office of Sustainability have been working to develop this package further and raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
+At USC, Brian Tinsley, Alison Chen and Dr. Julie Hopper in the Office of Sustainability switched to using the new [text2sdg](https://www.text2sdg.io/){target='_blank'} package to raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
 
 Check out the [Sustainability Course Finder](https://usc-sustainability.shinyapps.io/Sustainability-Course-Finder/){target="_blank"} to see the the product of our work! Also find an article about our web app [here](https://news.usc.edu/207748/new-usc-sustainability-course-finder/){target="_blank"}!
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Keyword List](#keyword-list)
-- [Cleaning Course Data](#cleaning-course-data)
-- [Mapping Course Descriptions with text2sdg](#mapping-course-descriptions-with-text2sdg)
-- [Sustainability Related Courses](#sustainability-related-courses)
-- [General Education](#general-education)
-- [Creating Shiny App](#creating-shiny-app)
-- [Creating a Github Repo](#creating-a-github-repo)
-- [Creating a Readme](#creating-a-readme)
-- [Updating Data and Shiny App](#updating-data-and-shiny-app)
-- [Questions?](#questions)
 
 
 ## Installation
@@ -68,33 +59,17 @@ The way in which we map course descriptions to the SDGs is through keyword lists
 
 Some of the lists have weights associated with every keyword based on their relevance to the SDG, while some do not. Also note that some of these keyword lists do not have keywords for SDG 17. In prior versions of this project, we attempted to mimic CMU's method and use various Python and R packages to assign weights but in our current version we do not use weights.
 
-```{r, echo=FALSE, example}
-sdg_table <- data.frame(
-  "Source" = c("[USC Keywords (Work in Progress)](https://www.president.usc.edu/sustainability-pwg/){target='_blank'}",
-               "[Core Elsevier (Work in Progress)](https://data.mendeley.com/datasets/87txkw7khs/1){target='_blank'}", 
-               "[Improved Elsevier Top 100](https://data.mendeley.com/datasets/9sxdykm8s4/2){target='_blank'}", 
-               "[SDSN](https://ap-unsdsn.org/regional-initiatives/universities-sdgs/){target='_blank'}", 
-               "[CMU Top 250 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
-               "[CMU Top 500 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
-               "[CMU Top 1000 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
-               "[University of Auckland (Work in Progress)](https://www.sdgmapping.auckland.ac.nz/){target='_blank'}", "[University of Toronto (Work in Progress)](https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/){target='_blank'}"),
-  "Dataset" = c("`usc_keywords`",
-              "`elsevier_keywords`",
-             "`elsevier100_keywords`",
-             "`sdsn_keywords`",
-             "`cmu250_keywords`",
-             "`cmu500_keywords`",
-             "`cmu1000_keywords`",
-             "`auckland_keywords`",
-             "`toronto_keywords`"),
-  "CSV" = c("[Link](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv){target='_blank'}",
-    "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv){target='_blank'}", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv){target='_blank'}", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv){target='_blank'}", 
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv){target='_blank'}",
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv){target='_blank'}",
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv){target='_blank'}", "", "")
-)
-kable(sdg_table)
-```
+Source | Dataset | CSV
+---|---|---
+<a href="https://www.president.usc.edu/sustainability-pwg/" target="_blank">USC Keywords (Work in Progress)</a> | `usc_keywords` | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a>
+<a href="https://data.mendeley.com/datasets/87txkw7khs/1" target="_blank">Core Elsevier (Work in Progress)</a> | `elsevier_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a> | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a> | `sdsn_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a> | `cmu250_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 500 Words</a> | `cmu500_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 1000 Words</a> | `cmu1000_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv" target="_blank">Link</a>
+<a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` |
+<a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` | 
 
 The first few rows of the USC keyword table, which has over 4250 keywords, are shown below.
 
@@ -113,7 +88,7 @@ In the 02_R directory's file `01_cleaning_keywords.R`, notice that the keywords 
 
 ## Cleaning Course Data
 
-While I do not expect another school's data to be of the same format as the raw files at USC, I am still including some details on how we cleaned the files in hopes that it may address some common problems others might have with their data.  
+While we do not expect another school's data to be of the same format as the raw files at USC, we are still including some details on how we cleaned the files in hopes that it may address some common problems others might have with their data.  
 
 <!-- add link to a file? -->
 Course data was retrieved from the USC’s Office of Academic Records and Registrar, and the raw data files, as well as the R scripts to clean them, can be found in the `01_cleaning_raw_data/00_raw_usc_data` folder [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/01_cleaning_raw_data/00_raw_usc_data){target='_blank'}.
@@ -142,7 +117,7 @@ for(i in seq(nrow(x), 2, -1)) { # Work on the table in bottom to top so we can m
 }
 ```
 
-Once the files are cleaned, we run a function (in the same R script) to clean each individual file and write it as CSV into a new folder, as well as obtain the "origin" column which is the year and term of the data. Once again, I do not expect anyone's data to be in the same format, but this might help someone clean scattered CSV files.
+Once the files are cleaned, we run a function (in the same R script) to clean each individual file and write it as CSV into a new folder, as well as obtain the "origin" column which is the year and term of the data. Once again, we do not expect anyone's data to be in the same format, but this might help someone clean scattered CSV files.
 
 ```{r eval=FALSE}
 # make sure folder only contains CSVs you want to run the code on
@@ -305,11 +280,11 @@ We were given completely a different set of data for USC's general education req
 
 ## Creating Shiny App
 
-When I was tasked with creating a shiny app, I was daunted but eventually learned through trial and error. Despite the scary sight of 1400 lines of code, I can assure that anyone using this github repository can replicate the shiny app with little to no coding experience. To learn the basics, refer to [this tutorial](https://rstudio.github.io/shinydashboard/){target='_blank'}.  
+We can assure that anyone using this github repository can replicate the shiny app with little to no coding experience. To learn the basics, refer to [this tutorial](https://rstudio.github.io/shinydashboard/){target='_blank'}.  
 
 If you follow along with the code in the `app.R` file in the "shiny_app" directory, you will understand the structure and functionality of a shiny app.  
 
-One important lesson I learned when making various plots for the dashboard is that it is often helpful to create a new R script to generate a dataframe that is easier to work with for the purposes of that plot / function. In the `02_R` directory, the file `sustainability_related_classes.R` containts code to generate `classes_by_sdgs.csv` which is used for one of the barcharts in the dashboard. I also found it incredibly helpful to write code to generate plots in another file so you can quickly go through trial and error instead of opening the dashboard every time. Lastly, **Google and stackOverflow are your friends**... Plenty of people out there are struggling with the same things you struggle with in R and Rshiny. 
+One important tip for making various plots in the dashboard is that it is often helpful to create a new R script to generate a dataframe that is easier to work with for the purposes of that plot / function. In the `02_R` directory, the file `sustainability_related_classes.R` containts code to generate `classes_by_sdgs.csv` which is used for one of the barcharts in the dashboard. We found it incredibly helpful to write code to generate plots in another file so you can quickly go through trial and error instead of opening the dashboard every time. Lastly, **Google, ChatGPT and stackOverflow are your coding friends**... Plenty of people out there are struggling with the same things you struggle with in R and Rshiny. 
 
 
 ## Creating a Github Repo
@@ -318,19 +293,17 @@ To make a github repository, follow [this tutorial](https://docs.github.com/en/g
 
 ## Creating a Readme
 
-To create a Readme, familiarize yourself with [Markdown](https://www.markdownguide.org/getting-started){target='_blank'} and [R Markdown](https://rmarkdown.rstudio.com/articles_intro.html){target='_blank'}. In `.Rmd` (R Markdown) files, you can specify the `output` of the document to be a `github_document` and when you "knit" the `.Rmd` file, it will automatically generate a `.md` (markdown) file in the directory which will be displayed on your github page! You can also refer to my README.Rmd file to see how I created this readme file.
+To create a Readme, familiarize yourself with [Markdown](https://www.markdownguide.org/getting-started){target='_blank'} and [R Markdown](https://rmarkdown.rstudio.com/articles_intro.html){target='_blank'}. In `.Rmd` (R Markdown) files, you can specify the `output` of the document to be a `github_document` and when you "knit" the `.Rmd` file, it will automatically generate a `.md` (markdown) file in the directory which will be displayed on your github page! You can find more information [here](https://rmarkdown.rstudio.com/github_document_format.html). You can also refer to the README.Rmd file to see how Brian Tinsley created this original readme file.
 
 
 
 ## Updating Data and Shiny App
 
-When the keywords or course data is updated, the way I have been updating the shiny app is by rerunning all of the files in order with the new data. When doing so, remove the old files from the `Data` folder and the `shiny_app` folder, but I recommend storing them in a backup folder elsewhere in the case that the new run of code doesn't work. 
+When the keywords or course data are updated, the way we have been updating the shiny app is by rerunning all of the files in order with the new data. When doing so, we remove the old files from the `Data` folder and the `shiny_app` folder, but we recommend storing them in a backup folder elsewhere in the case that the new run of code doesn't work. 
 
 Which files you will have to rerun is determined by what data you are updating. If the raw course data is updated, you will need to start from the beginning (at `01_cleaning_raw_data/00_raw_usc_data/01_cleaning_scattered_files.R`) and clean and combine all of the school data again. Similarly, if you are adding / fixing keyword mapping issues with context dependencies, you will need to clean the course data again (starting at `01_cleaning_raw_data/03_cleaning_course_descriptions.R`). If you are only updating the keywords list, then you only need to rerun code starting at the mapping of course descriptions (starting at `02_R/01_cleaning_keywords.R`). 
 
 ## Questions?
 
-There have been many packages in R that have confused me, and I am very grateful for some developers that responded to my emails and helped me along the way.  
-
-If you have any questions, comments, or concerns, please reach out to me via email: [btinsley@usc.edu](mailto:btinsley@usc.edu)
+We are very grateful to the developers that responded to our emails and helped us along the way. If you have any questions, comments, or concerns, please reach out to Brian Tinsley: [btinsley@usc.edu](mailto:btinsley@usc.edu) or Julie Hopper [juliehop@usc.edu](mailto:juliehop@usc.edu)
 
