@@ -1,8 +1,5 @@
 ---
-title: "README"
 output: github_document
-  # md_document:
-  #   variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
@@ -18,31 +15,39 @@ library(tidyverse)
 library(knitr)
 ```
 
-Peter Wu at Carnegie Mellon wrote the initial code that inspired this project, and his original R package can be found on [Github](https://github.com/pwu97/SDGmapR). 
-At USC, myself (Brian Tinsley) and Dr. Julie Hopper in the Office of Sustainability have been working to develop this package further and raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals.](https://sdgs.un.org/goals)  
+Peter Wu at Carnegie Mellon wrote the initial code that inspired this project, and his original R package can be found on [Github](https://github.com/pwu97/SDGmapR){target='_blank'}. 
+At USC, myself (Brian Tinsley) and Dr. Julie Hopper in the Office of Sustainability have been working to develop this package further and raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
 
-Check out the [Sustainability Course Finder](https://usc-sustainability.shinyapps.io/Sustainability-Course-Finder/){target="_blank"} to see the the product of our work! Also find an article about our web app [here!](https://news.usc.edu/207748/new-usc-sustainability-course-finder/){target="_blank"}
+Check out the [Sustainability Course Finder](https://usc-sustainability.shinyapps.io/Sustainability-Course-Finder/){target="_blank"} to see the the product of our work! Also find an article about our web app [here](https://news.usc.edu/207748/new-usc-sustainability-course-finder/){target="_blank"}!
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Keyword List](#keyword-list)
 - [Cleaning Course Data](#cleaning-course-data)
-- [Mapping Course Descriptions](#mapping-course-descriptions)
+- [Mapping Course Descriptions with text2sdg](#mapping-course-descriptions-with-text2sdg)
 - [Sustainability Related Courses](#sustainability-related-courses)
 - [General Education](#general-education)
 - [Creating Shiny App](#creating-shiny-app)
-- [Creating a Readme / Github Repo](Creating-a-Readme-/-Github-Repo)
-- [Updating Data / Shiny App](#updating-data-/-shiny-app)
+- [Creating a Github Repo](#creating-a-github-repo)
+- [Creating a Readme](#creating-a-readme)
+- [Updating Data and Shiny App](#updating-data-and-shiny-app)
 - [Questions?](#questions)
 
 
 ## Installation
 
-If you wish to install this package on your computer, clone this repository by following [these instructions.](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-Once installed, you can open, view, and edit all files in this repository.  
+Prerequisites: R and RStudio
 
-To download `.csv` or `.R ` files, open them on this github repository and right click the "raw" button and select "save link as" button and name the file with the correct extension.
+If you wish to install this package on your computer, clone this repository by following [these instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository){target="_blank"}.
+Once downloaded, you can open, view, and edit all files in this repository.  
+
+Open RStudio and click on the button in the top right to open the project file `SustainabilityCourseFinder.Rproj`. This will automatically set the working directory as the project directory. For more information about Projects [here](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects#:~:text=Opening%20Projects,Rproj){target="_blank"}.
+
+```{r, eval=FALSE}
+# check current directory
+getwd()
+```
 
 For those who are new to R, we often install and load external packages at the top of our R scripts like this:
 
@@ -54,25 +59,25 @@ library(tidyverse)
 
 ```
 
-The [tidyverse package](https://github.com/tidyverse/tidyverse) is an incredibly powerful R package which helps transform and present data; it has been used extensively in this project.  
+The [tidyverse package](https://github.com/tidyverse/tidyverse){target="_blank"} is an incredibly powerful R package which helps transform and present data; it has been used extensively in this project.  
 
 
 ## Keyword List
 
 The way in which we map course descriptions to the SDGs is through keyword lists containing words relevant to each SDG. The table below lists publicly available SDG keywords that have been published online.  
 
-Some of the lists have weights associated with every keyword based on their relevance to the SDG, while some do not. Also note that some of these keyword lists do not have keywords for SDG 17. In prior versions of this project, we attempted to mimic CMU's method and use various Python and R packages, such as [text2sdg](https://www.text2sdg.io/), to assign weights, but we have since switched methods and assigned each keyword a weight of 1. 
+Some of the lists have weights associated with every keyword based on their relevance to the SDG, while some do not. Also note that some of these keyword lists do not have keywords for SDG 17. In prior versions of this project, we attempted to mimic CMU's method and use various Python and R packages to assign weights but in our current version we do not use weights.
 
 ```{r, echo=FALSE, example}
 sdg_table <- data.frame(
-  "Source" = c("[USC Keywords (Work in Progress)](https://www.president.usc.edu/sustainability-pwg/)",
-               "[Core Elsevier (Work in Progress)](https://data.mendeley.com/datasets/87txkw7khs/1)", 
-               "[Improved Elsevier Top 100](https://data.mendeley.com/datasets/9sxdykm8s4/2)", 
-               "[SDSN](https://ap-unsdsn.org/regional-initiatives/universities-sdgs/)", 
-               "[CMU Top 250 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html)",
-               "[CMU Top 500 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html)",
-               "[CMU Top 1000 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html)",
-               "[University of Auckland (Work in Progress)](https://www.sdgmapping.auckland.ac.nz/)", "[University of Toronto (Work in Progress)](https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/)"),
+  "Source" = c("[USC Keywords (Work in Progress)](https://www.president.usc.edu/sustainability-pwg/){target='_blank'}",
+               "[Core Elsevier (Work in Progress)](https://data.mendeley.com/datasets/87txkw7khs/1){target='_blank'}", 
+               "[Improved Elsevier Top 100](https://data.mendeley.com/datasets/9sxdykm8s4/2){target='_blank'}", 
+               "[SDSN](https://ap-unsdsn.org/regional-initiatives/universities-sdgs/){target='_blank'}", 
+               "[CMU Top 250 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
+               "[CMU Top 500 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
+               "[CMU Top 1000 Words](https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html){target='_blank'}",
+               "[University of Auckland (Work in Progress)](https://www.sdgmapping.auckland.ac.nz/){target='_blank'}", "[University of Toronto (Work in Progress)](https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/){target='_blank'}"),
   "Dataset" = c("`usc_keywords`",
               "`elsevier_keywords`",
              "`elsevier100_keywords`",
@@ -82,41 +87,28 @@ sdg_table <- data.frame(
              "`cmu1000_keywords`",
              "`auckland_keywords`",
              "`toronto_keywords`"),
-  "CSV" = c("[Link](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv)",
-    "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv)", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv)", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv)", 
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv)",
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv)",
-"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv)", "", "")
+  "CSV" = c("[Link](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv){target='_blank'}",
+    "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv){target='_blank'}", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv){target='_blank'}", "[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv){target='_blank'}", 
+"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv){target='_blank'}",
+"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv){target='_blank'}",
+"[Link](https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv){target='_blank'}", "", "")
 )
 kable(sdg_table)
 ```
 
-The first few rows of the USC keyword table, which has over 4200 keywords, are shown below.
+The first few rows of the USC keyword table, which has over 4250 keywords, are shown below.
 
 ```{r, echo=F}
-keywords = read.csv("data/usc_keywords.csv")
+keywords = read.csv("shiny_app/usc_keywords.csv")
 kw = keywords %>% select(goal, keyword, color) %>% (head)
 kable(kw)
 ```
 
 The USC keyword list has been modified many times with the help of the Presidential Working Group (PWG) and is continually being improved to increase accuracy. 
 
-Note that the [USC keyword list](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv) contains the goal, keyword, and sdg color columns, but also the `pattern` and `weight` columns. If you were to make your own keyword list, you must include all of these columns. The pattern column is used when the mapping function matches words. The format for this column is `"\\b(\\d*)keyword(\\d*)\\b"`. Also note that if you intend to print these patterns in R, you must use an extra backslash ( \\ ) because it is a special "escape" character. 
+In the 02_R directory's file `01_cleaning_keywords.R`, notice that the keywords are converted to lowercase, punctuation is removed, and that duplicates are removed. Removing duplicates is very important for ensuring some courses do not get mapped twice. Furthermore, the pound symbol causes problems when using [text2sdg](https://www.text2sdg.io/){target='_blank'}'s `detect_any()` so keywords with `#` are removed.
 
-In the R directory, the file `cleaning_keywords.R` notice that the keyword and keyword pattern are converted to lowercase and that duplicates are removed. Removing duplicates is very important for ensuring some classes do not get mapped twice.
-
-```{r, eval=F}
-# only select the relevant columns (sometimes there are empty columns)
-keywords = keywords %>% select (goal, keyword, pattern, color)
-# assign every keyword a weight of 1
-keywords$weight = 1
-# make everything lower case
-keywords$keyword = tolower(keywords$keyword)
-keywords$pattern = tolower(keywords$pattern)
-# get rid of duplicates
-keywords = keywords[!duplicated(keywords), ]
-
-write.csv(keywords, "usc_keywords.csv", row.names=F)
+```{r, code = readLines("02_R/01_cleaning_keywords.R"), eval=F}
 ```
 
 ## Cleaning Course Data
@@ -124,8 +116,8 @@ write.csv(keywords, "usc_keywords.csv", row.names=F)
 While I do not expect another school's data to be of the same format as the raw files at USC, I am still including some details on how we cleaned the files in hopes that it may address some common problems others might have with their data.  
 
 <!-- add link to a file? -->
-Course data was retrieved from the USC’s Office of Academic Records and Registrar, and the raw data files, as well as the R scripts to clean them, can be found in the `cleaning_raw_data` folder and inside the `raw_usc_data` folder.
-These files had lots of problems with spacing and column names, and we addressed these issues in `cleaning_scattered_files.R`.  
+Course data was retrieved from the USC’s Office of Academic Records and Registrar, and the raw data files, as well as the R scripts to clean them, can be found in the `01_cleaning_raw_data/00_raw_usc_data` folder [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/01_cleaning_raw_data/00_raw_usc_data){target='_blank'}.
+The raw data files had lots of problems with spacing and column names, and we addressed these issues in `01_cleaning_scattered_files.R`.  
 
 <!-- show the dataframe -->
 <!-- show the code to clean it -->
@@ -188,194 +180,153 @@ master_df$COURSE_CODE = trimws(master_df$COURSE_CODE, which = c("right"))
 write.csv(master_df, "combined_data.csv", row.names=FALSE)
 ```
 
-In the next R file, `cleaning_2020-2023.R`, we read in the combined clean CSV and reformat it. In this file, we change column names, count the number of students and sections for each section, cut out research courses, and we create the "semester," "all_semesters," and "course_level" columns. To see this code please see the R script. In this script, some of the cleaning is done in one function, `clean_data`, and some cleaning processes are done with helper functions like `get_semesters` and `get_class_levels`.
+In the next R file, `02_cleaning_2020-2023.R`, we read in the combined clean CSV and reformat it. In this file, we change column names, count the number of students and sections for each section, cut out courses listed purely for enrollment credit, and we create the "semester," "all_semesters," and "course_level" columns. To see this code please see the R script. In this script, some of the cleaning is done in one function, `clean_data`, and some cleaning processes are done with helper functions like `get_semester` and `get_course_level`.
 
-One important piece of this file is excluding certain courses, such as "Directed Research" or "Master's Thesis" course titles. You can add any generic course descriptions you wish to exclude with the following code inside the cleaning function:
+One important piece of this file is excluding certain courses. For example, courses with titles containing "Directed Research" and Individual Instruction", courses with exact titles "Advanced Research Experience" and Board Development", courses with descriptions containing "Directed undergraduate research" and "Directed graduate research", and courses with course IDs ending in 490, 790, and 594 are all removed. You can add additional rules to the clean_data function:
 
 ```{r, eval=F}
-data_clean = raw_data[trimws(raw_data$COURSE_TITLE) !=  "Directed Research"
-                      & trimws(raw_data$COURSE_TITLE) !=  "Master's Thesis" 
-                      & trimws(raw_data$COURSE_TITLE) !=  "Doctoral Dissertation"
-                      & trimws(raw_data$COURSE_TITLE) !=  "Research"
-                      , ]
+titles_containing = c("Directed Research",
+                        "Individual Instruction")
+titles_matching = c("Advanced Research Experience",
+                      "Board Development")
+descriptions_containing = c("Directed undergraduate research",
+                              "Directed graduate research")
+data_clean <- raw_data %>%
+    filter(!grepl(paste(titles_containing, collapse = "|"), COURSE_TITLE) & 
+             !COURSE_TITLE %in% titles_matching &
+             !grepl(paste(descriptions_containing, collapse = "|"), COURSE_DESCRIPTION) &
+             !grepl("-[47]90|-594", COURSE_CODE))
 ```
 
 Note that when you make an update to data like such, you must go and rerun the next R scripts with the new data to update all of the data frames for the shiny app. 
 Once we create the cleaned `usc_courses.csv`, we duplicate it and move it up one directory so that we can run more code on it.
 
-In the above directory, `cleaning_raw_data`, there is an R script that shows you how to add a course to the dataframe `adding_course.R`. It is important that you include ALL COLUMNS when adding new entries -- otherwise the data will get messy. 
+In the above directory, `01_cleaning_raw_data`, there is an R script that shows you how to add a course to the dataframe `01_adding_course.R`. It is important that you include ALL COLUMNS when adding new entries -- otherwise the data will get messy. 
 
 
 ## Cleaning Course Descriptions
 
-Once we have the cleaned dataframe with correct column names, we now clean the course descriptions to increase the accuracy of the mapping we will perform to the keyword list.
-If you navigate to `cleaning_course_descriptions.R`, you will see what appears to be a daunting 600-line R script -- do not be scared.
+Once we have the cleaned dataframe with correct column names, we now clean the course descriptions in `01_cleaning_raw_data/03_cleaning_course_descriptions.R` to increase the accuracy of the mapping we will perform to the keyword list.
+
 This file corrects context-dependency issues that lead to inaccurate mappings of courses to SDGs. For example, courses with the phrases "business environment" or "learning environment" should not be mapped to the word "environment" and its related SDGs. 
 
-The first thing we do is create a new column "clean_course_desc" which holds the course description of the class but **excluding punctuation.** By exluding punctuation (except for apostraphes), we ensure there are no problems mapping words that come before a comma or period or other punctuation. Code to achieve this is shown below:
+First some typos in the course descriptions are corrected using `stri_replace_all_regex` from the [stringi package](https://stringi.gagolewski.com/){target='_blank'}.
+
+Next we want to create a new column "clean_course_desc" which holds the course description of the course without punctuation  except apostrophes and corrected context dependencies. 
 
 ```{r eval=FALSE}
-# column to hold cleaned course description
-usc_courses["clean_course_desc"] = NA
+usc_courses$clean_course_desc <- 
+  apply_context_dependency(remove_punctuation(usc_courses$course_desc))
+```
 
-# put the clean version of course_desc in new column without punctuation, except for '
-for (i in 1:nrow(usc_courses)){
-  desc = usc_courses$course_desc[i]
-  desc_clean = gsub("[^[:alnum:][:space:]']", " ", desc)
-  desc_spaces = str_squish(desc_clean)
-  usc_courses$clean_course_desc[i] = desc_spaces
+The `remove_punctuation` function simply replaces all punctuation in the text with a space using gsub. Learn more about regular expressions in R by typing `?base::regex` into the console.
+
+```{r eval = FALSE}
+remove_punctuation <- function(tt) {
+  gsub("[^[:alnum:][:space:]']", " ", tt)
 }
 ```
 
-To account for context dependencies either before a word or after a word, follow the model in the file, and ensure to convert words to lowercase and trim whitespace. 
+The `apply_context_dependency` function uses `stri_replace_all_regex` to replace advertising ecosystem with advertising domain in all course descriptions. There is a file called `context_dependencies.csv` which lists all the replacements to be made as two columns: before and after. You can use regex capture groups for more generic matches. Warning: the more context dependencies in the csv file, the slower this function will run. 
 
-Once we have the output from this cleaning, `usc_courses_cleaned.csv`, we duplicate it and move it to the `data` directory where we will be working from now on. Now, all of our R scripts will be from the ` R ` directory and our data will be in this data directory. To make sure that your output files are created in the correct folder, use the `setwd()` function like this:
+Once we have the output from this cleaning, `usc_courses_cleaned.csv`, we duplicate it and move it to the `data` directory where we will be working from now on. Now, all of our R scripts will be from the `02_R` directory and our data will be in this data directory. 
 
-```{r}
-# check current directory
-getwd()
-# change the working directory
-setwd("/Users/btinsley/Desktop/USC-SDGmap/data")
-# check out the files in the folder
-list.files()
+
+## Mapping Course Descriptions with text2sdg
+
+Our previous strategy to map course descriptions took over 6 hours to run. We now use [text2sdg](https://www.text2sdg.io/){target='_blank'}'s `detect_any` function to map course descriptions in less than 5 minutes.
+
+Now, we are ready to map the clean course descriptions void of punctuation errors and major context dependencies to our keyword list and the 17 SDGs. 
+In the `02_R` directory, find the code to map course descriptions in `02_using_text2sdg.R`.  
+First we need to create a system to use the USC keywords. The system needs to have 3 columns: system name, SDG, and query.
+
+```{r eval=FALSE}
+# create system for text2sdg
+usc_pwg_system <- usc_pwg_keywords %>%
+  mutate(system = "usc_pwg",
+         query = paste0('"', keyword, '"')) %>%
+  rename(sdg = goal) %>%
+  select(system, sdg, query)
 ```
 
+Make sure the keywords and the text (course description) have no punctuation and are lowercase, so that detect_any can find the keywords in the text.
 
-## Mapping Course Descriptions
+Next we run detect_any using our keyword system. This function will only count a keyword once. The output from this function is a dataframe with columns: document, sdg, system, query_id, features, hit. The important columns are document, sdg, and features. The document number corresponds to the row number of usc_courses dataframe. SDG got changed into 'SDG-01' not 1. Features that are made up of multiple words get split by commas in this column, so I glued them back together. If a course gets mapped to multiple SDGs it will show up multiple rows in the dataframe.
 
-Now, we are ready to map the clean course descriptions void of punctuation errors and major context dependencies to our keyword list and the SDGs. 
-In the `R` directory, find the code to map course descriptions in `mapping_course_descriptions.R`.  
-
-The following function `find_words` is the foundation for the mapping. Given some text, one of the 17 SDGs, and a keyword list, it returns a vector of all keywords in the text that map to the designated SDG (including repeats). 
-
-```{r eval=TRUE}
-# goal of this function is to return a vector of all the keywords in a course description (including duplicates)
-find_words = Vectorize(function(text, sdg, keywords="usc_keywords", count_repeats=FALSE){
-  if (keywords=="usc_keywords"){
-    sdg_keywords = usc_keywords %>% filter (goal==sdg)
-  }
-  
-  patterns <- sdg_keywords$pattern
-  keywords <- sdg_keywords$keyword
-  
-  words <- c()
-  
-  for (i in 1:nrow(sdg_keywords)){
-    if (grepl(tolower(patterns[i]), tolower(text))){
-      # count number of times
-      sum = str_count(tolower(text), patterns[i])
-      for (j in 1:sum){
-        words = c(words, keywords[i])
-      }
-    }
-  }
-  return(words)
+```{r, eval=FALSE}
+# duplicate keywords will only count as 1
+hits <- detect_any(usc_courses$text, usc_pwg_system, output = "features")
+# remove commas in features
+hits$cleanfeatures <- gsub(",", "", hits$features)
+# get sdg number
+hits$sdg_num <- sapply(hits$sdg, function(x) {
+  as.numeric(strsplit(x, "-")[[1]][2])
 })
 ```
 
-
-Here is an example of how it works:
-
-```{r}
-usc_keywords = read.csv("data/usc_keywords.csv")
-find_words("this maps to SDG 1 because the words poverty and charity and charity", 1)
-```
-
-Now that the function to map text is created, we can use a loop to go through the entire course dataframe for each of the 17 sdgs and find the keywords. The following function performs the mapping and creates the `goal` and `keyword` columns. Note: this function can take a very long time to run (**about 3-4 hours** for the USC keywords and course dataframe).
+Then we want the color for the corresponding sdg (and keyword) by merging the dataframe with the original keywords.
 
 ```{r, eval=FALSE}
-# read in the USC course data
-classes = read.csv("usc_courses_cleaned.csv")
-
-all_sdg_keywords <- data.frame() # new dataframe to hold everything
-for (goal_num in 1:17) {
-  print(goal_num) #useful for seeing how far you are in the code run
-  classes %>%
-    mutate(goal = goal_num, #run on clean_course_desc column w no punctuation and accuracy edits made
-           keyword = find_words(classes$clean_course_desc, goal_num, keywords = "usc_keywords")) %>%
-    unnest(keyword) -> cur_sdg_keywords
-  
-  all_sdg_keywords <- rbind(all_sdg_keywords, cur_sdg_keywords) 
-}
+hits_color <- merge(hits, usc_pwg_keywords, 
+                    by.x = c("cleanfeatures", "sdg_num"), 
+                    by.y = c("keyword", "goal")) %>%
+  select(document, sdg_num, cleanfeatures, color)
 ```
 
-Once the mapping is done, it is a good idea to save the dataframe as a .Rda object so you don't need to rerun it every time.  
+Next, we want to combine the dataframe with our original course info dataframe. In addition we want two columns that summarize a course's keywords and goals.
 
 ```{r, eval=FALSE}
-save(all_sdg_keywords, file="all_sdg_keywords.Rda")
-```
-
-Before writing the dataframe as a CSV, we also want to combine this output with the keyword dataframe to obtain the `color` and `weight` columns. Remember to add all relevant columns to the select() function. 
-
-```{r, eval=FALSE}
-#now join it with usc_keywords to get color and weight
-all_sdg_keywords %>%
-  left_join(usc_keywords, by = c("goal", "keyword")) %>%
-  select(courseID, course_title, section, semester, keyword, goal, weight, color, course_desc, clean_course_desc, department, N.Sections, year, course_level, total_enrolled, all_semesters) %>%
-  arrange(courseID) -> all_sdg_keywords
+master_course_sdg_data <- merge(hits_color, usc_courses, by.x = "document", by.y = "rowID", all.y = TRUE) %>%
+  rename(keyword = cleanfeatures, goal = sdg_num) %>%
+  select(document, school, courseID, course_title, instructor, section, semester, keyword, goal, color, course_desc, text, department, N.Sections, year, course_level, total_enrolled, all_semesters) %>%
+  arrange(courseID) %>%
+  group_by(document) %>%
+  mutate(all_keywords = paste(unique(keyword), collapse = ","),
+         all_goals = paste(sort(unique(goal)), collapse = ","))
 ```
 
 ## Sustainability Related Courses
 
-With the mapping complete, we can refer to the R script `sustainability_related_classes.R` which analyzes the goals a class mapped to and labels it as `SDG-Related`, `Sustainability-focused`, or not `Related`.
-We first make a new dataframe of unique `courseID`'s, and then create the columns `all_goals` and `sustainability_classification`. 
-To obtain all mapped goals for each class, use the following code:
-
-```{r, eval=FALSE}
-index = 1
-for (course in sustainability$courseID){
-  # subset master data to just the rows for that class and grab the unique goals
-  mini_df = unique(master_data[master_data$courseID == course, "goal"])
-  # combine all the goals into a string to be added to the goals column in df
-  goals = paste(mini_df, collapse=",")
-  #update the goals column of df to be this string "goals"
-  sustainability$goals[index] = goals
-  index = index + 1
-}
-```
+After mapping, we analyze the goals a course is mapped to and labels it as `SDG-Related`, `Sustainability-Focused`, or `Not Related`.
 
 We have tried multiple methods to determine sustainability classifications, and our current method is as follows:  
 
-* If a course's description does not map to any SDGs (no keywords in the master data) or only contains one keyword, it is "Not Related".  
-* If a course description contains two or more keywords, we categorize it as "SDG-Related".  
-* If a course maps to at least one social/economic SDG (SDGs 1-12, 16, 17) and one environmental goal (13, 14, 15), then it is labeled "Sustainability Focused".  
+* If a course description does not map to any SDGs, it is "Not Related".  
+* If a course description maps to at least 1 SDG, we categorize it as "SDG-Related".  
+* If a course maps to one or more social/economic SDG (1-5, 8-11, 16, 17) AND one or more environmental SDG (6, 7, 12, 13, 14, 15), then it is labeled "Sustainability Focused".  
 
-Code for achieving these labels are found in the R script.  
+Code for achieving these labels are found in the R script `02_using_text2sdg.R`.  
 
-Lastly, we want to join this dataframe with the course data, so we run the following code:
-
-```{r, eval=FALSE}
-# "sustainability" is the dataframe we just made, usc_courses is the cleaned USC course data
-course_data = usc_courses %>% left_join(sustainability, by="courseID")
-write.csv(course_data, "usc_courses_full.csv", row.names = F)
-```
+Lastly, we also want a count of the number of occurrences of each keyword in the course description using `str_count`.
 
 ## General Education
 
-We were given completely a different set of data for USC's general education requirements. Code for obtaining the GE categories and course titles is found in `general_education.R`. In this script, we join the GE data with the course / sustainability data and then go through and ensure that unmapped classes have "Not Related" as the sustainability classification. The resulting dataframe is used in the Shiny App for the general education page. 
+We were given completely a different set of data for USC's general education requirements. Code for obtaining the GE categories and course titles is found in `03_general_education.R`. In this script, we join the GE data with the course and sustainability data and then go through and ensure that unmapped courses have "Not Related" as the sustainability classification. The resulting dataframe is used in the Shiny App for the general education page. 
 
 ## Creating Shiny App
 
-When I was tasked with creating a shiny app, I was daunted but eventually learned through trial and error. Despite the scary sight of 1400 lines of code, I can assure that anyone using this github repository can replicate the shiny app with little to no coding experience. To learn the basics, refer to [this tutorial](https://rstudio.github.io/shinydashboard/).  
+When I was tasked with creating a shiny app, I was daunted but eventually learned through trial and error. Despite the scary sight of 1400 lines of code, I can assure that anyone using this github repository can replicate the shiny app with little to no coding experience. To learn the basics, refer to [this tutorial](https://rstudio.github.io/shinydashboard/){target='_blank'}.  
 
 If you follow along with the code in the `app.R` file in the "shiny_app" directory, you will understand the structure and functionality of a shiny app.  
 
-One important lesson I learned when making various plots for the dashboard is that it is often helpful to create a new R script to generate a dataframe that is easier to work with for the purposes of that plot / function. In the ` R ` directory, the file `sustainability_related_classes.R` containts code to generate `classes_by_sdgs.csv` which is used for one of the barcharts in the dashboard. I also found it incredibly helpful to write code to generate plots in another file so you can quickly go through trial and error instead of opening the dashboard every time. Lastly, **google and stackOverflow are your friends**... Plenty of people out there are struggling with the same things you struggle with in R and Rshiny. 
+One important lesson I learned when making various plots for the dashboard is that it is often helpful to create a new R script to generate a dataframe that is easier to work with for the purposes of that plot / function. In the `02_R` directory, the file `sustainability_related_classes.R` containts code to generate `classes_by_sdgs.csv` which is used for one of the barcharts in the dashboard. I also found it incredibly helpful to write code to generate plots in another file so you can quickly go through trial and error instead of opening the dashboard every time. Lastly, **Google and stackOverflow are your friends**... Plenty of people out there are struggling with the same things you struggle with in R and Rshiny. 
 
 
-## Creating a Readme / Github Repo
+## Creating a Github Repo
 
-To make a github repository, follow [this tutorial](https://docs.github.com/en/get-started/quickstart/create-a-repo) and consider downloading the [GitHub Desktop App](https://desktop.github.com/). 
+To make a github repository, follow [this tutorial](https://docs.github.com/en/get-started/quickstart/create-a-repo){target='_blank'} and consider downloading the [GitHub Desktop App](https://desktop.github.com/){target='_blank'}. You can also make commits and pushes using the Git button on the top bar of RStudio. 
 
-To create a Readme, familiarize yourself with [Markdown](https://www.markdownguide.org/getting-started) and [R Markdown](https://rmarkdown.rstudio.com/articles_intro.html). In `.Rmd` (R Markdown) files, you can specify the `output` of the document to be a `github_document` and when you "knit" the `.Rmd` file, it will automatically generate a `.md` (markdown) file in the directory which will be displayed on your github page! You can also refer to my README.Rmd file to see how I created this readme file.
+## Creating a Readme
+
+To create a Readme, familiarize yourself with [Markdown](https://www.markdownguide.org/getting-started){target='_blank'} and [R Markdown](https://rmarkdown.rstudio.com/articles_intro.html){target='_blank'}. In `.Rmd` (R Markdown) files, you can specify the `output` of the document to be a `github_document` and when you "knit" the `.Rmd` file, it will automatically generate a `.md` (markdown) file in the directory which will be displayed on your github page! You can also refer to my README.Rmd file to see how I created this readme file.
 
 
 
-## Updating Data / Shiny App
+## Updating Data and Shiny App
 
-When the keywords or course data is updated, the way I have been updating the shiny app is by rerunning all of the files in order with the new data. When doing so, remove the old files from the `Data` folder and the `Shiny_app` folder, but I recommend storing them in a backup folder elsewhere in the case that the new run of code doesn't work. 
+When the keywords or course data is updated, the way I have been updating the shiny app is by rerunning all of the files in order with the new data. When doing so, remove the old files from the `Data` folder and the `shiny_app` folder, but I recommend storing them in a backup folder elsewhere in the case that the new run of code doesn't work. 
 
-Which files you will have to rerun is determined by what data you are updating. If the raw course data is updated, you will need to start from the beginning and clean and combine all of the school data again. Similarly, if you are adding / fixing keyword mapping issues with context dependencies, you will need to clean the course data again. If you are only updating the keywords list, then you only need to rerun code starting at the mapping of course descriptions. 
+Which files you will have to rerun is determined by what data you are updating. If the raw course data is updated, you will need to start from the beginning (at `01_cleaning_raw_data/00_raw_usc_data/01_cleaning_scattered_files.R`) and clean and combine all of the school data again. Similarly, if you are adding / fixing keyword mapping issues with context dependencies, you will need to clean the course data again (starting at `01_cleaning_raw_data/03_cleaning_course_descriptions.R`). If you are only updating the keywords list, then you only need to rerun code starting at the mapping of course descriptions (starting at `02_R/01_cleaning_keywords.R`). 
 
 ## Questions?
 

@@ -1,10 +1,12 @@
-# adding school
+# add school column
 library(dplyr)
 usc_courses_cleaned <- read.csv("usc_courses_updated.csv")
 fulldata <- read.csv("01_cleaning_raw_data/00_raw_usc_data/combined_data.csv")
 fulldata_select <- fulldata %>%
   select("COURSE_CODE", "COURSE_TITLE", "SECTION", "DEPARTMENT", "SCHOOL", 
          "DEPTOWNERNAME", "origin", "INSTRUCTOR_NAME")
+# create semester column based on origin column
+# ends in 3 -> fall, 2 -> summer, 1 -> spring
 fulldata_select$semester <- sapply(fulldata_select$origin, function(x) {
   if (x%%10 == 3) {
     # fall
@@ -80,6 +82,7 @@ usc_courses_with_school <- usc_courses_with_school %>%
                                                                    ifelse(DEPTOWNERNAME %in% Ostrow,
                                                                           "Ostrow School of Dentistry",
                                                                           DEPTOWNERNAME))))))))))
+# check current DEPTOWNERNAME
 levels(as.factor(usc_courses_with_school$DEPTOWNERNAME))
 
 # replace empty SCHOOL with NA

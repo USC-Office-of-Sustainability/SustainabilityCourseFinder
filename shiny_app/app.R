@@ -429,12 +429,12 @@ ui <- dashboardPage( skin="black",
                                                 uiOutput("disclaimer7"),
                                                 pickerInput("school_dl", "Choose Schools",  
                                                             choices = sort(unique(sustainability_related$school)), 
-                                                            selected = sort(unique(sustainability_related$school))[1],
+                                                            selected = sort(unique(sustainability_related$school)),
                                                             multiple = TRUE,
                                                             options = list(`actions-box` = TRUE)),
                                                 pickerInput("dept_dl", "Choose Departments",  
-                                                            choices = NULL,
-                                                            selected = NULL,
+                                                            choices = sort(unique(sustainability_related$department)),
+                                                            selected = sort(unique(sustainability_related$department)),
                                                             multiple = TRUE, 
                                                             options = list(`actions-box` = TRUE)),
                                                 pickerInput("sdg_dl", "Choose SDGs",  choices = sdg_choices, selected = sdg_choices,
@@ -1324,21 +1324,48 @@ server <- function(input, output, session) {
   ###
   
   # download data page
-  observeEvent(input$school_dl,
-               {
-                 depts <- sustainability_related %>%
-                   filter(school %in% input$school_dl) %>%
-                   select(department) %>%
-                   distinct() %>%
-                   arrange(department)
-                 depts_selected <- depts %>%
-                   filter(department %in% input$dept_dl)
-                 updatePickerInput(session,
-                                   "dept_dl",
-                                   choices = depts$department,
-                                   selected = depts_selected
-                                   )
-               })
+  # deptChoices <- reactive({
+  #   sustainability_related %>%
+  #     filter(school %in% input$school_dl) %>%
+  #     select(department) %>%
+  #     distinct() %>%
+  #     arrange(department) %>%
+  #     pull()
+  # })
+  # deptSelected <- reactive({
+  #   if (is.null(input$dept_dl)) {  # select all by default
+  #     sustainability_related %>%
+  #       filter(school %in% input$school_dl) %>%
+  #       select(department) %>%
+  #       distinct() %>%
+  #       arrange(department) %>%
+  #       pull()
+  #   } else {  # maintain current selection
+  #     sustainability_related %>%
+  #       filter(school %in% input$school_dl) %>%
+  #       select(department) %>%
+  #       distinct() %>%
+  #       arrange(department) %>%
+  #       filter(department %in% input$dept_dl) %>%
+  #       pull()
+  #   }
+  #   
+  # })
+  # observeEvent(input$school_dl,
+  #              {
+  #                depts <- sustainability_related %>%
+  #                  filter(school %in% input$school_dl) %>%
+  #                  select(department) %>%
+  #                  distinct() %>%
+  #                  arrange(department)
+  #                depts_selected <- depts %>%
+  #                  filter(department %in% input$dept_dl)
+  #                updatePickerInput(session,
+  #                                  "dept_dl",
+  #                                  choices = deptChoices(),
+  #                                  selected = deptSelected()
+  #                                  )
+  #              })
   output$download_data_table <- downloadHandler(
     filename = function() {"usc_sustainability_course_data.csv"},
     content = function(fname) {
@@ -1348,8 +1375,8 @@ server <- function(input, output, session) {
                sustainability_classification %in% input$sustainability_dl,
                goal %in% as.numeric(input$sdg_dl)) %>%
         ungroup() %>%
-        select(school, department, courseID, course_title, course_desc, semester, all_goals, sustainability_classification, N.Sections, total_enrolled, all_semesters, course_level, year) %>%
-        rename(School = school, Department = department, "Course ID" = courseID, "Course Title" = course_title, "Course Description" = course_desc, Semester = semester, "All Goals" = all_goals, "Sustainability Classification" = sustainability_classification, "Number of Sections" = N.Sections, "Total Enrolled" = total_enrolled, "All Semesters" = all_semesters, "Course Level" = course_level, Year = year) %>%
+        select(school, department, courseID, course_title, course_desc, semester, all_goals, sustainability_classification, N.Sections, all_semesters, course_level, year) %>%
+        rename(School = school, Department = department, "Course ID" = courseID, "Course Title" = course_title, "Course Description" = course_desc, Semester = semester, "All Goals" = all_goals, "Sustainability Classification" = sustainability_classification, "Number of Sections" = N.Sections, "All Semesters" = all_semesters, "Course Level" = course_level, Year = year) %>%
         distinct() -> download_data_output
       write.csv(download_data_output, fname, row.names = FALSE)
     }
@@ -1362,8 +1389,8 @@ server <- function(input, output, session) {
              goal %in% as.numeric(input$sdg_dl)) %>%
       ungroup() %>%
       arrange(sustainability_classification) %>%
-      select(school, department, courseID, course_title, course_desc, semester, all_goals, sustainability_classification, N.Sections, total_enrolled, all_semesters, course_level, year) %>%
-      rename(School = school, Department = department, "Course ID" = courseID, "Course Title" = course_title, "Course Description" = course_desc, Semester = semester, "All Goals" = all_goals, "Sustainability Classification" = sustainability_classification, "Number of Sections" = N.Sections, "Total Enrolled" = total_enrolled, "All Semesters" = all_semesters, "Course Level" = course_level, Year = year) %>%
+      select(school, department, courseID, course_title, course_desc, semester, all_goals, sustainability_classification, N.Sections, all_semesters, course_level, year) %>%
+      rename(School = school, Department = department, "Course ID" = courseID, "Course Title" = course_title, "Course Description" = course_desc, Semester = semester, "All Goals" = all_goals, "Sustainability Classification" = sustainability_classification, "Number of Sections" = N.Sections, "All Semesters" = all_semesters, "Course Level" = course_level, Year = year) %>%
       distinct()
   }, rownames=FALSE,
   options = list(

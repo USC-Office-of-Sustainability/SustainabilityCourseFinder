@@ -26,7 +26,8 @@ usc_courses$course_desc <- stri_replace_all_regex(usc_courses$course_desc,
                                                   pattern = corrections[,1],
                                                   replacement = corrections[,2],
                                                   vectorize = FALSE)
-
+# context dependency
+# replace certain phrases with new phrases
 apply_context_dependency <- function(tt) {
   tt <- tolower(tt)
   corrections <- read.csv("context_dependencies_06_30_23.csv")
@@ -39,6 +40,7 @@ apply_context_dependency <- function(tt) {
   tt
 }
 
+# remove all punctuation except '
 remove_punctuation <- function(tt) {
   gsub("[^[:alnum:][:space:]']", " ", tt)
 }

@@ -5,7 +5,8 @@
 data = read.csv("01_cleaning_raw_data/00_raw_usc_data/combined_data.csv")
 data$COURSE_TITLE <- trimws(data$COURSE_TITLE)
 
-# filtering out Master's Thesis, Directed Research, and Doctoral Dissertation, all of which have a space at the end
+# filtering out courses with titles containing ..., titles matching ..., and course 
+# descriptions containing ...
 # also counting number of sections and number of enrolled students
 clean_data = function (raw_data){
   # we could split data in to origin < or > 20231
@@ -59,8 +60,8 @@ clean_data = function (raw_data){
              !COURSE_TITLE %in% titles_matching &
              !grepl(paste(descriptions_containing, collapse = "|"), COURSE_DESCRIPTION) &
              !grepl("-[47]90|-594", COURSE_CODE))
-  # want to get a column for the total number of enrolled students across all sections for class
-  # first grab all the unique courses per semester
+  # get total number of enrolled students across all sections for class
+  # get number of sections
   data_clean %>%
     group_by(COURSE_CODE, origin) %>%
     mutate(total_enrolled = sum(TOTAL_ENR),
