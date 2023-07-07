@@ -172,8 +172,8 @@ write.csv(usc_pwg_keywords,
 
 ## Cleaning Course Data
 
-While I do not expect another school’s data to be of the same format as
-the raw files at USC, I am still including some details on how we
+While we do not expect another school’s data to be of the same format as
+the raw files at USC, we are still including some details on how we
 cleaned the files in hopes that it may address some common problems
 others might have with their data.
 
@@ -220,7 +220,7 @@ for(i in seq(nrow(x), 2, -1)) { # Work on the table in bottom to top so we can m
 Once the files are cleaned, we run a function (in the same R script) to
 clean each individual file and write it as CSV into a new folder, as
 well as obtain the “origin” column which is the year and term of the
-data. Once again, I do not expect anyone’s data to be in the same
+data. Once again, we do not expect anyone’s data to be in the same
 format, but this might help someone clean scattered CSV files.
 
 ``` r
@@ -457,9 +457,7 @@ general education page.
 
 ## Creating Shiny App
 
-When I was tasked with creating a shiny app, I was daunted but
-eventually learned through trial and error. Despite the scary sight of
-1400 lines of code, I can assure that anyone using this github
+We can assure you that anyone using this github
 repository can replicate the shiny app with little to no coding
 experience. To learn the basics, refer to
 <a href="https://rstudio.github.io/shinydashboard/" target="_blank">this
@@ -469,16 +467,16 @@ If you follow along with the code in the `app.R` file in the “shiny_app”
 directory, you will understand the structure and functionality of a
 shiny app.
 
-One important lesson I learned when making various plots for the
+One important tip for making various plots in the
 dashboard is that it is often helpful to create a new R script to
 generate a dataframe that is easier to work with for the purposes of
 that plot / function. In the `02_R` directory, the file
 `sustainability_related_classes.R` containts code to generate
 `classes_by_sdgs.csv` which is used for one of the barcharts in the
-dashboard. I also found it incredibly helpful to write code to generate
+dashboard. We found it helpful to write code to generate
 plots in another file so you can quickly go through trial and error
-instead of opening the dashboard every time. Lastly, **Google and
-stackOverflow are your friends**… Plenty of people out there are
+instead of opening the dashboard every time. Lastly, **Google, ChatGPT and
+stackOverflow are your coding friends**… Plenty of people out there are
 struggling with the same things you struggle with in R and Rshiny.
 
 ## Creating a Github Repo
@@ -500,16 +498,16 @@ target="_blank">R Markdown</a>. In `.Rmd` (R Markdown) files, you can
 specify the `output` of the document to be a `github_document` and when
 you “knit” the `.Rmd` file, it will automatically generate a `.md`
 (markdown) file in the directory which will be displayed on your github
-page! You can also refer to my README.Rmd file to see how I created this
+page! You can also refer to the README.Rmd file to see how Brian Tinsley created this original
 readme file.
 
 ## Updating Data and Shiny App
 
-When the keywords or course data is updated, the way I have been
+When the keywords or course data are updated, the way we have been
 updating the shiny app is by rerunning all of the files in order with
-the new data. When doing so, remove the old files from the `Data` folder
-and the `shiny_app` folder, but I recommend storing them in a backup
-folder elsewhere in the case that the new run of code doesn’t work.
+the new data. When doing so, we remove the old files from the `Data` folder
+and the `shiny_app` folder, but we recommend storing them in a backup
+folder elsewhere in the case that the new code doesn’t work.
 
 Which files you will have to rerun is determined by what data you are
 updating. If the raw course data is updated, you will need to start from
@@ -525,9 +523,6 @@ starting at the mapping of course descriptions (starting at
 
 ## Questions?
 
-There have been many packages in R that have confused me, and I am very
-grateful for some developers that responded to my emails and helped me
-along the way.
-
-If you have any questions, comments, or concerns, please reach out to me
-via email: <btinsley@usc.edu>
+We are very grateful to the developers that responded to our emails and helped us
+along the way. If you have any questions, comments, or concerns, please reach out to Brian
+Tinsley: <btinsley@usc.edu> or to Julie Hopper <juliehop@usc.edu
