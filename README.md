@@ -5,7 +5,7 @@ Peter Wu at Carnegie Mellon wrote the initial code that inspired this
 project, and his original R package can be found on
 <a href="https://github.com/pwu97/SDGmapR" target="_blank">Github</a>.
 At USC, Brian Tinsley, Alison Chen and Dr. Julie Hopper in the Office of
-Sustainability switched to using the new text2sdg package to
+Sustainability switched to using the new <a href="https://www.text2sdg.io" target="_blank">text2sdg</a>. package to
 raise sustainability awareness in higher education by mapping USC course
 descriptions to the
 <a href="https://sdgs.un.org/goals" target="_blank">United Nations
