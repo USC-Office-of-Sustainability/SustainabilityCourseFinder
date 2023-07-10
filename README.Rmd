@@ -61,15 +61,15 @@ Some of the lists have weights associated with every keyword based on their rele
 
 Source | Dataset | CSV
 ---|---|---
-<a href="https://www.president.usc.edu/sustainability-pwg/" target="_blank">USC Keywords (Work in Progress)</a> | `usc_keywords` | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a>
+USC Keywords (Work in Progress) | `usc_keywords` | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a>
 <a href="https://data.mendeley.com/datasets/87txkw7khs/1" target="_blank">Core Elsevier (Work in Progress)</a> | `elsevier_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv" target="_blank">Link</a>
 <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a> | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a>
 <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a> | `sdsn_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a>
 <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a> | `cmu250_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a>
-<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 500 Words</a> | `cmu500_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu500_keywords_cleaned.csv" target="_blank">Link</a>
-<a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 1000 Words</a> | `cmu1000_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu1000_keywords_cleaned.csv" target="_blank">Link</a>
 <a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` |
 <a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` | 
+
+Additional keywords can be accessed via [text2sdg](https://www.text2sdg.io/reference/detect_sdg_systems.html){target="_blank"}.
 
 The first few rows of the USC keyword table, which has over 4250 keywords, are shown below.
 
@@ -160,6 +160,7 @@ In the next R file, `02_cleaning_2020-2023.R`, we read in the combined clean CSV
 One important piece of this file is excluding certain courses. For example, courses with titles containing "Directed Research" and Individual Instruction", courses with exact titles "Advanced Research Experience" and Board Development", courses with descriptions containing "Directed undergraduate research" and "Directed graduate research", and courses with course IDs ending in 490, 790, and 594 are all removed. You can add additional rules to the clean_data function:
 
 ```{r, eval=F}
+# a snippet of code from 02_cleaning_2020-2023.R
 titles_containing = c("Directed Research",
                         "Individual Instruction")
 titles_matching = c("Advanced Research Experience",
