@@ -1,6 +1,6 @@
 # add school column
 library(dplyr)
-usc_courses_cleaned <- read.csv("usc_courses_updated.csv")
+usc_courses_cleaned <- read.csv("01_cleaning_raw_data/usc_courses_updated.csv")
 fulldata <- read.csv("01_cleaning_raw_data/00_raw_usc_data/combined_data.csv")
 fulldata_select <- fulldata %>%
   select("COURSE_CODE", "COURSE_TITLE", "SECTION", "DEPARTMENT", "SCHOOL", 
@@ -36,7 +36,7 @@ Dornsife = c("LAS - Natural Sciences & Mathematics",
              "LAS- Social Science & Communications Animation",
              "Dana and David Dornsife College of Letters, Arts and Sciences" ,
              "Dana and David Dornsife College of Letters, Arts and Sciences Registrar's Office",  
-             " Humanities",
+             "Humanities",
              "Hebrew Union College")
 Annenberg = c("nenberg School for Communication and Journalism",
               "nnenberg School for Communication and Journalism",
@@ -50,7 +50,7 @@ Marshall = c("Business",
 Pharmacy = c("School of Pharmacy", 
              "Pharmacy")
 Policy = c("Sol Price School of Public Policy", 
-           "Policy, Planning and Development Sol Price School of Public Policy")
+           "Policy, Planning and Development")
 Music = c("Flora L. Thornton School of Music",
           "School of Music")
 RegistrarOffice_GradSchool = c("Registrar's Office",

@@ -7,25 +7,6 @@ library(stringi)
 usc_courses = read.csv("usc_courses_updated_with_school.csv")
 # usc_courses = read.csv("usc_courses.csv")
 
-# fix typos in course description
-corrections <- rbind(
-  c("ofenvironmental", "of environmental"),
-  c("ProfessionalEducation", "Professional Education"),
-  c("EconomicContext", "Economic Context"),
-  c("builtenvironment", "built environment"),
-  c("medicaldevices", "medical devices"),
-  c("systemscollapse", "systems collapse"),
-  c("thepresent", "the present"),
-  c("onindustralization", "on industralization"),
-  c("buildingstructures", "building structures"),
-  c("structuralinvestigation", "structural investigation")
-)
-colnames(corrections) <- c("wrong", "right")
-
-usc_courses$course_desc <- stri_replace_all_regex(usc_courses$course_desc,
-                                                  pattern = corrections[,1],
-                                                  replacement = corrections[,2],
-                                                  vectorize = FALSE)
 # context dependency
 # replace certain phrases with new phrases
 apply_context_dependency <- function(tt) {
