@@ -7,11 +7,12 @@ library(dplyr)
 ## ............................................................................
 ## clean SOC excel files
 ## ............................................................................
-
-ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/SOC_files2", 
+# list of xlsx files
+ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/SOC_files", 
                  pattern = "xlsx", full.names = TRUE)
-# no deptownername column
+# check column names -> no deptownername column
 lapply(ff, function(x) {names(read_excel(x))})
+# clean 1 excel file
 readOneFile <- function(filename) {
   d <- read_excel(filename, col_types = "text")
   # remove . in colname
@@ -46,6 +47,7 @@ readOneFile <- function(filename) {
       }
     })
   } else {
+    # some publish column are PUBLISH?
     names(df)[grep("PUBLISH", names(df))] <- "PUBLISH"
   }
   
@@ -92,27 +94,35 @@ readOneFile <- function(filename) {
               ASSIGNED_ROOM = paste(ASSIGNED_ROOM[!is.na(ASSIGNED_ROOM)], collapse = " "),
               TOTAL_ENR1 = first(TOTAL_ENR2),
               COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "))
+  # department is first part of course code
+  # CHE in CHE-490
   df3$DEPARTMENT <- sapply(df3$COURSE_CODE, function(x) {
     strsplit(x, "-")[[1]][1]
   })
+  # origin comes from filename
+  # 20193 in 20193_SOC.xlsx
   df3$origin <- strsplit(basename(filename), "_")[[1]][1]
   # replace NA with ""
   # apply(df3, 2, anyNA) # which columns have NA
   df3$MODALITY <- df3$MODALITY %>% replace_na("")
   df3$Link <- df3$Link %>% replace_na("")
-  cleanfile <- paste0("01_cleaning_raw_data/00_raw_usc_data/clean_data2/", strsplit(basename(filename), "_")[[1]][1], ".csv")
+  # cleaned file location + name
+  cleanfile <- paste0("01_cleaning_raw_data/00_raw_usc_data/clean_data/", strsplit(basename(filename), "_")[[1]][1], ".csv")
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }
+# clean all excel files
 lapply(ff, readOneFile)
 
 ## ............................................................................
 ## clean SOC csv files
 ## ............................................................................
-
+# list of csv files
 ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/SOC_files", 
                  pattern = "csv", full.names = TRUE)
+# check column names
 lapply(ff, function(x) {names(read.csv(x))})
+# clean 1 csv file
 readOneFileCSV <- function(filename) {
   d <- read.csv(filename)
   # remove . in colname
@@ -182,25 +192,31 @@ readOneFileCSV <- function(filename) {
               TOTAL_ENR1 = first(TOTAL_ENR1),
               COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "),
               DEPTOWNERNAME = first(DEPTOWNERNAME))
+  # department is first part of course code
+  # CHE in CHE-490
   df3$DEPARTMENT <- sapply(df3$COURSE_CODE, function(x) {
     strsplit(x, "-")[[1]][1]
   })
+  # origin comes from filename
+  # 20193 in 20193_SOC.csv
   df3$origin <- strsplit(basename(filename), "_")[[1]][1]
   # replace NA with ""
   # apply(df3, 2, anyNA) # which columns have NA
   df3$MODALITY <- df3$MODALITY %>% replace_na("")
   df3$Link <- df3$Link %>% replace_na("")
-  cleanfile <- paste0("01_cleaning_raw_data/00_raw_usc_data/clean_data2/", strsplit(basename(filename), "_")[[1]][1], ".csv")
+  # cleaned file location + name
+  cleanfile <- paste0("01_cleaning_raw_data/00_raw_usc_data/clean_data/", strsplit(basename(filename), "_")[[1]][1], ".csv")
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }
+# clean all csv files
 lapply(ff, readOneFileCSV)
 
 ## ............................................................................
 ## combine cleaned files
 ## ............................................................................
-
-ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/clean_data2", 
+# list of cleaned csv files
+ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/clean_data", 
                  pattern = "csv", full.names = TRUE)
 # read data
 tmp <- lapply(ff, read.csv)
