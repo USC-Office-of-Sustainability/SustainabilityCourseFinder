@@ -2,8 +2,7 @@
 # different format from the 2018/2019 data
 
 # data = read.csv("All_SOC_files_2020-2022_fixed.csv")
-data = read.csv("01_cleaning_raw_data/00_raw_usc_data/combined_data.csv")
-data$COURSE_TITLE <- trimws(data$COURSE_TITLE)
+combined_data <- read.csv("combined_data.csv")
 
 # filtering out courses with titles containing ..., titles matching ..., and course 
 # descriptions containing ...
@@ -69,7 +68,7 @@ clean_data = function (raw_data){
     filter(row_number()==1)
 }
 
-cleaned = clean_data(data)
+cleaned = clean_data(combined_data)
 
 # now need to get the semester format right, need F20, SU20, SP20 etc.
 # right now it is in format 20202_SUMMER, 20212_SUMMER
