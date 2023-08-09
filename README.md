@@ -176,89 +176,87 @@ them, can be found in the `01_cleaning_raw_data/00_raw_usc_data` folder
 href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/01_cleaning_raw_data/00_raw_usc_data"
 target="_blank">here</a>. The raw data files had lots of problems with
 spacing and column names, and we addressed these issues in
-`01_cleaning_scattered_files.R`.
+`01_combine_SOC.R`.
 
-<!-- show the dataframe -->
-<!-- show the code to clean it -->
+The main problem was that one course’s description was sometimes spread
+over two cells instead of one row per course. This occurred in multiple
+columns. For instance, the data looked like this:
 
-In the `clean_file` function, we loop from the bottom of the raw
-dataframe and combine empty rows with the row above to fix the empty
-line issue. We also trim spaces before and after to account for random
-spaces added at the end of some data entries. One problem to look out
-for when cleaning a dataframe is accounting for empty values (““) vs NA
-vs”NA” in data entries.
+| SECTION | SCHOOL | COURSE_CODE | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME          | END_TIME            | DAYS | TOTAL_ENR1 | MODALITY | INSTRUCTOR_NAME      | ASSIGNED_ROOM | TOTAL_ENR2 | COURSE_DESCRIPTION                                              |
+|:--------|:-------|:------------|:--------|:----------|:----------|:-------------|:-----|:-----|:--------|:--------------------|:--------------------|:-----|:-----------|:---------|:---------------------|:--------------|:-----------|:----------------------------------------------------------------|
+| 34170   | ACAD   | IDSN-585    | 68      | 3         | 3         | Capstone     | C    | NA   | Y       | 0.72916666666666663 | 0.79513888888888884 | T    | 13         | NA       | Clewis, Jay          | ONLINE        | 13         | Faculty-mentored, applied project with individual and team      |
+| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | components. Implement a prototype solution to a problem. Deploy |
+| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | relevant tools, methods and processes learned throughout the    |
+| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | program. Recommended preparation: all other required courses    |
+| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | (excluding concurrent courses).                                 |
+| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | Arnoult, Jean-Michel | NA            | NA         | NA                                                              |
 
-Note that this function (and script) contain various other adjustments
-to the data which you can find in the file.
+An example of raw data for course IDSN-585 spread over multiple rows.
 
-``` r
-# go through backwords and combine error rows with row above it
-for(i in seq(nrow(x), 2, -1)) { # Work on the table in bottom to top so we can merge the values
-  if(is.na(x[i, "SECTION"]) | x[i, "SECTION"] == "NA" | x[i, "SECTION"] == "") { #always note if values are NA or "NA" or ""
-      x[i, "SECTION"] = NA # fix the issue of combining character "NA" 
-      print(i)
-      # Work on the current row and the previous row.
-      # Don't modify numeric columns (don't want to merge NA values).
-      # Use lead() to check across rows, and turn NA values into an empty string.
-      # Use paste() to combine the row values.
-      # use trim() to get rid of any excess white space produced.
-      x[i-1,] <- (x[c(i-1,i),] %>% mutate(across(.fns = ~ ifelse(is.numeric(.x), .x, trim(paste(.x, ifelse(is.na(lead(.x)), "", lead(.x))))))))[1, ]
-    }
-}
-```
-
-Once the files are cleaned, we run a function (in the same R script) to
-clean each individual file and write it as CSV into a new folder, as
-well as obtain the “origin” column which is the year and term of the
-data. Once again, we do not expect anyone’s data to be in the same
-format, but this might help someone clean scattered CSV files.
+The key to combining multiple rows as one row was tidyr’s fill function
+shown below.
 
 ``` r
-# make sure folder only contains CSVs you want to run the code on
-files = list.files("SOC_files/")
-
-# going to apply the function to each file and write a new csv in "clean_data" folder
-# this loop will also get the "origin" column from the file name
-# other users may have different file names and have to figure out how to get the origin
-# column in the form "YYYYS" where s is 1, 2, 3 for spring, summer, fall
-for (i in 1:length(files)){
-  table = read.csv(paste0("SOC_files/", files[i]), header=TRUE) # load file
-  out <- clean_file(table) # clean the file
-  out$origin = NA #create origin column
-  file_name = files[i] #grab the name of the file that starts with YYYYS
-  term = substr(file_name, 1, 5) # grab just the first 5 digits to be used in the origin
-  out$origin = term
-  name = paste0("clean_data/", term, ".csv") # will change this to actually be the year output format
-  write.csv(out, file = name, row.names = FALSE)
-}
+# fill empty columns based on above column
+df2 <- df %>%
+  tidyr::fill(SECTION, COURSE_CODE, .direction = "down")
 ```
 
-Once all the files have been cleaned and put into a new folder, we can
-combine them all into one dataframe with the following code:
+By filling in the SECTION and COURSE_CODE columns with the previous row,
+the dataframe looks like this:
+
+| SECTION | SCHOOL | COURSE_CODE | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME          | END_TIME            | DAYS | TOTAL_ENR1 | MODALITY | INSTRUCTOR_NAME      | ASSIGNED_ROOM | TOTAL_ENR2 | COURSE_DESCRIPTION                                              |
+|:--------|:-------|:------------|:--------|:----------|:----------|:-------------|:-----|:-----|:--------|:--------------------|:--------------------|:-----|:-----------|:---------|:---------------------|:--------------|:-----------|:----------------------------------------------------------------|
+| 34170   | ACAD   | IDSN-585    | 68      | 3         | 3         | Capstone     | C    | NA   | Y       | 0.72916666666666663 | 0.79513888888888884 | T    | 13         | NA       | Clewis, Jay          | ONLINE        | 13         | Faculty-mentored, applied project with individual and team      |
+| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | components. Implement a prototype solution to a problem. Deploy |
+| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | relevant tools, methods and processes learned throughout the    |
+| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | program. Recommended preparation: all other required courses    |
+| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | (excluding concurrent courses).                                 |
+| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | Arnoult, Jean-Michel | NA            | NA         | NA                                                              |
+
+SECTION and COURSE_CODE columns are filled in based on the first row.
+
+Now, we simply group by SECTION and COURSE_CODE and combine all the text
+in each column to end up with one row for one course:
+
+| SECTION | COURSE_CODE | SCHOOL | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME          | END_TIME            | DAYS | TOTAL_ENR | MODALITY | INSTRUCTOR_NAME                  | ASSIGNED_ROOM | TOTAL_ENR1 | COURSE_DESCRIPTION                                                                                                                                                                                                                                                                   |
+|:--------|:------------|:-------|:--------|:----------|:----------|:-------------|:-----|:-----|:--------|:--------------------|:--------------------|:-----|:----------|:---------|:---------------------------------|:--------------|:-----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 34170   | IDSN-585    | ACAD   | 68      | 3         | 3         | Capstone     | C    | NA   | Y       | 0.72916666666666663 | 0.79513888888888884 | T    | 13        | NA       | Clewis, Jay;Arnoult, Jean-Michel | ONLINE        | 13         | Faculty-mentored, applied project with individual and team components. Implement a prototype solution to a problem. Deploy relevant tools, methods and processes learned throughout the program. Recommended preparation: all other required courses (excluding concurrent courses). |
+
+Final row for course IDSN-585.
+
+The process is the same for both CSV and Excel files. The only
+difference is that CSV files have an extra DEPTOWNERNAME column. While
+cleaning the SOC files, we also added an “origin” column which indicates
+which year and term the data is from.
+
+Once all the files have been cleaned and saved in a new folder
+clean_data, we can combine them all into one dataframe with the
+following code:
 
 ``` r
-dataframes = list.files("clean_data")
-master_df = data.frame()
-for (i in 1:length(dataframes)){
-  table = read.csv(paste0("clean_data/", dataframes[i]), header=TRUE) # load file
-  # master_df = rbind(master_df, table)
-  # number of columns is different in dataframes so use this function and fill empty with NA
-  master_df = data.table::rbindlist(list(master_df, table), fill=TRUE)
-}
-# just noticed theres a space at the end of the course_code, lets fix
-master_df$COURSE_CODE = trimws(master_df$COURSE_CODE, which = c("right"))
+ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/clean_data", 
+                 pattern = "csv", full.names = TRUE)
+# read data
+tmp <- lapply(ff, read.csv)
 
-write.csv(master_df, "combined_data.csv", row.names=FALSE)
+# combine
+combined_data <- data.table::rbindlist(tmp, fill = TRUE)
+
+write.csv(combined_data,
+          "combined_data.csv",
+          row.names = FALSE)
 ```
 
-In the next R file, `02_cleaning_2020-2023.R`, we read in the combined
-clean CSV and reformat it. In this file, we change column names, count
-the number of students and sections for each section, cut out courses
-listed purely for enrollment credit, and we create the “semester,”
-“all_semesters,” and “course_level” columns. To see this code please see
-the R script. In this script, some of the cleaning is done in one
-function, `clean_data`, and some cleaning processes are done with helper
-functions like `get_semester` and `get_course_level`.
+In the next R file, `02_formatting.R`, we read in the combined clean CSV
+and reformat it. In this file, we change column names, count the number
+of students and sections for each section, cut out courses listed purely
+for enrollment credit, and we create the “semester,” “all_semesters,”
+and “course_level” columns. To see this code please see the R script <a
+href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/01_cleaning_raw_data/00_raw_usc_data/02_formatting.R"
+target="_blank">here</a>. In this script, some of the cleaning is done
+in one function, `clean_data`, and some cleaning processes are done with
+helper functions like `get_semester` and `get_course_level`.
 
 One important piece of this file is excluding certain courses. For
 example, courses with titles containing “Directed Research” and
