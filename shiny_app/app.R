@@ -1,6 +1,4 @@
-# USC SHINY WEB APP
-# BRIAN TINSLEY -- btinsley@usc.edu
-# EXTENSION FROM PETER WU AT CMU
+# USC SHINY WEB APP updated 9/13/23
 
 # require(devtools)
 # install_github("lchiffon/wordcloud2")
@@ -24,7 +22,9 @@ library(ggrepel)
 # install.packages("shinyWidgets")
 library(shinyWidgets)
 
-classes = read.csv("master_course_sdg_data.csv")
+# exclude AY20
+classes = read.csv("master_course_sdg_data.csv") %>%
+  filter(year != "AY20")
 classes$sustainability_classification <- factor(classes$sustainability_classification, levels = c("Sustainability-Focused", "SDG-Related", "Not Related"))
 
 keywords = read.csv("usc_keywords.csv")
@@ -43,13 +43,15 @@ names(sdg_choices) <- c(goals, "None")
 num_top_classes <- 10
 
 # data for pie chart
-sustainability_related = read.csv("usc_courses_full.csv")
+sustainability_related = read.csv("usc_courses_full.csv") %>%
+  filter(year != "AY20")
 
 # data for GE's
 ge_data = read.csv("ge_data.csv")
 
 # data for find classes by sdgs
-recent_courses = read.csv("recent_courses.csv")
+recent_courses = read.csv("recent_courses.csv") %>%
+  filter(year != "AY20")
 
 # for the ordering of GE's in dropdown
 values = c("A", "B", "C",
@@ -172,7 +174,7 @@ ui <- dashboardPage( skin="black",
                                  ‘All Sustainability-Related Courses”."),
                                                 
                                                 h3(strong("How was this dashboard created?"), "This dashboard was created with R Shiny, based on source code in R through a 
-                                              collaboration of USC’s Office of Sustainability (Source Code Developers: PSIP Intern- Brian Tinsley and Data Analyst- Dr. 
+                                              collaboration of USC’s Office of Sustainability (Source Code Developers: PSIP Interns- Brian Tinsley and Alison Chen, with USC's Sustainablity Data Analyst- Dr. 
                                               Julie Hopper) with Carnegie Mellon University (Source Code Developers: Director of Sustainability Initiatives - Alex Hinicker 
                                               and Undergraduate Alumni - Peter Wu). Following the initial development of this dashboard, USC staff in the Office of 
                                               Sustainability and faculty in the Presidential Working Group (PWG) on Sustainability in Education reviewed the dashboard and 
