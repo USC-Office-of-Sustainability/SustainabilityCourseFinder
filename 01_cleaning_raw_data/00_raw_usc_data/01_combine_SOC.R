@@ -3,6 +3,7 @@ library(readxl)
 library(tidyr)
 library(chron)
 library(dplyr)
+library(stringr)
 
 ## ............................................................................
 ## clean SOC excel files
@@ -131,7 +132,7 @@ readOneFileCSV <- function(filename) {
   d <- d %>%
     mutate_if(is.character, str_trim)
   # replace "" with NA
-  d <- d %>% mutate(across(everything(), ~na_if(.,"")))
+  d <- d %>% mutate(across(everything() & where(is.character), ~na_if(.,"")))
   # remove rows that are all NA
   df <- d[rowSums(!is.na(d)) != 0, ]
   # remove last row
@@ -172,26 +173,49 @@ readOneFileCSV <- function(filename) {
   # apply(df4,2,unique)
   
   # keep all info in assigned room, days, start + end time columns
-  df3 <- df2 %>%
-    group_by(SECTION, COURSE_CODE) %>%
-    summarize(SCHOOL = paste(SCHOOL[!is.na(SCHOOL)], collapse = " "),
-              SESSION = first(SESSION),
-              MIN_UNITS = first(MIN_UNITS),
-              MAX_UNITS = first(MAX_UNITS),
-              COURSE_TITLE = paste(COURSE_TITLE[!is.na(COURSE_TITLE)], collapse = " "),
-              MODE = first(MODE),
-              Link = first(Link),
-              PUBLISH = first(PUBLISH),
-              START_TIME = paste(START_TIME[!is.na(START_TIME)], collapse = " "),
-              END_TIME = paste(END_TIME[!is.na(END_TIME)], collapse = " "),
-              DAYS = paste(DAYS[!is.na(DAYS)], collapse = " "),
-              TOTAL_ENR = first(TOTAL_ENR),
-              MODALITY = first(MODALITY),
-              INSTRUCTOR_NAME = paste(INSTRUCTOR_NAME[!is.na(INSTRUCTOR_NAME)], collapse = ";"),
-              ASSIGNED_ROOM = paste(ASSIGNED_ROOM[!is.na(ASSIGNED_ROOM)], collapse = " "),
-              TOTAL_ENR1 = first(TOTAL_ENR1),
-              COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "),
-              DEPTOWNERNAME = first(DEPTOWNERNAME))
+  if ("DEPTOWNERNAME" %in% names(df2)) {
+    df3 <- df2 %>%
+      group_by(SECTION, COURSE_CODE) %>%
+      summarize(SCHOOL = paste(SCHOOL[!is.na(SCHOOL)], collapse = " "),
+                SESSION = first(SESSION),
+                MIN_UNITS = first(MIN_UNITS),
+                MAX_UNITS = first(MAX_UNITS),
+                COURSE_TITLE = paste(COURSE_TITLE[!is.na(COURSE_TITLE)], collapse = " "),
+                MODE = first(MODE),
+                Link = first(Link),
+                PUBLISH = first(PUBLISH),
+                START_TIME = paste(START_TIME[!is.na(START_TIME)], collapse = " "),
+                END_TIME = paste(END_TIME[!is.na(END_TIME)], collapse = " "),
+                DAYS = paste(DAYS[!is.na(DAYS)], collapse = " "),
+                TOTAL_ENR = first(TOTAL_ENR),
+                MODALITY = first(MODALITY),
+                INSTRUCTOR_NAME = paste(INSTRUCTOR_NAME[!is.na(INSTRUCTOR_NAME)], collapse = ";"),
+                ASSIGNED_ROOM = paste(ASSIGNED_ROOM[!is.na(ASSIGNED_ROOM)], collapse = " "),
+                TOTAL_ENR1 = first(TOTAL_ENR1),
+                COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "),
+                DEPTOWNERNAME = first(DEPTOWNERNAME))
+  } else {
+    df3 <- df2 %>%
+      group_by(SECTION, COURSE_CODE) %>%
+      summarize(SCHOOL = paste(SCHOOL[!is.na(SCHOOL)], collapse = " "),
+                SESSION = first(SESSION),
+                MIN_UNITS = first(MIN_UNITS),
+                MAX_UNITS = first(MAX_UNITS),
+                COURSE_TITLE = paste(COURSE_TITLE[!is.na(COURSE_TITLE)], collapse = " "),
+                MODE = first(MODE),
+                Link = first(Link),
+                PUBLISH = first(PUBLISH),
+                START_TIME = paste(START_TIME[!is.na(START_TIME)], collapse = " "),
+                END_TIME = paste(END_TIME[!is.na(END_TIME)], collapse = " "),
+                DAYS = paste(DAYS[!is.na(DAYS)], collapse = " "),
+                TOTAL_ENR = first(TOTAL_ENR),
+                MODALITY = first(MODALITY),
+                INSTRUCTOR_NAME = paste(INSTRUCTOR_NAME[!is.na(INSTRUCTOR_NAME)], collapse = ";"),
+                ASSIGNED_ROOM = paste(ASSIGNED_ROOM[!is.na(ASSIGNED_ROOM)], collapse = " "),
+                TOTAL_ENR1 = first(TOTAL_ENR1),
+                COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "))
+  }
+  
   # department is first part of course code
   # CHE in CHE-490
   df3$DEPARTMENT <- sapply(df3$COURSE_CODE, function(x) {
