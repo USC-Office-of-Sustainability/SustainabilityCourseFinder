@@ -11,7 +11,7 @@ usc_courses = read.csv("usc_courses_updated_with_school.csv")
 # replace certain phrases with new phrases
 apply_context_dependency <- function(tt) {
   tt <- tolower(tt)
-  corrections <- read.csv("context_dependencies_06_30_23.csv")
+  corrections <- read.csv("Data/context_dependencies_09_20_23.csv")
   corrections$before <- tolower(corrections$before)
   corrections$after <- tolower(corrections$after)
   tt <- stri_replace_all_regex(tt,
