@@ -22,11 +22,6 @@ library(ggrepel)
 # install.packages("shinyWidgets")
 library(shinyWidgets)
 
-# exclude AY20
-classes = read.csv("master_course_sdg_data.csv") %>%
-  filter(year != "AY20")
-classes$sustainability_classification <- factor(classes$sustainability_classification, levels = c("Sustainability-Focused", "SDG-Related", "Not Related"))
-
 keywords = read.csv("usc_keywords.csv")
 
 sdg_colors <- c('#e5243b', '#DDA63A', '#4C9F38', '#C5192D', '#FF3A21', '#26BDE2', 
@@ -42,9 +37,22 @@ sdg_choices <- c(1:17, NA)
 names(sdg_choices) <- c(goals, "None")
 num_top_classes <- 10
 
+# exclude AY20
+
 # data for pie chart
 sustainability_related = read.csv("usc_courses_full.csv") %>%
   filter(year != "AY20")
+
+# data for download data and word cloud
+course_sdg_data <- read.csv("course_sdg_data.csv")
+classes <- merge(course_sdg_data, sustainability_related)
+classes$sustainability_classification <- factor(classes$sustainability_classification, levels = c("Sustainability-Focused", "SDG-Related", "Not Related"))
+# add semesters
+classes$semester <- factor(classes$semester, levels = c("SU20","F20",
+                                                        "SP21","SU21","F21",
+                                                        "SP22","SU22","F22",
+                                                        "SP23","SU23","F23",
+                                                        "SP24"))
 
 # data for GE's
 ge_data = read.csv("ge_data.csv")
