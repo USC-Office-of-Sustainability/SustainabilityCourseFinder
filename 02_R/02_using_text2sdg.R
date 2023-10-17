@@ -68,7 +68,12 @@ master_course_sdg_data$sustainability_classification <- sapply(master_course_sdg
 # count the number of times the keyword appears in the text (clean course desc)
 master_course_sdg_data$freq <- str_count(master_course_sdg_data$text, master_course_sdg_data$keyword)
 # save for shiny app data
-write.csv(master_course_sdg_data, "shiny_app/master_course_sdg_data.csv", row.names = FALSE)
+# there are some duplicate keywords
+master_course_sdg_data <- master_course_sdg_data %>%
+  distinct()
+course_sdg_data <- master_course_sdg_data %>%
+  select(document, courseID, semester, year, keyword, goal, color, freq)
+write.csv(course_sdg_data, "shiny_app/course_sdg_data.csv", row.names = FALSE)
 
 # save distinct rows for shiny app data
 single_rows <- master_course_sdg_data[,!(names(master_course_sdg_data) %in% c("keyword", "goal", "color", "freq"))] %>% distinct()
@@ -89,3 +94,4 @@ recent_courses <- merge(most_recent_semester, master_course_sdg_data, by.x = c("
 names(recent_courses)[names(recent_courses) == 'recentSemester'] <- "semester"
 # save most recent course data for shiny app
 write.csv(recent_courses, "shiny_app/recent_courses.csv", row.names=FALSE)
+
