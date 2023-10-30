@@ -274,7 +274,7 @@ ui <- dashboardPage( skin="black",
                                                 h4(""),
                                                 h3("Select a USC course ID below to view the SDG mapping for 
                           that particular course. If you cannot find a course you are looking for, then it did not map to any of the SDGs via our keyword list.
-                                                   To check out the USC course catalogue, click ", a("here.", href="https://catalogue.usc.edu/", target="_blank")),
+                                                   To check out the USC Schedule of Classes, click ", a("here.", href="https://classes.usc.edu/", target="_blank")),
                                                 uiOutput("disclaimer3"),
                                                 h4("Type in the course ID using the same format as this example: “ENST-150”"),
                                                 selectizeInput(inputId = "usc_classes", 
@@ -312,7 +312,7 @@ ui <- dashboardPage( skin="black",
                                               fluidPage(
                                                 h1("Find Courses by SDGs"),
                                                 h3("Select USC departments and course levels, and then choose an SDG to display the 10 most relevant USC courses that map to
-                                                  that goal. To check out the USC course catalogue, click ", a("here.", href="https://catalogue.usc.edu/", target="_blank")),
+                                                  that goal. To check out the USC Schedule of Classes, click ", a("here.", href="https://classes.usc.edu/", target="_blank")),
                                                 uiOutput("disclaimer4"),
                                                 # div(style="font-size:24px;", selectInput(inputId = "usc_semester3",
                                                 #                                          label = "Choose USC Semester",
