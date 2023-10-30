@@ -20,7 +20,15 @@ for (i in 1:nrow(courses_to_replace)) {
 }
 
 # arrange semesters in order then create all_semesters column
+courses_new$semester <- factor(courses_new$semester, 
+                               levels = c("SU19","F19",
+                                          "SP20","SU20","F20",
+                                          "SP21","SU21","F21",
+                                          "SP22","SU22","F22",
+                                          "SP23","SU23","F23",
+                                          "SP24"))
 courses_new <- courses_new %>%
+  arrange(courseID, semester) %>%
   group_by(courseID) %>%
   mutate(all_semesters = paste(unique(semester), collapse = ", ")) %>%
   ungroup()
