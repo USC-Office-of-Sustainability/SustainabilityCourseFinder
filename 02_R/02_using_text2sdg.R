@@ -3,6 +3,7 @@
 # get most recent course data
 library(text2sdg)
 library(dplyr)
+library(stringr)
 
 usc_pwg_keywords <- read.csv("shiny_app/usc_keywords.csv")
 
