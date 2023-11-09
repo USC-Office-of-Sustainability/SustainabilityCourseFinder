@@ -133,6 +133,14 @@ usc_courses_with_school <- usc_courses_with_school %>%
                   "Dana and David Dornsife College of Letters, Arts and Sciences", 
                   school))
 
+# ACCT to Leventhal
+usc_courses_with_school[grep("ACCT",usc_courses_with_school$courseID),]$department %>% length()
+usc_courses_with_school %>% filter(department == "ACCT") %>% nrow()
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "ACCT", 
+                         "Elaine and Kenneth Leventhal School of Accounting", 
+                         school))
+
 # remove Registrar's Office and Graduate School courses
 usc_courses_with_school <- usc_courses_with_school %>%
   filter(school != "Registrar's Office and Graduate School")
