@@ -133,12 +133,30 @@ usc_courses_with_school <- usc_courses_with_school %>%
                   "Dana and David Dornsife College of Letters, Arts and Sciences", 
                   school))
 
+# fix some department's school
 # ACCT to Leventhal
 usc_courses_with_school[grep("ACCT",usc_courses_with_school$courseID),]$department %>% length()
 usc_courses_with_school %>% filter(department == "ACCT") %>% nrow()
 usc_courses_with_school <- usc_courses_with_school %>%
   mutate(school = ifelse(department == "ACCT", 
                          "Elaine and Kenneth Leventhal School of Accounting", 
+                         school))
+
+# ACAD and ISDN to Iovine/Young
+usc_courses_with_school[grep("ACAD",usc_courses_with_school$courseID),]$department %>% length()
+usc_courses_with_school %>% filter(department == "ACAD") %>% nrow()
+usc_courses_with_school[grep("IDSN",usc_courses_with_school$courseID),]$department %>% length()
+usc_courses_with_school %>% filter(department == "IDSN") %>% nrow()
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "ACAD" | department == "IDSN", 
+                         "Jimmy Iovine and Andre Young Academy", 
+                         school))
+# PUBD to Annenberg
+usc_courses_with_school[grep("PUBD",usc_courses_with_school$courseID),]$department %>% length()
+usc_courses_with_school %>% filter(department == "PUBD") %>% nrow()
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "PUBD", 
+                         "Annenberg School for Communication and Journalism", 
                          school))
 
 # remove Registrar's Office and Graduate School courses
