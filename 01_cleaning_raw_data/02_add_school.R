@@ -133,6 +133,13 @@ usc_courses_with_school <- usc_courses_with_school %>%
                   "Dana and David Dornsife College of Letters, Arts and Sciences", 
                   school))
 
+# fix specific classes
+# BUAD-280 BUAD-281 to Leventhal
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(courseID == "BUAD-280" | courseID == "BUAD-281", 
+                         "Elaine and Kenneth Leventhal School of Accounting", 
+                         school))
+
 # fix some department's school
 # ACCT to Leventhal
 usc_courses_with_school[grep("ACCT",usc_courses_with_school$courseID),]$department %>% length()
@@ -141,7 +148,6 @@ usc_courses_with_school <- usc_courses_with_school %>%
   mutate(school = ifelse(department == "ACCT", 
                          "Elaine and Kenneth Leventhal School of Accounting", 
                          school))
-
 # ACAD and ISDN to Iovine/Young
 usc_courses_with_school[grep("ACAD",usc_courses_with_school$courseID),]$department %>% length()
 usc_courses_with_school %>% filter(department == "ACAD") %>% nrow()
