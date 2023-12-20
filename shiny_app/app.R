@@ -1,4 +1,4 @@
-# USC SHINY WEB APP updated 10/16/23
+# USC SHINY WEB APP updated 11/9/23
 
 # require(devtools)
 # install_github("lchiffon/wordcloud2")
@@ -386,7 +386,7 @@ ui <- dashboardPage( skin="black",
                                                 h3("The below charts show the percent and number of USC courses that are ‘sustainability-focused’, ‘SDG-related’ or ‘not related’ to 
                                                 sustainability, as well as the number and percent of departments that offer sustainability-focused or SDG-related courses. Note that there are often many sections
                                                    for an offered course."),
-                                                h3("For a course to count as SDG-related, it has to include at least two SDG keywords. For a course to count as sustainability-focused, 
+                                                h3("For a course to count as SDG-related, it has to include at least one SDG keyword. For a course to count as sustainability-focused, 
                                                    it has to map to a combination of SDGs that includes at least one environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one economic or social 
                                                    focused SDG (1, 2, 3, 4, 5, 8, 9, 10, 11, 16, 17)."),
                                                 uiOutput("disclaimer6"),
