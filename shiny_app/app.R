@@ -189,16 +189,18 @@ ui <- dashboardPage(
         fluidPage(
           h1("About"),
           h3(
-            "Welcome to the USC Sustainability Course Finder\u2014a collaborative project from the
-                                                staff, faculty, and students of the University of Southern California and Carnegie
-                                                Mellon University. This tool allows users to identify USC courses which relate to the
-                                                17 United Nations Sustainable Development Goals (SDGs). With this information, students
-                                                can focus their studies in particular sustainability goals, and faculty can identify
-                                                ways to incorporate sustainability into their classes."
+            "Welcome to the USC Sustainability Course Finder\u2014a 
+            collaborative project from the staff, faculty, and students of the 
+            University of Southern California and Carnegie Mellon University. 
+            This tool allows users to identify USC courses which relate to the 
+            17 United Nations Sustainable Development Goals (SDGs). With this 
+            information, students can focus their studies in particular 
+            sustainability goals, and faculty can identify ways to incorporate 
+            sustainability into their classes."
           ),
           h3(
-            "This dashboard is a work in progress and will be improved through feedback and
-                                                   collaboration with faculty (",
+            "This dashboard is a work in progress and will be improved through 
+            feedback and collaboration with faculty (",
             a(
               "access the feedback form here",
               href = feedback_form_link,
@@ -221,9 +223,10 @@ ui <- dashboardPage(
                      6,
                      h3(
                        strong("Assignment: Earth"),
-                       "is USC’s Sustainability Framework for a greener campus and planet. It articulates our
-                                                         commitment to addressing the impacts of climate change and creating a more just, equitable, and
-                                                         sustainable future. It’s a big assignment. ",
+                       "is USC’s Sustainability Framework for a greener campus 
+                       and planet. It articulates our commitment to addressing 
+                       the impacts of climate change and creating a more just, 
+                       equitable, and sustainable future. It’s a big assignment. ",
                        strong("We’re all in!")
                      )
                    )),
@@ -233,16 +236,22 @@ ui <- dashboardPage(
           
           h1("Mapping the 17 SDGs"),
           h3(
-            "The SDGs were adopted by all United Nations Member States in 2015, providing a shared blueprint for peace and prosperity
-                                                   for people and the planet, now and into the future. The SDGs are an urgent call for action by all countries - developed and
-                                                   developing - in a global partnership. They recognize that ending poverty and other deprivations must go hand-in-hand with
-                                                   strategies that improve health and education, reduce inequality, and spur economic growth – all while tackling climate
-                                                   change and working to preserve our oceans and forests."
+            "The SDGs were adopted by all United Nations Member States in 2015, 
+            providing a shared blueprint for peace and prosperity for people 
+            and the planet, now and into the future. The SDGs are an urgent 
+            call for action by all countries\u2014developed and developing\u2014
+            in a global partnership. They recognize that ending poverty and other 
+            deprivations must go hand-in-hand with strategies that improve 
+            health and education, reduce inequality, and spur economic growth\u2014 
+            all while tackling climate change and working to preserve our oceans 
+            and forests."
           ),
           h3(
-            "Below displays a wordcloud for the keywords for each SDG. The keywords
-                                                   were edited by USC’s Office of Sustainability staff and interns as well as the USC Presidential Working Group. These keywords
-                                                   evolved from lists suggested by Elsevier and Carnegie Mellon University."
+            "Below displays a wordcloud for the keywords for each SDG. The 
+            keywords were edited by USC’s Office of Sustainability staff and 
+            interns as well as the USC Presidential Working Group. These 
+            keywords evolved from lists suggested by Elsevier and Carnegie 
+            Mellon University."
           ),
           
           # h3("Below displays a wordcloud for the top keywords for each SDG.
@@ -278,82 +287,90 @@ ui <- dashboardPage(
           h2(strong("FAQ")),
           h3(
             strong("How do I use this dashboard?"),
-            "You can choose your search function in
-                                 the main menu in the upper-left corner of this dashboard.
-                                 Here you can either find courses by the 17 different SDGs
-                                 (Find Courses by SDGs) or see which SDGs map to a selected course
-                                 (Find SDGs by Courses). To see how many courses at USC are sustainability-focused
-                                 or SDG-related, please click on the bottom menu option
-                                 ‘All Sustainability-Related Courses”."
+            "You can choose your search function in the main menu in the 
+            upper-left corner of this dashboard. Here you can either find 
+            courses by the 17 different SDGs (Find Courses by SDGs) or see 
+            which SDGs map to a selected course (Find SDGs by Courses). To see 
+            how many courses at USC are sustainability-focused or SDG-related, 
+            please click on the bottom menu option \"All Sustainability-Related 
+            Courses\"."
           ),
           
           h3(
             strong("How was this dashboard created?"),
-            "This dashboard was created with R Shiny, based on source code in R through a
-                                              collaboration of USC’s Office of Sustainability (Source Code Developers: PSIP Interns- Brian Tinsley and Alison Chen, with USC's Sustainablity Data Analyst- Dr.
-                                              Julie Hopper) with Carnegie Mellon University (Source Code Developers: Director of Sustainability Initiatives - Alex Hinicker
-                                              and Undergraduate Alumni - Peter Wu). Following the initial development of this dashboard, USC staff in the Office of
-                                              Sustainability and faculty in the Presidential Working Group (PWG) on Sustainability in Education reviewed the dashboard and
-                                              keywords. All of the datasets and source code used in this dashboard are open-source and can be found through",
-            a("our
-                                              Github page.", href = "https://github.com/USC-Office-of-Sustainability/USC-SDGmap", target =
-                "_blank")
+            "This dashboard was created with R Shiny, based on source code in R 
+            through a collaboration of USC’s Office of Sustainability (Source 
+            Code Developers: PSIP Interns\u2014Brian Tinsley and Alison Chen, with 
+            USC's Sustainablity Data Analyst\u2014Dr. Julie Hopper) with 
+            Carnegie Mellon University (Source Code Developers: Director of 
+            Sustainability Initiatives\u2014Alex Hinicker and Undergraduate 
+            Alumni\u2014Peter Wu). Following the initial development of this 
+            dashboard, USC staff in the Office of Sustainability and faculty in 
+            the Presidential Working Group (PWG) on Sustainability in Education 
+            reviewed the dashboard and keywords. All of the datasets and source 
+            code used in this dashboard are open-source and can be found through",
+            a("our Github page.",
+              href = "https://github.com/USC-Office-of-Sustainability/USC-SDGmap",
+              target = "_blank")
           ),
           h3(
             strong("What are the UN’s 17 Sustainability Development Goals (SDGs)?"),
-            "The 2030 Agenda for Sustainable Development was adopted in 2015 by all UN member
-                                    states and provides a ‘blueprint for peace and prosperity for people and the planet,
-                                    now and into the future’. At the center of this are the 17 Sustainable Development
-                                    Goals (SDGs). These goals acknowledge that ending poverty and other deprivations must
-                                    accompany strategies that reduce inequality,  improve education and health, and
-                                    spur economic growth – all while working to preserve our natural ecosystems and
-                                    tackling climate change. To explore the 17 SDGs,
-                                    please visit ",
-            a("their website.", href = "https://sdgs.un.org/goals#icons", target =
-                "_blank")
+            "The 2030 Agenda for Sustainable Development was adopted in 2015 by 
+            all UN member states and provides a ‘blueprint for peace and 
+            prosperity for people and the planet, now and into the future’. At 
+            the center of this are the 17 Sustainable Development Goals (SDGs). 
+            These goals acknowledge that ending poverty and other deprivations 
+            must accompany strategies that reduce inequality,  improve 
+            education and health, and spur economic growth\u2014all while 
+            working to preserve our natural ecosystems and tackling climate 
+            change. To explore the 17 SDGs, please visit ",
+            a("their website.",
+              href = "https://sdgs.un.org/goals#icons",
+              target = "_blank")
           ),
           
           h3(
             strong("Which USC courses are included in this dashboard?"),
-            "All USC courses except for \"Directed Research,\"
-                                                   Master's Thesis,\" and \"Doctoral Dissertation\" courses. Although some courses do not map to the SDGs, they are still included
-                                                   in data analysis. "
+            "All USC courses except for \"Directed Research,\" Master's 
+            Thesis,\" and \"Doctoral Dissertation\" courses. Although some 
+            courses do not map to the SDGs, they are still included in data 
+            analysis. "
           ),
           
           h3(
             strong("How often is this dashboard updated?"),
-            "Data is updated at least once a semester after registration
-                                                is complete for the following semester, and more frequently upon feedback."
+            "Data is updated at least once a semester after registration is 
+            complete for the following semester, and more frequently upon 
+            feedback."
           ),
           
           h3(
             strong("How are USC's courses mapped to the 17 SDGs?"),
-            "Please visit our
-                                                   “Home” page to learn more."
+            "Please visit our \"Home\" page to learn more."
           ),
           
           h3(
             strong(
               "I’m a faculty member, how can I use or provide feedback on this dashboard?"
             ),
-            "It is our hope that this dashboard will be a useful tool for faculty who are looking
-                                                   for ways to incorporate sustainability into their courses by identifying potential
-                                                   connections between course topics and the UN SDGs. The dashboard is a work in progress
-                                                   and faculty feedback is critical in refining its accuracy and utility. If you have
-                                                   feedback or suggestions, please fill out",
-            a("this form", href = feedback_form_link, target =
-                "_blank"),
+            "It is our hope that this dashboard will be a useful tool for 
+            faculty who are looking for ways to incorporate sustainability into 
+            their courses by identifying potential connections between course 
+            topics and the UN SDGs. The dashboard is a work in progress and 
+            faculty feedback is critical in refining its accuracy and utility. 
+            If you have feedback or suggestions, please fill out",
+            a("this form", href = feedback_form_link, target = "_blank"), 
             "or email us at oosdata@usc.edu."
           ),
           
           h3(
             strong(
-              "I’d like to integrate sustainability into my courses. Where can I get help
-                                                          with this?"
+              "I’d like to integrate sustainability into my courses. 
+              Where can I get help with this?"
             ),
-            "If you’re interested in integrating sustainability into an existing course, contact
-                                                   the Office of Sustainability’s Experiential Learning Manager, Dr. Chelsea Graham at
-                                                   cmgraham@usc.edu."
+            "If you’re interested in integrating sustainability into an 
+            existing course, contact the Office of Sustainability’s 
+            Experiential Learning Manager, Dr. Chelsea Graham at cmgraham@usc.edu."
           ),
           
           h3(
@@ -373,13 +390,14 @@ ui <- dashboardPage(
         fluidPage(
           h1("Map Your Courses"),
           h3(
-            "Select your courses below and see how your curriculum relates to the 17 SDGs. Some courses
-                                                   do not map to the SDGs via our keywords so those courses' mapping will be blank."
+            "Select your courses below and see how your curriculum relates to 
+            the 17 SDGs. Some courses do not map to the SDGs via our keywords 
+            so those courses' mapping will be blank."
           ),
           uiOutput("disclaimer2"),
           # h3("Enter Your USC Courses"),
           h4(
-            "Type in the course ID using the same format as this example: “ENST-150”"
+            "Type in the course ID using the same format as this example: \"ENST-150\""
           ),
           selectizeInput(
             inputId = "user_classes",
@@ -430,14 +448,15 @@ ui <- dashboardPage(
           h1("Find SDGs by Courses"),
           h4(""),
           h3(
-            "Select a USC course ID below to view the SDG mapping for
-                          that particular course. If you cannot find a course you are looking for, then it did not map to any of the SDGs via our keyword list.
-                                                   To check out the USC Schedule of Classes, click ",
+            "Select a USC course ID below to view the SDG mapping for that 
+            particular course. If you cannot find a course you are looking 
+            for, then it did not map to any of the SDGs via our keyword list. 
+            To check out the USC Schedule of Classes, click ",
             a("here.", href = "https://classes.usc.edu/", target = "_blank")
           ),
           uiOutput("disclaimer3"),
           h4(
-            "Type in the course ID using the same format as this example: “ENST-150”"
+            "Type in the course ID using the same format as this example: \"ENST-150\""
           ),
           selectizeInput(
             inputId = "usc_classes",
@@ -450,8 +469,8 @@ ui <- dashboardPage(
           h3(textOutput("semesters_offered")),
           
           h5(
-            "*special topics courses (course levels 499 and 599) often change, but the course data comes from the
-                                                   current semester for all courses."
+            "*special topics courses (course levels 499 and 599) often change, 
+            but the course data comes from the current semester for all courses."
           ),
           
           br(),
@@ -480,8 +499,9 @@ ui <- dashboardPage(
         fluidPage(
           h1("Find Courses by SDGs"),
           h3(
-            "Select USC departments and course levels, and then choose an SDG to display the 10 most relevant USC courses that map to
-                                                  that goal. To check out the USC Schedule of Classes, click ",
+            "Select USC departments and course levels, and then choose an SDG 
+            to display the 10 most relevant USC courses that map to that goal. 
+            To check out the USC Schedule of Classes, click ",
             a("here.", href = "https://classes.usc.edu/", target = "_blank")
           ),
           uiOutput("disclaimer4"),
@@ -538,8 +558,10 @@ ui <- dashboardPage(
           
           # h3("All students at USC are required to fulfill their general education (GE) requirements."),
           h3(
-            "Select a GE category below to see the sustainability related courses which satisfy that requirement. GE courses that
-                                                   did not map to the SDGs via our keywords are not shown, but you can find them in the course catalogue ",
+            "Select a GE category below to see the sustainability related 
+            courses which satisfy that requirement. GE courses that did not 
+            map to the SDGs via our keywords are not shown, but you can find 
+            them in the course catalogue ",
             a("here.", href = "https://dornsife.usc.edu/2015ge/2015ge-requirements/")
           ),
           
@@ -580,18 +602,24 @@ ui <- dashboardPage(
         fluidPage(
           h1("All Sustainability-Related Courses"),
           h3(
-            "The below charts show the percent and number of USC courses that are ‘sustainability-focused’, ‘SDG-related’ or ‘not related’ to
-                                                sustainability, as well as the number and percent of departments that offer sustainability-focused or SDG-related courses. Note that there are often many sections
-                                                   for an offered course."
+            "The below charts show the percent and number of USC courses that 
+            are ‘sustainability-focused’, ‘SDG-related’ or ‘not related’ to 
+            sustainability, as well as the number and percent of departments 
+            that offer sustainability-focused or SDG-related courses. Note 
+            that there are often many sections for an offered course."
           ),
           h3(
-            "For a course to count as SDG-related, it has to include at least one SDG keyword. For a course to count as sustainability-focused,
-                                                   it has to map to a combination of SDGs that includes at least one environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one economic or social
-                                                   focused SDG (1, 2, 3, 4, 5, 8, 9, 10, 11, 16, 17)."
+            "For a course to count as SDG-related, it has to include at least 
+            one SDG keyword. For a course to count as sustainability-focused, 
+            it has to map to a combination of SDGs that includes at least one 
+            environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one 
+            economic or social focused SDG (1, 2, 3, 4, 5, 8, 9, 10, 11, 16, 17)."
           ),
           uiOutput("disclaimer6"),
           h4(
-            "Academic year determined by the year of the Spring semester and includes Summer and Fall terms of the previous calendar year. (AY23 = SU22, F22, SP23)"
+            "Academic year determined by the year of the Spring semester and 
+            includes Summer and Fall terms of the previous calendar year. 
+            (AY23 = SU22, F22, SP23)"
           ),
           selectInput(
             inputId = "usc_year",
@@ -656,8 +684,9 @@ ui <- dashboardPage(
         fluidPage(
           h1("Download Data"),
           h3(
-            "Select schools, departments, SDGs, and sustainability classifications to view and
-                                                   download USC course data displayed in the table at the bottom."
+            "Select schools, departments, SDGs, and sustainability 
+            classifications to view and download USC course data displayed in 
+            the table at the bottom."
           ),
           uiOutput("disclaimer7"),
           pickerInput(
