@@ -269,7 +269,7 @@ ui <- dashboardPage(
             choices = goals
           ),
           fluidRow(bootstrapPage(
-            column(6, plotOutput(outputId = "visualize_sdg"), br()),
+            column(6, plotOutput(outputId = "visualize_sdg", height = "auto"), br()),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h2(strong("SDG Keywords Table")),
@@ -420,7 +420,7 @@ ui <- dashboardPage(
           fluidRow(
             column(
               6,
-              plotOutput(outputId = "users_wordcloud"),
+              plotOutput(outputId = "users_wordcloud", height = "auto"),
               br(),
               plotOutput(outputId = "user_to_goals"),
               br()
@@ -477,7 +477,7 @@ ui <- dashboardPage(
           h3(strong("Course Title and Description:")),
           h3(textOutput("course_desc")),
           fluidRow(bootstrapPage(
-            column(6, plotOutput(outputId = "classes_to_wordcloud"), br()),
+            column(6, plotOutput(outputId = "classes_to_wordcloud", height = "auto"), br()),
             column(6, plotOutput(outputId = "classes_to_keywords"), br())
             # column(6, plotOutput(outputId = "test_run"), br())
           )),
@@ -852,7 +852,7 @@ server <- function(input, output, session) {
     )
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, height = "100%")
+    list(src = filename, width = "100%", height = "auto")
   }, deleteFile = TRUE)
   
   #sdg keywords table
@@ -920,7 +920,7 @@ server <- function(input, output, session) {
     }
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, height = "100%")
+    list(src = filename, width = "100%", height = "auto")
   }, deleteFile = TRUE)
   
   # output for users classes
@@ -1169,7 +1169,7 @@ server <- function(input, output, session) {
     }
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, height = "100%")
+    list(src = filename, width = "100%", height = "auto")
   }, deleteFile = TRUE)
   
   
@@ -1674,7 +1674,7 @@ server <- function(input, output, session) {
     )
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, height = "100%")
+    list(src = filename, width = "100%", height = "auto")
   }, deleteFile = TRUE)
   
   # title above the chart
