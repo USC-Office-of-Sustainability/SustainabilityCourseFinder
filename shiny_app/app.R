@@ -21,6 +21,9 @@ library(ggplot2)
 library(ggrepel)
 # install.packages("shinyWidgets")
 library(shinyWidgets)
+# install.packages("scales")
+library(scales)
+
 
 keywords = read.csv("usc_keywords.csv")
 
@@ -417,20 +420,30 @@ ui <- dashboardPage(
           h3("SDG Mapping Data for:"),
           h4(textOutput("personal_classes")),
           br(),
-          fluidRow(
+          fluidRow(align="center",
             column(
               6,
-              plotOutput(outputId = "users_wordcloud", height = "auto"),
-              br(),
-              plotOutput(outputId = "user_to_goals"),
-              br()
+              plotOutput(outputId = "users_wordcloud", height = "auto")
             ),
             column(
               6,
+              h2(strong("All SDG Keywords")),
               plotOutput(outputId = "user_classes_barplot"),
-              img(src = "un_17sdgs.png", width = "100%"),
-              br()
+              uiOutput("keyword_freq_axis_title2"),
             )
+          ),
+          fluidRow(align="center",
+                   column(
+                     6,
+                     
+                     h2(strong("All SDGs Mapped to Your Courses")),
+                     plotOutput(outputId = "user_to_goals"),
+                     uiOutput("keyword_freq_axis_title1")
+                   ),
+                   column(
+                     6,
+                     img(src = "un_17sdgs.png", width = "100%")
+                   )
           ),
           h2(strong("Your Courses")),
           fluidRow(bootstrapPage(column(
@@ -476,13 +489,24 @@ ui <- dashboardPage(
           br(),
           h3(strong("Course Title and Description:")),
           h3(textOutput("course_desc")),
-          fluidRow(bootstrapPage(
-            column(6, plotOutput(outputId = "classes_to_wordcloud", height = "auto"), br()),
-            column(6, plotOutput(outputId = "classes_to_keywords"), br())
+          fluidRow(align="center",bootstrapPage(
+            column(6, 
+                   plotOutput(outputId = "classes_to_wordcloud", height = "auto"), br()),
+            column(6, 
+                   h2(strong(textOutput("classes_to_keywords_title"))), 
+                   plotOutput(outputId = "classes_to_keywords"), 
+                   # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
+                   uiOutput("keyword_freq_axis_title3")
+                   )
+                   
             # column(6, plotOutput(outputId = "test_run"), br())
           )),
-          fluidRow(bootstrapPage(
-            column(6, plotOutput(outputId = "classes_to_goals"), br()),
+          fluidRow(align="center",bootstrapPage(
+            column(6, 
+                   h2(strong(textOutput("classes_to_goals_title"))),
+                   plotOutput(outputId = "classes_to_goals"), 
+                   # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px"),
+                   uiOutput("keyword_freq_axis_title4")),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h2(strong("Keyword Table")),
@@ -539,8 +563,9 @@ ui <- dashboardPage(
           ),
           br(),
           h2(strong(textOutput("top_classes"))),
-          fluidRow(bootstrapPage(
-            column(6, plotOutput(outputId = "goals_to_classes"), br()),
+          fluidRow(align = "center", bootstrapPage(
+            column(6, plotOutput(outputId = "goals_to_classes"), 
+                   uiOutput("keyword_freq_axis_title5"),br()),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h2(strong(textOutput("sdg_name"))),
@@ -584,8 +609,9 @@ ui <- dashboardPage(
           br(),
           br(),
           h3(strong(textOutput("top_ge_chart"))),
-          fluidRow(bootstrapPage(
-            column(6, plotOutput(outputId = "ge_bar"), br()),
+          fluidRow(align = "center", bootstrapPage(
+            column(6, plotOutput(outputId = "ge_bar"), 
+                   uiOutput("keyword_freq_axis_title6"),br()),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h1(strong(textOutput("ge_name"))),
@@ -640,23 +666,23 @@ ui <- dashboardPage(
           fluidRow(
             column(
               6,
-              h2("Sustainability Related Courses Offered"),
-              plotOutput("pie4")
+              h2(strong("Sustainability Related Courses Offered"), align = "center"),
+              plotlyOutput("pie4")
             ),
             column(
               6,
-              h2("Sustainability Focused Courses"),
+              h2(strong("Sustainability Focused Courses"), align = "center"),
               DT::dataTableOutput("courses_sustainability_table")
             )
           ),
           fluidRow(column(
             6,
-            h2("Sustainability Related Departments"),
-            plotOutput("pie3")
+            h2(strong("Sustainability Related Departments"), align = "center"),
+            plotlyOutput("pie3")
           ),
           column(
             6,
-            h2("Department Wordcloud"),
+            h2(strong("Department Wordcloud"), align = "center"),
             h3(
               "Based on the number of sustainability focused courses offered by each department"
             ),
@@ -673,8 +699,8 @@ ui <- dashboardPage(
           #             selected = sort(unique(sustainability_related$school))[1]),
           # h2(textOutput("department_barchart_title")),
           # fluidRow(column(12, plotOutput("department_barchart")))
-          h2(textOutput("school_barchart_title")),
-          fluidRow(column(12, plotOutput("school_barchart")))
+          h2(strong(textOutput("school_barchart_title"))),
+          fluidRow(bootstrapPage(column(12, plotlyOutput("school_barchart", width = "100%"))))
         ),
         # end fluid page
       ),
@@ -826,6 +852,16 @@ server <- function(input, output, session) {
       )
     })
   
+  # total sdg keyword frequency label
+  output$keyword_freq_axis_title1 <-
+    output$keyword_freq_axis_title2 <-
+    output$keyword_freq_axis_title3 <-
+    output$keyword_freq_axis_title4 <-
+    output$keyword_freq_axis_title5 <-
+    output$keyword_freq_axis_title6 <- renderUI({
+    h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
+  })
+  
   
   #####
   ##
@@ -925,6 +961,9 @@ server <- function(input, output, session) {
   
   # output for users classes
   output$user_classes_barplot <- renderPlot({
+    # validate(
+    #   need(input$user_classes != "", label = "Course")
+    # )
     df <- recent_courses %>%
       filter(courseID %in% input$user_classes) %>%
       filter(!is.na(keyword)) %>%
@@ -943,20 +982,28 @@ server <- function(input, output, session) {
       geom_col() +
       coord_flip() +
       labs(
-        title = paste0("All SDG Keywords"),
+        # title = paste0("All SDG Keywords"),
         fill = "SDG",
         x = "SDG Keyword",
         y = "Total SDG Keyword Frequency"
       ) +
       theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black")) +
+            axis.text = element_text(color = "black"),
+            axis.title.x = element_blank()) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
             0, (max(x) + 1) * 1.1
           ))))
-      ) # integer breaks
+      ) -> p
+    
+    if (nrow(df) != 0) {
+      p <- p + scale_x_discrete(labels = label_wrap(20))
+    }
+    
+    p
+      
     
   })
   
@@ -981,13 +1028,14 @@ server <- function(input, output, session) {
       geom_col() +
       coord_flip() +
       labs(
-        title = paste0("All SDGs Mapped to your Courses"),
+        # title = paste0("All SDGs Mapped to your Courses"),
         fill = "SDG",
         x = "SDG",
         y = "Total SDG Keyword Frequency"
       ) +
       theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black")) +
+            axis.text = element_text(color = "black"),
+            axis.title.x = element_blank()) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(
         breaks = function(x)
@@ -1017,7 +1065,9 @@ server <- function(input, output, session) {
              "Sustainability Classification",
              "Course Description") %>%
       distinct()
-  }, rownames = FALSE)
+  }, rownames = FALSE,
+  options = list(scrollX = TRUE)
+  )
   
   
   
@@ -1087,13 +1137,14 @@ server <- function(input, output, session) {
       geom_col() +
       coord_flip() +
       labs(
-        title = paste0("All SDGs Mapped to ", input$usc_classes),
+        # title = paste0("All SDGs Mapped to ", input$usc_classes),
         fill = "SDG",
         x = "SDG",
-        y = "Total SDG Keyword Frequency"
+        # y = "Total SDG Keyword Frequency"
       ) +
       theme(text = element_text(size = 18, face = "bold"),
-            axis.text = element_text(color = "black")) +
+            axis.text = element_text(color = "black"),
+            axis.title.x=element_blank()) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(
         breaks = function(x)
@@ -1101,6 +1152,11 @@ server <- function(input, output, session) {
             0, (max(x) + 1) * 1.1
           ))))
       )
+  })
+  
+  # title
+  output$classes_to_goals_title <- renderText({
+    paste0("All SDGs Mapped to ", input$usc_classes)
   })
   
   
@@ -1126,20 +1182,27 @@ server <- function(input, output, session) {
       geom_col() +
       coord_flip() +
       labs(
-        title = paste0(input$usc_classes, " SDG Keywords"),
+        # title = paste0(input$usc_classes, " SDG Keywords"),
         fill = "SDG",
         x = "SDG Keyword",
         y = "Total SDG Keyword Frequency"
       ) +
       scale_fill_manual(values = plot_colors) +
+      scale_x_discrete(labels = label_wrap(20)) +
       theme(text = element_text(size = 18, face = "bold"),
-            axis.text = element_text(color = "black")) +
+            axis.text = element_text(color = "black"),
+            axis.title.x = element_blank()) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
             0, (max(x) + 1) * 1.1
           ))))
       )
+  })
+  
+  # title
+  output$classes_to_keywords_title <- renderText({
+    paste0(input$usc_classes, " SDG Keywords")
   })
   
   
@@ -1273,7 +1336,8 @@ server <- function(input, output, session) {
       labs(x = "Course",
            y = "Total SDG Keyword Frequency") +
       theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black")) +
+            axis.text = element_text(color = "black"),
+            axis.title.x = element_blank()) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
@@ -1315,7 +1379,7 @@ server <- function(input, output, session) {
       )
   },
   rownames = FALSE,
-  options = list(language = list(zeroRecords = "No Courses")))
+  options = list(language = list(zeroRecords = "No Courses"),scrollX = TRUE))
   # options = list(
   #     autoWidth = TRUE)
   #     # columnDefs = list(list(width = '200px', targets = "_all"))
@@ -1396,7 +1460,8 @@ server <- function(input, output, session) {
            x = "Course",
            y = "Total SDG Keyword Frequency") +
       theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black")) +
+            axis.text = element_text(color = "black"),
+            axis.title.x = element_blank()) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
@@ -1442,7 +1507,7 @@ server <- function(input, output, session) {
       distinct()
   },
   rownames = FALSE,
-  options = list(language = list(zeroRecords = "No Courses")))
+  options = list(language = list(zeroRecords = "No Courses"), scrollX = TRUE))
   
   
   
@@ -1455,7 +1520,7 @@ server <- function(input, output, session) {
   
   
   # sustainability related departments pie chart
-  output$pie3 <- renderPlot({
+  output$pie3 <- renderPlotly({
     df <- sustainability_related %>%
       filter(year == input$usc_year)
     if (input$course_level_pie == "Undergraduate") {
@@ -1483,39 +1548,55 @@ server <- function(input, output, session) {
       ) %>%
       group_by(one_sustainability_classification) %>%
       count()
-    total_num = sum(df$n)
-    pie_data <-
-      data.frame(
-        group = df$one_sustainability_classification,
-        value = df$n,
-        proportion = round(df$n / total_num * 100, 1)
-      )
+    # total_num = sum(df$n)
+    # pie_data <-
+    #   data.frame(
+    #     group = df$one_sustainability_classification,
+    #     value = df$n,
+    #     proportion = round(df$n / total_num * 100, 1)
+    #   )
     
     # compute positions of labels
-    pie_data <- pie_data %>%
-      arrange(desc(group)) %>%
-      mutate(prop = value / sum(pie_data$value) * 100) %>%
-      mutate(ypos = cumsum(prop) - 0.5 * prop)
+    # pie_data <- pie_data %>%
+    #   arrange(desc(group)) %>%
+    #   mutate(prop = value / sum(pie_data$value) * 100) %>%
+    #   mutate(ypos = cumsum(prop) - 0.5 * prop)
+    df <- df %>%
+      arrange(one_sustainability_classification)
+    fig <- plot_ly(df, labels = ~one_sustainability_classification, values = ~n, type = 'pie',
+                   textposition = 'inside',
+                   textinfo = 'label+percent',
+                   insidetextfont = list(color = '#FFFFFF'),
+                   hoverinfo = 'text',
+                   text = ~paste(n, ' departments'),
+                   marker = list(colors = c("#767676", "#FFC72C", "#990000"),
+                                 line = list(color = '#FFFFFF', width = 1)),
+                   #The 'pull' attribute can also be used to create space between the sectors
+                   showlegend = FALSE)
+    fig <- fig %>% layout(margin = list(l = 20, r = 20),
+                          xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                          yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+    fig
     
-    pie(
-      pie_data$value,
-      labels = paste0(
-        str_wrap(pie_data$group, 20),
-        "\n (",
-        pie_data$value,
-        ", " ,
-        pie_data$proportion,
-        "%)"
-      ),
-      col = c("#990000", "#FFC72C", "#767676"),
-      cex = 1.5,
-      cex.main = 2,
-      family = "sans"
-    )
+    # p <- pie(
+    #   pie_data$value,
+    #   labels = paste0(
+    #     str_wrap(pie_data$group, 20),
+    #     "\n (",
+    #     pie_data$value,
+    #     ", " ,
+    #     pie_data$proportion,
+    #     "%)"
+    #   ),
+    #   col = c("#990000", "#FFC72C", "#767676"),
+    #   cex = 1.5,
+    #   cex.main = 2,
+    #   family = "sans"
+    # )
   })
   
   # sustainability courses offered pie chart
-  output$pie4 <- renderPlot({
+  output$pie4 <- renderPlotly({
     df <- sustainability_related %>%
       filter(year == input$usc_year)
     if (input$course_level_pie == "Undergraduate") {
@@ -1535,35 +1616,51 @@ server <- function(input, output, session) {
                 by_course = n())
     df$sustainability_classification <-
       gsub("-", " ", df$sustainability_classification)
-    total_num <- sum(df$by_section)
-    pie_data <- data.frame(
-      group = df$sustainability_classification,
-      value = df$by_section,
-      proportion = round(df$by_section / total_num *
-                           100, 1)
-    )
+    # total_num <- sum(df$by_section)
+    # pie_data <- data.frame(
+    #   group = df$sustainability_classification,
+    #   value = df$by_section,
+    #   proportion = round(df$by_section / total_num *
+    #                        100, 1)
+    # )
+    df <- df %>% arrange(sustainability_classification)
+    fig <- plot_ly(df, labels = ~sustainability_classification, values = ~by_section, type = 'pie',
+                   textposition = 'inside',
+                   textinfo = 'label+percent',
+                   insidetextfont = list(color = '#FFFFFF'),
+                   hoverinfo = 'text',
+                   text = ~paste(by_section, ' course sections'),
+                   marker = list(colors = c("#767676", "#FFC72C", "#990000"),
+                                 line = list(color = '#FFFFFF', width = 1)),
+                   #The 'pull' attribute can also be used to create space between the sectors
+                   showlegend = FALSE)
+    fig <- fig %>% layout(
+      margin = list(l = 20, r = 20),
+      xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+      yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+    fig
     
     # compute positions of labels
-    pie_data <- pie_data %>%
-      arrange(desc(group)) %>%
-      mutate(prop = value / sum(pie_data$value) * 100) %>%
-      mutate(ypos = cumsum(prop) - 0.5 * prop)
+    # pie_data <- pie_data %>%
+    #   arrange(desc(group)) %>%
+    #   mutate(prop = value / sum(pie_data$value) * 100) %>%
+    #   mutate(ypos = cumsum(prop) - 0.5 * prop)
     
-    pie(
-      pie_data$value,
-      labels = paste0(
-        str_wrap(pie_data$group, 20),
-        "\n (",
-        pie_data$value,
-        ", " ,
-        pie_data$proportion,
-        "%)"
-      ),
-      col = c("#990000", "#FFC72C", "#767676"),
-      cex = 1.5,
-      cex.main = 2,
-      family = "sans"
-    )
+    # pie(
+    #   pie_data$value,
+    #   labels = paste0(
+    #     str_wrap(pie_data$group, 20),
+    #     "\n (",
+    #     pie_data$value,
+    #     ", " ,
+    #     pie_data$proportion,
+    #     "%)"
+    #   ),
+    #   col = c("#990000", "#FFC72C", "#767676"),
+    #   cex = 1.5,
+    #   cex.main = 2,
+    #   family = "sans"
+    # )
   })
   
   # sustainability departments table
@@ -1776,11 +1873,26 @@ server <- function(input, output, session) {
   # title above the chart
   output$school_barchart_title = renderText({
     paste(input$course_level_pie,
-          "courses by School in",
+          "Courses by School in",
           input$usc_year)
   })
   
-  output$school_barchart <- renderPlot({
+  # set_shiny_plot_height <- function(seesion, output_school_barchart_height) {
+  #   print("here")
+  #   function() {
+  #     session$clientData[[output_school_barchart_height]]
+  #   }
+  # }
+  
+  output$school_barchart <- renderPlotly({
+    width <- session$clientData$output_school_barchart_width
+    left <- 290
+    if (width < 290+100) {
+      left <- width - 170
+    }
+    print(left)
+    print(width)
+    height <- session$clientData$output_school_barchart_height
     df <- sustainability_related %>%
       filter(year == input$usc_year)
     if (input$course_level_pie == "Undergraduate") {
@@ -1803,21 +1915,21 @@ server <- function(input, output, session) {
       group_by(school, sustainability_classification) %>%
       count()
     
-    middle_school <-
-      unique(plot_data$school)[length(unique(plot_data$school)) / 2]
-    
-    plot_data$group <- 1
-    if (length(unique(plot_data$school)) > 20) {
-      plot_data <- plot_data %>%
-        group_by(school) %>%
-        mutate(group = ifelse(school <= middle_school,
-                              1,
-                              2)) %>%
-        ungroup()
-    }
+    # middle_school <-
+    #   unique(plot_data$school)[length(unique(plot_data$school)) / 2]
+    # 
+    # plot_data$group <- 1
+    # if (length(unique(plot_data$school)) > 20) {
+    #   plot_data <- plot_data %>%
+    #     group_by(school) %>%
+    #     mutate(group = ifelse(school <= middle_school,
+    #                           1,
+    #                           2)) %>%
+    #     ungroup()
+    # }
     plot_data <- plot_data %>%
       mutate(
-        SCHOOL = recode(
+        school = recode(
           school,
           "Andrew and Erna Viterbi School of Engineering" = "Viterbi School of Engineering",
           "Annenberg School for Communication and Journalism" = "Annenberg School for Communication & Journalism",
@@ -1845,25 +1957,86 @@ server <- function(input, output, session) {
           "Thornton School of Music" = "Thornton School of Music"
         )
       ) %>%
-      arrange(SCHOOL)
-    plot_data %>%
-      ggplot(aes(x = SCHOOL, y = n, fill = sustainability_classification)) +
-      geom_bar(position = "fill", stat = "identity") +
-      # facet_wrap(~ group, scales = "free", nrow = length(unique(plot_data$group))) +
-      scale_fill_manual(values = plot_colors) +
-      scale_y_continuous(labels = scales::percent) +
-      labs(fill = "Sustainability Classification",
-           x = "School",
-           y = "Percent") +
-      theme(
-        text = element_text(size = 18, face = "bold"),
-        legend.position = "bottom",
-        axis.text = element_text(face = "plain", color = 'black')
-      ) +
-      # guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
-      coord_flip() +
-      scale_x_discrete(labels = scales::label_wrap(50))
+      arrange(school)
     
+    plot_data %>%
+      group_by(school) %>%
+      mutate(total = sum(n)) %>%
+      mutate(perc = round(n/total*100, 1)) -> plot_data
+    wide_data <- tidyr::pivot_wider(plot_data, id_cols = school, names_from = sustainability_classification, values_from = perc, values_fill = 0)
+    # wide_data$school <- stringr::str_wrap(wide_data$school, 30)
+    
+    fig <- plot_ly(wide_data, x = ~`Not Related`, y = ~school,  
+                   type = "bar", orientation = "h",
+                   marker = list(color = "#767676"),
+                   name = "Not Related", hoverinfo="skip"
+                   ) %>%
+      add_trace(x = ~`SDG-Related`, marker = list(color = "#FFC72C"), name = "SDG-Related", hoverinfo="skip") %>%
+      add_trace(x = ~`Sustainability-Focused`, marker = list(color = "#990000"), name = "Sustainability-Focused", hoverinfo="none") %>%
+      layout(xaxis = list(title = "",
+                          showgrid = FALSE,
+                          showline = FALSE,
+                          showticklabels = TRUE,
+                          zeroline = FALSE,
+                          domain = c(0.01, 1),
+                          range = list(0, 100),
+                          fixedrange = TRUE,
+                          automargin=TRUE, ticksuffix = "%"
+                          ),
+             yaxis = list(title = "",
+                          showgrid = FALSE,
+                          showline = FALSE,
+                          showticklabels = FALSE,
+                          zeroline = FALSE),
+             barmode = 'stack',
+             paper_bgcolor = 'rgb(248, 248, 255)', plot_bgcolor = 'rgb(248, 248, 255)',
+             margin = list(l = left, r = 10, t = 25, b = 10),
+             showlegend = TRUE,
+             legend = list(orientation = 'h',
+                           title=list(text='<b>Sustainability\n Classification</b>'),
+                           xanchor = "center",
+                           x = 0.25,
+                           y = -0.1)
+             # dragmode="pan"
+             # height = height
+             ) 
+    # label y axis
+    fig <- fig %>% 
+      add_annotations(xref = 'paper', yref = 'y', x = 0, y = wide_data$school,
+                                   xanchor = 'right',
+                                   text = wide_data$school,
+                                   font = list(family = 'Arial', size = 12,
+                                               color = 'rgb(67, 67, 67)'),
+                                   showarrow = FALSE, align = 'right')
+    
+    fig
+    
+    # fig <- plot_ly(plot_data, x = ~school, y = ~perc, 
+    #                type = 'bar', 
+    #                # orientation = 'h',
+    #                color = ~sustainability_classification,
+    #                text=~n,
+    #                hoverinfo = 'text') %>% 
+    #   layout(yaxis = list(title = 'Percentage (%)'), barmode = "stack")
+    # fig
+    # plot_data %>%
+    #   ggplot(aes(x = SCHOOL, y = n, fill = sustainability_classification)) +
+    #   geom_bar(position = "fill", stat = "identity") +
+    #   # facet_wrap(~ group, scales = "free", nrow = length(unique(plot_data$group))) +
+    #   scale_fill_manual(values = plot_colors) +
+    #   scale_y_continuous(labels = scales::percent) +
+    #   labs(fill = "Sustainability Classification",
+    #        x = "School",
+    #        y = "Percent") +
+    #   theme(
+    #     text = element_text(size = 18, face = "bold"),
+    #     legend.position = "bottom",
+    #     axis.text = element_text(face = "plain", color = 'black')
+    #   ) +
+    #   # guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
+    #   coord_flip() +
+    #   scale_x_discrete(labels = scales::label_wrap(50)) -> p
+    # ggplot(p)
   })
   
   
