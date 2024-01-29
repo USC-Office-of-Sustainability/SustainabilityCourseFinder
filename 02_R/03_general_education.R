@@ -62,7 +62,7 @@ df = left_join(data, key, by="id")
 # ge_multi <- merge(df, master, by = c("courseID", "course_title"), all.x = TRUE)
 # ge_single <- merge(df, sustainability_related, by = c("courseID", "course_title"), all.x = TRUE)
 
-recent_courses <- read.csv("shiny_app/recent_courses.csv")
+recent_courses <- read.csv("recent_courses_any_2_keywords.csv")
 # course title's have extra spaces at the beginning/end
 recent_courses$course_title <- trimws(recent_courses$course_title)
 # merge ge data with recent course data
@@ -76,6 +76,7 @@ ge_recent$sustainability_classification <-
          ge_recent$sustainability_classification)
 
 # save ge data for shiny app
-write.csv(ge_recent, "shiny_app/ge_data.csv", row.names = FALSE)
+# write.csv(ge_recent, "shiny_app/ge_data.csv", row.names = FALSE)
+write.csv(ge_recent, "ge_data_any_2_keywords.csv", row.names = FALSE)
 
 

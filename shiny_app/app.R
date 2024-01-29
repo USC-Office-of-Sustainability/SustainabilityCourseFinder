@@ -700,7 +700,8 @@ ui <- dashboardPage(
           # h2(textOutput("department_barchart_title")),
           # fluidRow(column(12, plotOutput("department_barchart")))
           h2(strong(textOutput("school_barchart_title"))),
-          fluidRow(bootstrapPage(column(12, plotlyOutput("school_barchart", width = "100%"))))
+          # fluidRow(bootstrapPage(column(12, plotOutput("school_barchart", width = "100%")))),
+          fluidRow(bootstrapPage(column(12, plotlyOutput("school_barchart_plotly", width = "100%"))))
         ),
         # end fluid page
       ),
@@ -1540,6 +1541,7 @@ server <- function(input, output, session) {
       mutate(
         one_sustainability_classification = case_when(
           grepl("Focused", all_sustainability_classifications) ~ "Sustainability Focused",
+          grepl("Inclusive", all_sustainability_classifications) ~ "Sustainability Inclusive",
           grepl("SDG", all_sustainability_classifications) ~
             "SDG Related",
           grepl("Not", all_sustainability_classifications) ~
@@ -1569,7 +1571,7 @@ server <- function(input, output, session) {
                    insidetextfont = list(color = '#FFFFFF'),
                    hoverinfo = 'text',
                    text = ~paste(n, ' departments'),
-                   marker = list(colors = c("#767676", "#FFC72C", "#990000"),
+                   marker = list(colors = c("#767676", "#FFC72C",  "#990000", "#ff00ff"),
                                  line = list(color = '#FFFFFF', width = 1)),
                    #The 'pull' attribute can also be used to create space between the sectors
                    showlegend = FALSE)
@@ -1630,7 +1632,7 @@ server <- function(input, output, session) {
                    insidetextfont = list(color = '#FFFFFF'),
                    hoverinfo = 'text',
                    text = ~paste(by_section, ' course sections'),
-                   marker = list(colors = c("#767676", "#FFC72C", "#990000"),
+                   marker = list(colors = c("#767676", "#FFC72C", "#990000", "#ff00ff"),
                                  line = list(color = '#FFFFFF', width = 1)),
                    #The 'pull' attribute can also be used to create space between the sectors
                    showlegend = FALSE)
@@ -1883,8 +1885,87 @@ server <- function(input, output, session) {
   #     session$clientData[[output_school_barchart_height]]
   #   }
   # }
-  
-  output$school_barchart <- renderPlotly({
+  output$school_barchart <- renderPlot({
+    df <- sustainability_related %>% 
+      filter(year == input$usc_year)
+    if (input$course_level_pie == "Undergraduate"){
+      df <- df %>% 
+        filter(course_level == "undergrad upper division" | course_level == "undergrad lower division")
+    }
+    else if(input$course_level_pie == "Graduate") {
+      df <- df %>% 
+        filter(course_level == "graduate")
+    }
+    plot_colors <- c("Sustainability-Focused" = "#990000", 
+                     "SDG-Related" = "#FFC72C", 
+                     "Not Related" = "#767676",
+                     "Sustainability-Inclusive" = "#ff00ff")
+    plot_data <- df %>%
+      group_by(school, sustainability_classification) %>%
+      count() 
+    
+    middle_school <- unique(plot_data$school)[length(unique(plot_data$school))/2]
+    
+    plot_data$group <- 1
+    if (length(unique(plot_data$school)) > 20) {
+      plot_data <- plot_data %>%
+        group_by(school) %>%
+        mutate(group = ifelse(school <= middle_school,
+                              1,
+                              2)) %>%
+        ungroup()
+    }
+    plot_data <- plot_data %>%
+      mutate(sustainability_classification = factor(sustainability_classification, levels = c("Sustainability-Focused", "Sustainability-Inclusive", "SDG-Related", "Not Related"))) %>%
+      mutate(SCHOOL = recode(school,
+                             "Andrew and Erna Viterbi School of Engineering" = "Viterbi School of Engineering",
+                             "Annenberg School for Communication and Journalism" = "Annenberg School for Communication & Journalism",
+                             "Barbara J. and Roger W. Rossier School of Education" = "Rossier School of Education",
+                             "Bovard College" = "Bovard College",
+                             "Dana and David Dornsife College of Letters, Arts and Sciences" = "Dornsife College of Letters, Arts & Sciences",
+                             "Elaine and Kenneth Leventhal School of Accounting" = "Leventhal School of Accounting",
+                             "Glorya Kaufman School of Dance" = "Kaufman School of Dance",
+                             "Gordon S. Marshall School of Business" = "Marshall School of Business",
+                             "Gould School of Law" = "Gould School of Law",
+                             "Hebrew Union College" = "Hebrew Union College",
+                             "Independent Health Professions" = "Independent Health Professions",
+                             "Jimmy Iovine and Andre Young Academy" = "Iovine & Young Academy",
+                             "Keck School of Medicine" = "Keck School of Medicine",
+                             "Leonard Davis School of Gerontology" = "Davis School of Gerontology",
+                             "Ostrow School of Dentistry" = "Ostrow School of Dentistry",
+                             "Registrar's Office and Graduate School" = "Registrar's Office & Graduate School",
+                             "Roski School of Art and Design" = "Roski School of Art & Design",
+                             "School of Architecture" = "School of Architecture",
+                             "School of Cinematic Arts" = "School of Cinematic Arts",
+                             "School of Dramatic Arts" = "School of Dramatic Arts",
+                             "School of Pharmacy" = "School of Pharmacy",
+                             "Sol Price School of Public Policy" = "Price School of Public Policy",
+                             "Suzanne Dworak-Peck School of Social Work" = "Dworak-Peck School of Social Work",
+                             "Thornton School of Music" = "Thornton School of Music")) %>%
+      arrange(SCHOOL)
+    plot_data %>%
+      ggplot(aes(x = SCHOOL, y = n, fill = sustainability_classification)) +
+      geom_bar(position = "fill", stat = "identity") +
+      # facet_wrap(~ group, scales = "free", nrow = length(unique(plot_data$group))) +
+      scale_fill_manual(values=plot_colors) +
+      scale_y_continuous(labels = scales::percent) +
+      labs(
+        fill="Sustainability Classification",
+        x = "School",
+        y = "Percent") +
+      theme(text = element_text(size = 18, face="bold"),
+            legend.position="bottom",
+            legend.justification = "left",
+            legend.title.align = 0,
+            legend.direction = "horizontal",
+            legend.title = element_text(vjust = .5, hjust = .3),
+            axis.text = element_text(face = "plain", color = 'black')) +
+      guides(fill = guide_legend(nrow = 2, byrow = TRUE)) + # two rows
+      coord_flip() +
+      scale_x_discrete(labels = scales::label_wrap(50))
+
+  })
+  output$school_barchart_plotly <- renderPlotly({
     width <- session$clientData$output_school_barchart_width
     left <- 290
     if (width < 290+100) {
@@ -1909,7 +1990,8 @@ server <- function(input, output, session) {
     plot_colors <- c(
       "Sustainability-Focused" = "#990000",
       "SDG-Related" = "#FFC72C",
-      "Not Related" = "#767676"
+      "Not Related" = "#767676",
+      "Sustainability-Inclusive" = "#ff00ff"
     )
     plot_data <- df %>%
       group_by(school, sustainability_classification) %>%
@@ -1972,6 +2054,7 @@ server <- function(input, output, session) {
                    name = "Not Related", hoverinfo="skip"
                    ) %>%
       add_trace(x = ~`SDG-Related`, marker = list(color = "#FFC72C"), name = "SDG-Related", hoverinfo="skip") %>%
+      add_trace(x = ~`Sustainability-Inclusive`, marker = list(color = "#ff00ff"), name = "Sustainability-Inclusive", hoverinfo="skip") %>%
       add_trace(x = ~`Sustainability-Focused`, marker = list(color = "#990000"), name = "Sustainability-Focused", hoverinfo="none") %>%
       layout(xaxis = list(title = "",
                           showgrid = FALSE,

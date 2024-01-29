@@ -11,7 +11,7 @@ usc_courses = read.csv("usc_courses_updated_with_school_updated.csv")
 # replace certain phrases with new phrases
 apply_context_dependency <- function(tt) {
   tt <- tolower(tt)
-  corrections <- read.csv("Data/context_dependencies_09_20_23.csv")
+  corrections <- read.csv("context_dependencies_01_19_24.csv")
   corrections$before <- tolower(corrections$before)
   corrections$after <- tolower(corrections$after)
   tt <- stri_replace_all_regex(tt,
@@ -25,6 +25,9 @@ apply_context_dependency <- function(tt) {
 remove_punctuation <- function(tt) {
   gsub("[^[:alnum:][:space:]']", " ", tt)
 }
+
+# fix typo
+usc_courses$course_desc <- gsub("parient", "patient", usc_courses$course_desc)
 
 usc_courses$clean_course_desc <- 
   apply_context_dependency(remove_punctuation(usc_courses$course_desc))
