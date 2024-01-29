@@ -686,7 +686,7 @@ ui <- dashboardPage(
             h3(
               "Based on the number of sustainability focused courses offered by each department"
             ),
-            plotOutput("department_wordcloud")
+            plotOutput("department_wordcloud", height = "auto")
           )),
           # column(6,
           #        h2("Department Sustainability Classification Table"),
@@ -1773,7 +1773,7 @@ server <- function(input, output, session) {
     )
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, width = "100%", height = "auto")
+    list(src = filename, width="100%", height = "auto")
   }, deleteFile = TRUE)
   
   # title above the chart
@@ -1968,9 +1968,15 @@ server <- function(input, output, session) {
   output$school_barchart_plotly <- renderPlotly({
     width <- session$clientData$output_school_barchart_width
     left <- 290
-    if (width < 290+100) {
-      left <- width - 170
+    print(left)
+    print(width)
+    print(is.null(width))
+    if (!is.null(width)) {
+      if (width < 290+100) {
+        left <- width - 170
+      }
     }
+    print("after")
     print(left)
     print(width)
     height <- session$clientData$output_school_barchart_height
