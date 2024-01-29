@@ -192,17 +192,17 @@ ui <- dashboardPage(
         fluidPage(
           h1("About"),
           h3(
-            "Welcome to the USC Sustainability Course Finder\u2014a 
-            collaborative project from the staff, faculty, and students of the 
-            University of Southern California and Carnegie Mellon University. 
-            This tool allows users to identify USC courses which relate to the 
-            17 United Nations Sustainable Development Goals (SDGs). With this 
-            information, students can focus their studies in particular 
-            sustainability goals, and faculty can identify ways to incorporate 
+            "Welcome to the USC Sustainability Course Finder\u2014a
+            collaborative project from the staff, faculty, and students of the
+            University of Southern California and Carnegie Mellon University.
+            This tool allows users to identify USC courses which relate to the
+            17 United Nations Sustainable Development Goals (SDGs). With this
+            information, students can focus their studies in particular
+            sustainability goals, and faculty can identify ways to incorporate
             sustainability into their classes."
           ),
           h3(
-            "This dashboard is a work in progress and will be improved through 
+            "This dashboard is a work in progress and will be improved through
             feedback and collaboration with faculty (",
             a(
               "access the feedback form here",
@@ -226,9 +226,9 @@ ui <- dashboardPage(
                      6,
                      h3(
                        strong("Assignment: Earth"),
-                       "is USC’s Sustainability Framework for a greener campus 
-                       and planet. It articulates our commitment to addressing 
-                       the impacts of climate change and creating a more just, 
+                       "is USC’s Sustainability Framework for a greener campus
+                       and planet. It articulates our commitment to addressing
+                       the impacts of climate change and creating a more just,
                        equitable, and sustainable future. It’s a big assignment. ",
                        strong("We’re all in!")
                      )
@@ -239,21 +239,21 @@ ui <- dashboardPage(
           
           h1("Mapping the 17 SDGs"),
           h3(
-            "The SDGs were adopted by all United Nations Member States in 2015, 
-            providing a shared blueprint for peace and prosperity for people 
-            and the planet, now and into the future. The SDGs are an urgent 
+            "The SDGs were adopted by all United Nations Member States in 2015,
+            providing a shared blueprint for peace and prosperity for people
+            and the planet, now and into the future. The SDGs are an urgent
             call for action by all countries\u2014developed and developing\u2014
-            in a global partnership. They recognize that ending poverty and other 
-            deprivations must go hand-in-hand with strategies that improve 
-            health and education, reduce inequality, and spur economic growth\u2014 
-            all while tackling climate change and working to preserve our oceans 
+            in a global partnership. They recognize that ending poverty and other
+            deprivations must go hand-in-hand with strategies that improve
+            health and education, reduce inequality, and spur economic growth\u2014
+            all while tackling climate change and working to preserve our oceans
             and forests."
           ),
           h3(
-            "Below displays a wordcloud for the keywords for each SDG. The 
-            keywords were edited by USC’s Office of Sustainability staff and 
-            interns as well as the USC Presidential Working Group. These 
-            keywords evolved from lists suggested by Elsevier and Carnegie 
+            "Below displays a wordcloud for the keywords for each SDG. The
+            keywords were edited by USC’s Office of Sustainability staff and
+            interns as well as the USC Presidential Working Group. These
+            keywords evolved from lists suggested by Elsevier and Carnegie
             Mellon University."
           ),
           
@@ -290,27 +290,27 @@ ui <- dashboardPage(
           h2(strong("FAQ")),
           h3(
             strong("How do I use this dashboard?"),
-            "You can choose your search function in the main menu in the 
-            upper-left corner of this dashboard. Here you can either find 
-            courses by the 17 different SDGs (Find Courses by SDGs) or see 
-            which SDGs map to a selected course (Find SDGs by Courses). To see 
-            how many courses at USC are sustainability-focused or SDG-related, 
-            please click on the bottom menu option \"All Sustainability-Related 
+            "You can choose your search function in the main menu in the
+            upper-left corner of this dashboard. Here you can either find
+            courses by the 17 different SDGs (Find Courses by SDGs) or see
+            which SDGs map to a selected course (Find SDGs by Courses). To see
+            how many courses at USC are sustainability-focused or SDG-related,
+            please click on the bottom menu option \"All Sustainability-Related
             Courses\"."
           ),
           
           h3(
             strong("How was this dashboard created?"),
-            "This dashboard was created with R Shiny, based on source code in R 
-            through a collaboration of USC’s Office of Sustainability (Source 
-            Code Developers: PSIP Interns\u2014Brian Tinsley and Alison Chen, with 
-            USC's Sustainablity Data Analyst\u2014Dr. Julie Hopper) with 
-            Carnegie Mellon University (Source Code Developers: Director of 
-            Sustainability Initiatives\u2014Alex Hinicker and Undergraduate 
-            Alumni\u2014Peter Wu). Following the initial development of this 
-            dashboard, USC staff in the Office of Sustainability and faculty in 
-            the Presidential Working Group (PWG) on Sustainability in Education 
-            reviewed the dashboard and keywords. All of the datasets and source 
+            "This dashboard was created with R Shiny, based on source code in R
+            through a collaboration of USC’s Office of Sustainability (Source
+            Code Developers: PSIP Interns\u2014Brian Tinsley and Alison Chen, with
+            USC's Sustainablity Data Analyst\u2014Dr. Julie Hopper) with
+            Carnegie Mellon University (Source Code Developers: Director of
+            Sustainability Initiatives\u2014Alex Hinicker and Undergraduate
+            Alumni\u2014Peter Wu). Following the initial development of this
+            dashboard, USC staff in the Office of Sustainability and faculty in
+            the Presidential Working Group (PWG) on Sustainability in Education
+            reviewed the dashboard and keywords. All of the datasets and source
             code used in this dashboard are open-source and can be found through",
             a("our Github page.",
               href = "https://github.com/USC-Office-of-Sustainability/USC-SDGmap",
@@ -318,14 +318,14 @@ ui <- dashboardPage(
           ),
           h3(
             strong("What are the UN’s 17 Sustainability Development Goals (SDGs)?"),
-            "The 2030 Agenda for Sustainable Development was adopted in 2015 by 
-            all UN member states and provides a ‘blueprint for peace and 
-            prosperity for people and the planet, now and into the future’. At 
-            the center of this are the 17 Sustainable Development Goals (SDGs). 
-            These goals acknowledge that ending poverty and other deprivations 
-            must accompany strategies that reduce inequality,  improve 
-            education and health, and spur economic growth\u2014all while 
-            working to preserve our natural ecosystems and tackling climate 
+            "The 2030 Agenda for Sustainable Development was adopted in 2015 by
+            all UN member states and provides a ‘blueprint for peace and
+            prosperity for people and the planet, now and into the future’. At
+            the center of this are the 17 Sustainable Development Goals (SDGs).
+            These goals acknowledge that ending poverty and other deprivations
+            must accompany strategies that reduce inequality,  improve
+            education and health, and spur economic growth\u2014all while
+            working to preserve our natural ecosystems and tackling climate
             change. To explore the 17 SDGs, please visit ",
             a("their website.",
               href = "https://sdgs.un.org/goals#icons",
@@ -334,16 +334,16 @@ ui <- dashboardPage(
           
           h3(
             strong("Which USC courses are included in this dashboard?"),
-            "All USC courses except for \"Directed Research,\" Master's 
-            Thesis,\" and \"Doctoral Dissertation\" courses. Although some 
-            courses do not map to the SDGs, they are still included in data 
+            "All USC courses except for \"Directed Research,\" Master's
+            Thesis,\" and \"Doctoral Dissertation\" courses. Although some
+            courses do not map to the SDGs, they are still included in data
             analysis. "
           ),
           
           h3(
             strong("How often is this dashboard updated?"),
-            "Data is updated at least once a semester after registration is 
-            complete for the following semester, and more frequently upon 
+            "Data is updated at least once a semester after registration is
+            complete for the following semester, and more frequently upon
             feedback."
           ),
           
@@ -356,23 +356,23 @@ ui <- dashboardPage(
             strong(
               "I’m a faculty member, how can I use or provide feedback on this dashboard?"
             ),
-            "It is our hope that this dashboard will be a useful tool for 
-            faculty who are looking for ways to incorporate sustainability into 
-            their courses by identifying potential connections between course 
-            topics and the UN SDGs. The dashboard is a work in progress and 
-            faculty feedback is critical in refining its accuracy and utility. 
+            "It is our hope that this dashboard will be a useful tool for
+            faculty who are looking for ways to incorporate sustainability into
+            their courses by identifying potential connections between course
+            topics and the UN SDGs. The dashboard is a work in progress and
+            faculty feedback is critical in refining its accuracy and utility.
             If you have feedback or suggestions, please fill out",
-            a("this form", href = feedback_form_link, target = "_blank"), 
+            a("this form", href = feedback_form_link, target = "_blank"),
             "or email us at oosdata@usc.edu."
           ),
           
           h3(
             strong(
-              "I’d like to integrate sustainability into my courses. 
+              "I’d like to integrate sustainability into my courses.
               Where can I get help with this?"
             ),
-            "If you’re interested in integrating sustainability into an 
-            existing course, contact the Office of Sustainability’s 
+            "If you’re interested in integrating sustainability into an
+            existing course, contact the Office of Sustainability’s
             Experiential Learning Manager, Dr. Chelsea Graham at cmgraham@usc.edu."
           ),
           
@@ -393,8 +393,8 @@ ui <- dashboardPage(
         fluidPage(
           h1("Map Your Courses"),
           h3(
-            "Select your courses below and see how your curriculum relates to 
-            the 17 SDGs. Some courses do not map to the SDGs via our keywords 
+            "Select your courses below and see how your curriculum relates to
+            the 17 SDGs. Some courses do not map to the SDGs via our keywords
             so those courses' mapping will be blank."
           ),
           uiOutput("disclaimer2"),
@@ -420,11 +420,10 @@ ui <- dashboardPage(
           h3("SDG Mapping Data for:"),
           h4(textOutput("personal_classes")),
           br(),
-          fluidRow(align="center",
-            column(
-              6,
-              plotOutput(outputId = "users_wordcloud", height = "auto")
-            ),
+          fluidRow(
+            align = "center",
+            column(6,
+                   plotOutput(outputId = "users_wordcloud", height = "auto")),
             column(
               6,
               h2(strong("All SDG Keywords")),
@@ -432,7 +431,7 @@ ui <- dashboardPage(
               uiOutput("keyword_freq_axis_title2"),
             )
           ),
-          fluidRow(align="center",
+          fluidRow(align = "center",
                    column(
                      6,
                      
@@ -443,8 +442,7 @@ ui <- dashboardPage(
                    column(
                      6,
                      img(src = "un_17sdgs.png", width = "100%")
-                   )
-          ),
+                   )),
           h2(strong("Your Courses")),
           fluidRow(bootstrapPage(column(
             12, DT::dataTableOutput("user_table")
@@ -461,9 +459,9 @@ ui <- dashboardPage(
           h1("Find SDGs by Courses"),
           h4(""),
           h3(
-            "Select a USC course ID below to view the SDG mapping for that 
-            particular course. If you cannot find a course you are looking 
-            for, then it did not map to any of the SDGs via our keyword list. 
+            "Select a USC course ID below to view the SDG mapping for that
+            particular course. If you cannot find a course you are looking
+            for, then it did not map to any of the SDGs via our keyword list.
             To check out the USC Schedule of Classes, click ",
             a("here.", href = "https://classes.usc.edu/", target = "_blank")
           ),
@@ -482,31 +480,41 @@ ui <- dashboardPage(
           h3(textOutput("semesters_offered")),
           
           h5(
-            "*special topics courses (course levels 499 and 599) often change, 
+            "*special topics courses (course levels 499 and 599) often change,
             but the course data comes from the current semester for all courses."
           ),
           
           br(),
           h3(strong("Course Title and Description:")),
           h3(textOutput("course_desc")),
-          fluidRow(align="center",bootstrapPage(
-            column(6, 
-                   plotOutput(outputId = "classes_to_wordcloud", height = "auto"), br()),
-            column(6, 
-                   h2(strong(textOutput("classes_to_keywords_title"))), 
-                   plotOutput(outputId = "classes_to_keywords"), 
-                   # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
-                   uiOutput("keyword_freq_axis_title3")
-                   )
-                   
+          fluidRow(align = "center", bootstrapPage(
+            column(
+              6,
+              plotOutput(outputId = "classes_to_wordcloud", height = "auto"),
+              br()
+            ),
+            column(
+              6,
+              h2(strong(
+                textOutput("classes_to_keywords_title")
+              )),
+              plotOutput(outputId = "classes_to_keywords"),
+              # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
+              uiOutput("keyword_freq_axis_title3")
+            )
+            
             # column(6, plotOutput(outputId = "test_run"), br())
           )),
-          fluidRow(align="center",bootstrapPage(
-            column(6, 
-                   h2(strong(textOutput("classes_to_goals_title"))),
-                   plotOutput(outputId = "classes_to_goals"), 
-                   # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px"),
-                   uiOutput("keyword_freq_axis_title4")),
+          fluidRow(align = "center", bootstrapPage(
+            column(
+              6,
+              h2(strong(textOutput(
+                "classes_to_goals_title"
+              ))),
+              plotOutput(outputId = "classes_to_goals"),
+              # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px"),
+              uiOutput("keyword_freq_axis_title4")
+            ),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h2(strong("Keyword Table")),
@@ -523,8 +531,8 @@ ui <- dashboardPage(
         fluidPage(
           h1("Find Courses by SDGs"),
           h3(
-            "Select USC departments and course levels, and then choose an SDG 
-            to display the 10 most relevant USC courses that map to that goal. 
+            "Select USC departments and course levels, and then choose an SDG
+            to display the 10 most relevant USC courses that map to that goal.
             To check out the USC Schedule of Classes, click ",
             a("here.", href = "https://classes.usc.edu/", target = "_blank")
           ),
@@ -564,8 +572,12 @@ ui <- dashboardPage(
           br(),
           h2(strong(textOutput("top_classes"))),
           fluidRow(align = "center", bootstrapPage(
-            column(6, plotOutput(outputId = "goals_to_classes"), 
-                   uiOutput("keyword_freq_axis_title5"),br()),
+            column(
+              6,
+              plotOutput(outputId = "goals_to_classes"),
+              uiOutput("keyword_freq_axis_title5"),
+              br()
+            ),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h2(strong(textOutput("sdg_name"))),
@@ -583,9 +595,9 @@ ui <- dashboardPage(
           
           # h3("All students at USC are required to fulfill their general education (GE) requirements."),
           h3(
-            "Select a GE category below to see the sustainability related 
-            courses which satisfy that requirement. GE courses that did not 
-            map to the SDGs via our keywords are not shown, but you can find 
+            "Select a GE category below to see the sustainability related
+            courses which satisfy that requirement. GE courses that did not
+            map to the SDGs via our keywords are not shown, but you can find
             them in the course catalogue ",
             a("here.", href = "https://dornsife.usc.edu/2015ge/2015ge-requirements/")
           ),
@@ -610,8 +622,12 @@ ui <- dashboardPage(
           br(),
           h3(strong(textOutput("top_ge_chart"))),
           fluidRow(align = "center", bootstrapPage(
-            column(6, plotOutput(outputId = "ge_bar"), 
-                   uiOutput("keyword_freq_axis_title6"),br()),
+            column(
+              6,
+              plotOutput(outputId = "ge_bar"),
+              uiOutput("keyword_freq_axis_title6"),
+              br()
+            ),
             column(6, img(src = "un_17sdgs.png", width = "100%"))
           )),
           h1(strong(textOutput("ge_name"))),
@@ -628,23 +644,23 @@ ui <- dashboardPage(
         fluidPage(
           h1("All Sustainability-Related Courses"),
           h3(
-            "The below charts show the percent and number of USC courses that 
-            are ‘sustainability-focused’, ‘SDG-related’ or ‘not related’ to 
-            sustainability, as well as the number and percent of departments 
-            that offer sustainability-focused or SDG-related courses. Note 
+            "The below charts show the percent and number of USC courses that
+            are ‘sustainability-focused’, ‘SDG-related’ or ‘not related’ to
+            sustainability, as well as the number and percent of departments
+            that offer sustainability-focused or SDG-related courses. Note
             that there are often many sections for an offered course."
           ),
           h3(
-            "For a course to count as SDG-related, it has to include at least 
-            one SDG keyword. For a course to count as sustainability-focused, 
-            it has to map to a combination of SDGs that includes at least one 
-            environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one 
+            "For a course to count as SDG-related, it has to include at least
+            one SDG keyword. For a course to count as sustainability-focused,
+            it has to map to a combination of SDGs that includes at least one
+            environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one
             economic or social focused SDG (1, 2, 3, 4, 5, 8, 9, 10, 11, 16, 17)."
           ),
           uiOutput("disclaimer6"),
           h4(
-            "Academic year determined by the year of the Spring semester and 
-            includes Summer and Fall terms of the previous calendar year. 
+            "Academic year determined by the year of the Spring semester and
+            includes Summer and Fall terms of the previous calendar year.
             (AY23 = SU22, F22, SP23)"
           ),
           selectInput(
@@ -664,11 +680,11 @@ ui <- dashboardPage(
           # style = rep(("font-size:24px; line-height: 1.5;"),2)))),
           
           fluidRow(
-            column(
-              6,
-              h2(strong("Sustainability Related Courses Offered"), align = "center"),
-              plotlyOutput("pie4")
-            ),
+            column(6,
+                   h2(
+                     strong("Sustainability Related Courses Offered"), align = "center"
+                   ),
+                   plotlyOutput("pie4")),
             column(
               6,
               h2(strong("Sustainability Focused Courses"), align = "center"),
@@ -699,9 +715,13 @@ ui <- dashboardPage(
           #             selected = sort(unique(sustainability_related$school))[1]),
           # h2(textOutput("department_barchart_title")),
           # fluidRow(column(12, plotOutput("department_barchart")))
-          h2(strong(textOutput("school_barchart_title"))),
+          h2(strong(textOutput(
+            "school_barchart_title"
+          ))),
           # fluidRow(bootstrapPage(column(12, plotOutput("school_barchart", width = "100%")))),
-          fluidRow(bootstrapPage(column(12, plotlyOutput("school_barchart_plotly", width = "100%"))))
+          fluidRow(bootstrapPage(column(
+            12, plotlyOutput("school_barchart_plotly", width = "100%")
+          )))
         ),
         # end fluid page
       ),
@@ -711,8 +731,8 @@ ui <- dashboardPage(
         fluidPage(
           h1("Download Data"),
           h3(
-            "Select schools, departments, SDGs, and sustainability 
-            classifications to view and download USC course data displayed in 
+            "Select schools, departments, SDGs, and sustainability
+            classifications to view and download USC course data displayed in
             the table at the bottom."
           ),
           uiOutput("disclaimer7"),
@@ -860,8 +880,8 @@ server <- function(input, output, session) {
     output$keyword_freq_axis_title4 <-
     output$keyword_freq_axis_title5 <-
     output$keyword_freq_axis_title6 <- renderUI({
-    h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
-  })
+      h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
+    })
   
   
   #####
@@ -889,7 +909,9 @@ server <- function(input, output, session) {
     )
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, width = "100%", height = "auto")
+    list(src = filename,
+         width = "100%",
+         height = "auto")
   }, deleteFile = TRUE)
   
   #sdg keywords table
@@ -957,7 +979,9 @@ server <- function(input, output, session) {
     }
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, width = "100%", height = "auto")
+    list(src = filename,
+         width = "100%",
+         height = "auto")
   }, deleteFile = TRUE)
   
   # output for users classes
@@ -982,15 +1006,15 @@ server <- function(input, output, session) {
       )) +
       geom_col() +
       coord_flip() +
-      labs(
-        # title = paste0("All SDG Keywords"),
+      labs(# title = paste0("All SDG Keywords"),
         fill = "SDG",
         x = "SDG Keyword",
-        y = "Total SDG Keyword Frequency"
+        y = "Total SDG Keyword Frequency") +
+      theme(
+        text = element_text(size = 20, face = "bold"),
+        axis.text = element_text(color = "black"),
+        axis.title.x = element_blank()
       ) +
-      theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black"),
-            axis.title.x = element_blank()) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(
         breaks = function(x)
@@ -1004,7 +1028,7 @@ server <- function(input, output, session) {
     }
     
     p
-      
+    
     
   })
   
@@ -1028,15 +1052,15 @@ server <- function(input, output, session) {
       )) +
       geom_col() +
       coord_flip() +
-      labs(
-        # title = paste0("All SDGs Mapped to your Courses"),
+      labs(# title = paste0("All SDGs Mapped to your Courses"),
         fill = "SDG",
         x = "SDG",
-        y = "Total SDG Keyword Frequency"
+        y = "Total SDG Keyword Frequency") +
+      theme(
+        text = element_text(size = 20, face = "bold"),
+        axis.text = element_text(color = "black"),
+        axis.title.x = element_blank()
       ) +
-      theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black"),
-            axis.title.x = element_blank()) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(
         breaks = function(x)
@@ -1067,8 +1091,7 @@ server <- function(input, output, session) {
              "Course Description") %>%
       distinct()
   }, rownames = FALSE,
-  options = list(scrollX = TRUE)
-  )
+  options = list(scrollX = TRUE))
   
   
   
@@ -1137,15 +1160,15 @@ server <- function(input, output, session) {
       )) +
       geom_col() +
       coord_flip() +
-      labs(
-        # title = paste0("All SDGs Mapped to ", input$usc_classes),
+      labs(# title = paste0("All SDGs Mapped to ", input$usc_classes),
         fill = "SDG",
-        x = "SDG",
-        # y = "Total SDG Keyword Frequency"
+        # y = "Total SDG Keyword Frequency",
+        x = "SDG") +
+      theme(
+        text = element_text(size = 18, face = "bold"),
+        axis.text = element_text(color = "black"),
+        axis.title.x = element_blank()
       ) +
-      theme(text = element_text(size = 18, face = "bold"),
-            axis.text = element_text(color = "black"),
-            axis.title.x=element_blank()) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(
         breaks = function(x)
@@ -1182,17 +1205,17 @@ server <- function(input, output, session) {
       )) +
       geom_col() +
       coord_flip() +
-      labs(
-        # title = paste0(input$usc_classes, " SDG Keywords"),
+      labs(# title = paste0(input$usc_classes, " SDG Keywords"),
         fill = "SDG",
         x = "SDG Keyword",
-        y = "Total SDG Keyword Frequency"
-      ) +
+        y = "Total SDG Keyword Frequency") +
       scale_fill_manual(values = plot_colors) +
       scale_x_discrete(labels = label_wrap(20)) +
-      theme(text = element_text(size = 18, face = "bold"),
-            axis.text = element_text(color = "black"),
-            axis.title.x = element_blank()) +
+      theme(
+        text = element_text(size = 18, face = "bold"),
+        axis.text = element_text(color = "black"),
+        axis.title.x = element_blank()
+      ) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
@@ -1233,7 +1256,9 @@ server <- function(input, output, session) {
     }
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, width = "100%", height = "auto")
+    list(src = filename,
+         width = "100%",
+         height = "auto")
   }, deleteFile = TRUE)
   
   
@@ -1336,9 +1361,11 @@ server <- function(input, output, session) {
       ) +
       labs(x = "Course",
            y = "Total SDG Keyword Frequency") +
-      theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black"),
-            axis.title.x = element_blank()) +
+      theme(
+        text = element_text(size = 20, face = "bold"),
+        axis.text = element_text(color = "black"),
+        axis.title.x = element_blank()
+      ) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
@@ -1380,7 +1407,10 @@ server <- function(input, output, session) {
       )
   },
   rownames = FALSE,
-  options = list(language = list(zeroRecords = "No Courses"),scrollX = TRUE))
+  options = list(
+    language = list(zeroRecords = "No Courses"),
+    scrollX = TRUE
+  ))
   # options = list(
   #     autoWidth = TRUE)
   #     # columnDefs = list(list(width = '200px', targets = "_all"))
@@ -1460,9 +1490,11 @@ server <- function(input, output, session) {
       labs(fill = "SDG",
            x = "Course",
            y = "Total SDG Keyword Frequency") +
-      theme(text = element_text(size = 20, face = "bold"),
-            axis.text = element_text(color = "black"),
-            axis.title.x = element_blank()) +
+      theme(
+        text = element_text(size = 20, face = "bold"),
+        axis.text = element_text(color = "black"),
+        axis.title.x = element_blank()
+      ) +
       scale_y_continuous(
         breaks = function(x)
           unique(floor(pretty(seq(
@@ -1508,7 +1540,10 @@ server <- function(input, output, session) {
       distinct()
   },
   rownames = FALSE,
-  options = list(language = list(zeroRecords = "No Courses"), scrollX = TRUE))
+  options = list(
+    language = list(zeroRecords = "No Courses"),
+    scrollX = TRUE
+  ))
   
   
   
@@ -1565,19 +1600,37 @@ server <- function(input, output, session) {
     #   mutate(ypos = cumsum(prop) - 0.5 * prop)
     df <- df %>%
       arrange(one_sustainability_classification)
-    fig <- plot_ly(df, labels = ~one_sustainability_classification, values = ~n, type = 'pie',
-                   textposition = 'inside',
-                   textinfo = 'label+percent',
-                   insidetextfont = list(color = '#FFFFFF'),
-                   hoverinfo = 'text',
-                   text = ~paste(n, ' departments'),
-                   marker = list(colors = c("#767676", "#FFC72C",  "#990000", "#ff00ff"),
-                                 line = list(color = '#FFFFFF', width = 1)),
-                   #The 'pull' attribute can also be used to create space between the sectors
-                   showlegend = FALSE)
-    fig <- fig %>% layout(margin = list(l = 20, r = 20),
-                          xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-                          yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+    fig <-
+      plot_ly(
+        df,
+        labels = ~ one_sustainability_classification,
+        values = ~ n,
+        type = 'pie',
+        textposition = 'inside',
+        textinfo = 'label+percent',
+        insidetextfont = list(color = '#FFFFFF'),
+        hoverinfo = 'text',
+        text = ~ paste(n, ' departments'),
+        marker = list(
+          colors = c("#767676", "#FFC72C",  "#990000", "#ff00ff"),
+          line = list(color = '#FFFFFF', width = 1)
+        ),
+        #The 'pull' attribute can also be used to create space between the sectors
+        showlegend = FALSE
+      )
+    fig <- fig %>% layout(
+      margin = list(l = 20, r = 20),
+      xaxis = list(
+        showgrid = FALSE,
+        zeroline = FALSE,
+        showticklabels = FALSE
+      ),
+      yaxis = list(
+        showgrid = FALSE,
+        zeroline = FALSE,
+        showticklabels = FALSE
+      )
+    )
     fig
     
     # p <- pie(
@@ -1626,20 +1679,37 @@ server <- function(input, output, session) {
     #                        100, 1)
     # )
     df <- df %>% arrange(sustainability_classification)
-    fig <- plot_ly(df, labels = ~sustainability_classification, values = ~by_section, type = 'pie',
-                   textposition = 'inside',
-                   textinfo = 'label+percent',
-                   insidetextfont = list(color = '#FFFFFF'),
-                   hoverinfo = 'text',
-                   text = ~paste(by_section, ' course sections'),
-                   marker = list(colors = c("#767676", "#FFC72C", "#990000", "#ff00ff"),
-                                 line = list(color = '#FFFFFF', width = 1)),
-                   #The 'pull' attribute can also be used to create space between the sectors
-                   showlegend = FALSE)
+    fig <-
+      plot_ly(
+        df,
+        labels = ~ sustainability_classification,
+        values = ~ by_section,
+        type = 'pie',
+        textposition = 'inside',
+        textinfo = 'label+percent',
+        insidetextfont = list(color = '#FFFFFF'),
+        hoverinfo = 'text',
+        text = ~ paste(by_section, ' course sections'),
+        marker = list(
+          colors = c("#767676", "#FFC72C", "#990000", "#ff00ff"),
+          line = list(color = '#FFFFFF', width = 1)
+        ),
+        #The 'pull' attribute can also be used to create space between the sectors
+        showlegend = FALSE
+      )
     fig <- fig %>% layout(
       margin = list(l = 20, r = 20),
-      xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-      yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+      xaxis = list(
+        showgrid = FALSE,
+        zeroline = FALSE,
+        showticklabels = FALSE
+      ),
+      yaxis = list(
+        showgrid = FALSE,
+        zeroline = FALSE,
+        showticklabels = FALSE
+      )
+    )
     fig
     
     # compute positions of labels
@@ -1773,7 +1843,9 @@ server <- function(input, output, session) {
     )
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
-    list(src = filename, width="100%", height = "auto")
+    list(src = filename,
+         width = "100%",
+         height = "auto")
   }, deleteFile = TRUE)
   
   # title above the chart
@@ -1842,7 +1914,7 @@ server <- function(input, output, session) {
     plot_data %>%
       ggplot(aes(x = department, y = n, fill = sustainability_classification)) +
       geom_bar(position = "fill", stat = "identity") +
-      facet_wrap( ~ group, scales = "free", nrow = length(unique(plot_data$group))) +
+      facet_wrap(~ group, scales = "free", nrow = length(unique(plot_data$group))) +
       scale_fill_manual(values = plot_colors) +
       scale_y_continuous(labels = scales::percent) +
       labs(
@@ -1886,25 +1958,31 @@ server <- function(input, output, session) {
   #   }
   # }
   output$school_barchart <- renderPlot({
-    df <- sustainability_related %>% 
+    df <- sustainability_related %>%
       filter(year == input$usc_year)
-    if (input$course_level_pie == "Undergraduate"){
-      df <- df %>% 
-        filter(course_level == "undergrad upper division" | course_level == "undergrad lower division")
+    if (input$course_level_pie == "Undergraduate") {
+      df <- df %>%
+        filter(
+          course_level == "undergrad upper division" |
+            course_level == "undergrad lower division"
+        )
     }
-    else if(input$course_level_pie == "Graduate") {
-      df <- df %>% 
+    else if (input$course_level_pie == "Graduate") {
+      df <- df %>%
         filter(course_level == "graduate")
     }
-    plot_colors <- c("Sustainability-Focused" = "#990000", 
-                     "SDG-Related" = "#FFC72C", 
-                     "Not Related" = "#767676",
-                     "Sustainability-Inclusive" = "#ff00ff")
+    plot_colors <- c(
+      "Sustainability-Focused" = "#990000",
+      "SDG-Related" = "#FFC72C",
+      "Not Related" = "#767676",
+      "Sustainability-Inclusive" = "#ff00ff"
+    )
     plot_data <- df %>%
       group_by(school, sustainability_classification) %>%
-      count() 
+      count()
     
-    middle_school <- unique(plot_data$school)[length(unique(plot_data$school))/2]
+    middle_school <-
+      unique(plot_data$school)[length(unique(plot_data$school)) / 2]
     
     plot_data$group <- 1
     if (length(unique(plot_data$school)) > 20) {
@@ -1916,54 +1994,67 @@ server <- function(input, output, session) {
         ungroup()
     }
     plot_data <- plot_data %>%
-      mutate(sustainability_classification = factor(sustainability_classification, levels = c("Sustainability-Focused", "Sustainability-Inclusive", "SDG-Related", "Not Related"))) %>%
-      mutate(SCHOOL = recode(school,
-                             "Andrew and Erna Viterbi School of Engineering" = "Viterbi School of Engineering",
-                             "Annenberg School for Communication and Journalism" = "Annenberg School for Communication & Journalism",
-                             "Barbara J. and Roger W. Rossier School of Education" = "Rossier School of Education",
-                             "Bovard College" = "Bovard College",
-                             "Dana and David Dornsife College of Letters, Arts and Sciences" = "Dornsife College of Letters, Arts & Sciences",
-                             "Elaine and Kenneth Leventhal School of Accounting" = "Leventhal School of Accounting",
-                             "Glorya Kaufman School of Dance" = "Kaufman School of Dance",
-                             "Gordon S. Marshall School of Business" = "Marshall School of Business",
-                             "Gould School of Law" = "Gould School of Law",
-                             "Hebrew Union College" = "Hebrew Union College",
-                             "Independent Health Professions" = "Independent Health Professions",
-                             "Jimmy Iovine and Andre Young Academy" = "Iovine & Young Academy",
-                             "Keck School of Medicine" = "Keck School of Medicine",
-                             "Leonard Davis School of Gerontology" = "Davis School of Gerontology",
-                             "Ostrow School of Dentistry" = "Ostrow School of Dentistry",
-                             "Registrar's Office and Graduate School" = "Registrar's Office & Graduate School",
-                             "Roski School of Art and Design" = "Roski School of Art & Design",
-                             "School of Architecture" = "School of Architecture",
-                             "School of Cinematic Arts" = "School of Cinematic Arts",
-                             "School of Dramatic Arts" = "School of Dramatic Arts",
-                             "School of Pharmacy" = "School of Pharmacy",
-                             "Sol Price School of Public Policy" = "Price School of Public Policy",
-                             "Suzanne Dworak-Peck School of Social Work" = "Dworak-Peck School of Social Work",
-                             "Thornton School of Music" = "Thornton School of Music")) %>%
+      mutate(sustainability_classification = factor(
+        sustainability_classification,
+        levels = c(
+          "Sustainability-Focused",
+          "Sustainability-Inclusive",
+          "SDG-Related",
+          "Not Related"
+        )
+      )) %>%
+      mutate(
+        SCHOOL = recode(
+          school,
+          "Andrew and Erna Viterbi School of Engineering" = "Viterbi School of Engineering",
+          "Annenberg School for Communication and Journalism" = "Annenberg School for Communication & Journalism",
+          "Barbara J. and Roger W. Rossier School of Education" = "Rossier School of Education",
+          "Bovard College" = "Bovard College",
+          "Dana and David Dornsife College of Letters, Arts and Sciences" = "Dornsife College of Letters, Arts & Sciences",
+          "Elaine and Kenneth Leventhal School of Accounting" = "Leventhal School of Accounting",
+          "Glorya Kaufman School of Dance" = "Kaufman School of Dance",
+          "Gordon S. Marshall School of Business" = "Marshall School of Business",
+          "Gould School of Law" = "Gould School of Law",
+          "Hebrew Union College" = "Hebrew Union College",
+          "Independent Health Professions" = "Independent Health Professions",
+          "Jimmy Iovine and Andre Young Academy" = "Iovine & Young Academy",
+          "Keck School of Medicine" = "Keck School of Medicine",
+          "Leonard Davis School of Gerontology" = "Davis School of Gerontology",
+          "Ostrow School of Dentistry" = "Ostrow School of Dentistry",
+          "Registrar's Office and Graduate School" = "Registrar's Office & Graduate School",
+          "Roski School of Art and Design" = "Roski School of Art & Design",
+          "School of Architecture" = "School of Architecture",
+          "School of Cinematic Arts" = "School of Cinematic Arts",
+          "School of Dramatic Arts" = "School of Dramatic Arts",
+          "School of Pharmacy" = "School of Pharmacy",
+          "Sol Price School of Public Policy" = "Price School of Public Policy",
+          "Suzanne Dworak-Peck School of Social Work" = "Dworak-Peck School of Social Work",
+          "Thornton School of Music" = "Thornton School of Music"
+        )
+      ) %>%
       arrange(SCHOOL)
     plot_data %>%
       ggplot(aes(x = SCHOOL, y = n, fill = sustainability_classification)) +
       geom_bar(position = "fill", stat = "identity") +
       # facet_wrap(~ group, scales = "free", nrow = length(unique(plot_data$group))) +
-      scale_fill_manual(values=plot_colors) +
+      scale_fill_manual(values = plot_colors) +
       scale_y_continuous(labels = scales::percent) +
-      labs(
-        fill="Sustainability Classification",
-        x = "School",
-        y = "Percent") +
-      theme(text = element_text(size = 18, face="bold"),
-            legend.position="bottom",
-            legend.justification = "left",
-            legend.title.align = 0,
-            legend.direction = "horizontal",
-            legend.title = element_text(vjust = .5, hjust = .3),
-            axis.text = element_text(face = "plain", color = 'black')) +
+      labs(fill = "Sustainability Classification",
+           x = "School",
+           y = "Percent") +
+      theme(
+        text = element_text(size = 18, face = "bold"),
+        legend.position = "bottom",
+        legend.justification = "left",
+        legend.title.align = 0,
+        legend.direction = "horizontal",
+        legend.title = element_text(vjust = .5, hjust = .3),
+        axis.text = element_text(face = "plain", color = 'black')
+      ) +
       guides(fill = guide_legend(nrow = 2, byrow = TRUE)) + # two rows
       coord_flip() +
       scale_x_discrete(labels = scales::label_wrap(50))
-
+    
   })
   output$school_barchart_plotly <- renderPlotly({
     width <- session$clientData$output_school_barchart_width
@@ -1972,7 +2063,7 @@ server <- function(input, output, session) {
     print(width)
     print(is.null(width))
     if (!is.null(width)) {
-      if (width < 290+100) {
+      if (width < 290 + 100) {
         left <- width - 170
       }
     }
@@ -2005,7 +2096,7 @@ server <- function(input, output, session) {
     
     # middle_school <-
     #   unique(plot_data$school)[length(unique(plot_data$school)) / 2]
-    # 
+    #
     # plot_data$group <- 1
     # if (length(unique(plot_data$school)) > 20) {
     #   plot_data <- plot_data %>%
@@ -2050,62 +2141,111 @@ server <- function(input, output, session) {
     plot_data %>%
       group_by(school) %>%
       mutate(total = sum(n)) %>%
-      mutate(perc = round(n/total*100, 1)) -> plot_data
-    wide_data <- tidyr::pivot_wider(plot_data, id_cols = school, names_from = sustainability_classification, values_from = perc, values_fill = 0)
+      mutate(perc = round(n / total * 100, 1)) -> plot_data
+    wide_data <-
+      tidyr::pivot_wider(
+        plot_data,
+        id_cols = school,
+        names_from = sustainability_classification,
+        values_from = perc,
+        values_fill = 0
+      )
     # wide_data$school <- stringr::str_wrap(wide_data$school, 30)
     
-    fig <- plot_ly(wide_data, x = ~`Not Related`, y = ~school,  
-                   type = "bar", orientation = "h",
-                   marker = list(color = "#767676"),
-                   name = "Not Related", hoverinfo="skip"
-                   ) %>%
-      add_trace(x = ~`SDG-Related`, marker = list(color = "#FFC72C"), name = "SDG-Related", hoverinfo="skip") %>%
-      add_trace(x = ~`Sustainability-Inclusive`, marker = list(color = "#ff00ff"), name = "Sustainability-Inclusive", hoverinfo="skip") %>%
-      add_trace(x = ~`Sustainability-Focused`, marker = list(color = "#990000"), name = "Sustainability-Focused", hoverinfo="none") %>%
-      layout(xaxis = list(title = "",
-                          showgrid = FALSE,
-                          showline = FALSE,
-                          showticklabels = TRUE,
-                          zeroline = FALSE,
-                          domain = c(0.01, 1),
-                          range = list(0, 100),
-                          fixedrange = TRUE,
-                          automargin=TRUE, ticksuffix = "%"
-                          ),
-             yaxis = list(title = "",
-                          showgrid = FALSE,
-                          showline = FALSE,
-                          showticklabels = FALSE,
-                          zeroline = FALSE),
-             barmode = 'stack',
-             paper_bgcolor = 'rgb(248, 248, 255)', plot_bgcolor = 'rgb(248, 248, 255)',
-             margin = list(l = left, r = 10, t = 25, b = 10),
-             showlegend = TRUE,
-             legend = list(orientation = 'h',
-                           title=list(text='<b>Sustainability\n Classification</b>'),
-                           xanchor = "center",
-                           x = 0.25,
-                           y = -0.1)
-             # dragmode="pan"
-             # height = height
-             ) 
+    fig <- plot_ly(
+      wide_data,
+      x = ~ `Not Related`,
+      y = ~ school,
+      type = "bar",
+      orientation = "h",
+      marker = list(color = "#767676"),
+      name = "Not Related",
+      hoverinfo = "skip"
+    ) %>%
+      add_trace(
+        x = ~ `SDG-Related`,
+        marker = list(color = "#FFC72C"),
+        name = "SDG-Related",
+        hoverinfo = "skip"
+      ) %>%
+      add_trace(
+        x = ~ `Sustainability-Inclusive`,
+        marker = list(color = "#ff00ff"),
+        name = "Sustainability-Inclusive",
+        hoverinfo = "skip"
+      ) %>%
+      add_trace(
+        x = ~ `Sustainability-Focused`,
+        marker = list(color = "#990000"),
+        name = "Sustainability-Focused",
+        hoverinfo = "none"
+      ) %>%
+      layout(
+        xaxis = list(
+          title = "",
+          showgrid = FALSE,
+          showline = FALSE,
+          showticklabels = TRUE,
+          zeroline = FALSE,
+          domain = c(0.01, 1),
+          range = list(0, 100),
+          fixedrange = TRUE,
+          automargin = TRUE,
+          ticksuffix = "%"
+        ),
+        yaxis = list(
+          title = "",
+          showgrid = FALSE,
+          showline = FALSE,
+          showticklabels = FALSE,
+          zeroline = FALSE
+        ),
+        barmode = 'stack',
+        paper_bgcolor = 'rgb(248, 248, 255)',
+        plot_bgcolor = 'rgb(248, 248, 255)',
+        margin = list(
+          l = left,
+          r = 10,
+          t = 25,
+          b = 10
+        ),
+        showlegend = TRUE,
+        legend = list(
+          orientation = 'h',
+          title = list(text = '<b>Sustainability\n Classification</b>'),
+          xanchor = "center",
+          x = 0.25,
+          y = -0.1
+        )
+        # dragmode="pan"
+        # height = height
+      )
     # label y axis
-    fig <- fig %>% 
-      add_annotations(xref = 'paper', yref = 'y', x = 0, y = wide_data$school,
-                                   xanchor = 'right',
-                                   text = wide_data$school,
-                                   font = list(family = 'Arial', size = 12,
-                                               color = 'rgb(67, 67, 67)'),
-                                   showarrow = FALSE, align = 'right')
+    fig <- fig %>%
+      add_annotations(
+        xref = 'paper',
+        yref = 'y',
+        x = 0,
+        y = wide_data$school,
+        xanchor = 'right',
+        text = wide_data$school,
+        font = list(
+          family = 'Arial',
+          size = 12,
+          color = 'rgb(67, 67, 67)'
+        ),
+        showarrow = FALSE,
+        align = 'right'
+      )
     
     fig
     
-    # fig <- plot_ly(plot_data, x = ~school, y = ~perc, 
-    #                type = 'bar', 
+    # fig <- plot_ly(plot_data, x = ~school, y = ~perc,
+    #                type = 'bar',
     #                # orientation = 'h',
     #                color = ~sustainability_classification,
     #                text=~n,
-    #                hoverinfo = 'text') %>% 
+    #                hoverinfo = 'text') %>%
     #   layout(yaxis = list(title = 'Percentage (%)'), barmode = "stack")
     # fig
     # plot_data %>%
