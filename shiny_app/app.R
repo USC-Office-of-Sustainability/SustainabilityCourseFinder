@@ -1523,17 +1523,19 @@ server <- function(input, output, session) {
         labels = ~ one_sustainability_classification,
         values = ~ n,
         type = 'pie',
+        sort = FALSE,
+        direction = "clockwise",
         textposition = 'inside',
-        textinfo = 'label+percent',
+        textinfo = 'percent',
         insidetextfont = list(color = '#FFFFFF'),
         hoverinfo = 'text',
-        text = ~ paste(n, ' departments'),
+        text = ~ paste(n, one_sustainability_classification, 'Departments'),
         marker = list(
-          colors = c("#767676", "#FFC72C",  "#990000", "#ff00ff"),
+          colors = c("#767676", "#FFC72C",  "#673499", "#990000"),
           line = list(color = '#FFFFFF', width = 1)
         ),
         #The 'pull' attribute can also be used to create space between the sectors
-        showlegend = FALSE
+        showlegend = TRUE
       )
     fig <- fig %>% layout(
       margin = list(l = 20, r = 20),
@@ -1546,6 +1548,9 @@ server <- function(input, output, session) {
         showgrid = FALSE,
         zeroline = FALSE,
         showticklabels = FALSE
+      ),
+      legend = list(
+        orientation = 'h'
       )
     )
     fig
@@ -1602,17 +1607,19 @@ server <- function(input, output, session) {
         labels = ~ sustainability_classification,
         values = ~ by_section,
         type = 'pie',
+        sort = FALSE,
+        direction = "clockwise",
         textposition = 'inside',
-        textinfo = 'label+percent',
+        textinfo = 'percent', # label+percent
         insidetextfont = list(color = '#FFFFFF'),
         hoverinfo = 'text',
-        text = ~ paste(by_section, ' course sections'),
+        text = ~ paste(by_section, sustainability_classification, 'Course Sections'),
         marker = list(
-          colors = c("#767676", "#FFC72C", "#990000", "#ff00ff"),
+          colors = c("#767676", "#FFC72C", "#673499", "#990000"),
           line = list(color = '#FFFFFF', width = 1)
         ),
         #The 'pull' attribute can also be used to create space between the sectors
-        showlegend = FALSE
+        showlegend = TRUE
       )
     fig <- fig %>% layout(
       margin = list(l = 20, r = 20),
@@ -1625,6 +1632,9 @@ server <- function(input, output, session) {
         showgrid = FALSE,
         zeroline = FALSE,
         showticklabels = FALSE
+      ),
+      legend = list(
+        orientation = 'h'
       )
     )
     fig
@@ -1889,10 +1899,10 @@ server <- function(input, output, session) {
         filter(course_level == "graduate")
     }
     plot_colors <- c(
-      "Sustainability-Focused" = "#990000",
+      "Sustainability-Focused" = "#673499",
       "SDG-Related" = "#FFC72C",
       "Not Related" = "#767676",
-      "Sustainability-Inclusive" = "#ff00ff"
+      "Sustainability-Inclusive" = "#990000"
     )
     plot_data <- df %>%
       group_by(school, sustainability_classification) %>%
@@ -1983,6 +1993,8 @@ server <- function(input, output, session) {
       if (width < 290 + 100) {
         left <- width - 170
       }
+    } else {
+      width = 260
     }
     print("after")
     print(left)
@@ -2002,10 +2014,10 @@ server <- function(input, output, session) {
         filter(course_level == "graduate")
     }
     plot_colors <- c(
-      "Sustainability-Focused" = "#990000",
+      "Sustainability-Focused" = "#673499",
       "SDG-Related" = "#FFC72C",
       "Not Related" = "#767676",
-      "Sustainability-Inclusive" = "#ff00ff"
+      "Sustainability-Inclusive" = "#990000"
     )
     plot_data <- df %>%
       group_by(school, sustainability_classification) %>%
@@ -2087,13 +2099,13 @@ server <- function(input, output, session) {
       ) %>%
       add_trace(
         x = ~ `Sustainability-Inclusive`,
-        marker = list(color = "#ff00ff"),
+        marker = list(color = "#990000"),
         name = "Sustainability-Inclusive",
         hoverinfo = "skip"
       ) %>%
       add_trace(
         x = ~ `Sustainability-Focused`,
-        marker = list(color = "#990000"),
+        marker = list(color = "#673499"),
         name = "Sustainability-Focused",
         hoverinfo = "none"
       ) %>%
