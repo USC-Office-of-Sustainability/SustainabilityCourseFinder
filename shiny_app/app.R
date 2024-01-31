@@ -218,8 +218,7 @@ ui <- dashboardPage(
                      6,
                      h3(
                        strong("Assignment: Earth"),
-                       "is USC’s Sustainability Framework for a greener campus and planet. It articulates our commitment to addressing the impacts of climate change and creating a more just, equitable, and sustainable future. It’s a big assignment. ",
-                       strong("We’re all in!")
+                       "is USC’s sustainability framework for creating a healthy, just and thriving campus and world.",  strong("It’s a big assignment. We’re all in!")
                      )
                    )),
           
@@ -573,10 +572,10 @@ ui <- dashboardPage(
         fluidPage(
           h1("All Sustainability-Related Courses"),
           h3(
-            "The below charts show the percent and number of USC courses that are ‘sustainability-focused’, ‘SDG-related’ or ‘not related’ to sustainability, as well as the number and percent of departments that offer sustainability-focused or SDG-related courses. Note that there are often many sections for an offered course."
+            "The below charts show the percent and number of USC courses that are ‘Sustainability-Focused’, 'Sustainability-Inclusive', ‘SDG-related’ or ‘Not Related’ (to sustainability), as well as the number and percent of departments that offer these sustainability-related courses. Note that there are often many sections for an offered course."
           ),
           h3(
-            "For a course to count as SDG-related, it has to include at least one SDG keyword. For a course to count as sustainability-focused, it has to map to a combination of SDGs that includes at least one environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one economic or social focused SDG (1, 2, 3, 4, 5, 8, 9, 10, 11, 16, 17)."
+            "For a course to count as sustainability-focused (the most stringent classification), it has to map to a combination of SDGs that includes at least one environmental focused SDG (6, 7, 12, 13, 14, 15) and at least one economic or social focused SDG (1, 2, 3, 4, 5, 8, 9, 10, 11, 16, 17). For a course to count as 'Sustainability-Inclusive, it has to map to at least two keywords across at least two SDGs (goals). For a course to count as SDG-related, it has to include at least one SDG keyword. All other courses are classified as 'Not-Related'."
           ),
           uiOutput("disclaimer6"),
           h4(
@@ -690,6 +689,16 @@ ui <- dashboardPage(
             ),
             selected = sort(
               unique(sustainability_related$sustainability_classification)
+            )
+          ),
+          checkboxGroupInput(
+            "year_dl",
+            "Choose Academic Year",
+            choices = sort(
+              unique(sustainability_related$year)
+            ),
+            selected = sort(
+              unique(sustainability_related$year)
             )
           ),
           downloadButton("download_data_table", "Download"),
@@ -1003,16 +1012,12 @@ server <- function(input, output, session) {
         "Sustainability Classification" = sustainability_classification
       ) %>%
       select("Course ID",
-             "All Goals",
+             "All Goals", 
              "Sustainability Classification",
              "Course Description") %>%
       distinct()
   }, rownames = FALSE,
   options = list(scrollX = TRUE))
-  
-  
-  
-  
   
   
   #####
@@ -2254,7 +2259,8 @@ server <- function(input, output, session) {
         filter(
           school %in% input$school_dl,
           department %in% input$dept_dl,
-          sustainability_classification %in% input$sustainability_dl,
+          sustainability_classification %in% input$sustainability_dl,  
+          year %in% input$year_dl,
           goal %in% as.numeric(input$sdg_dl)
         ) %>%
         ungroup() %>%
@@ -2266,6 +2272,7 @@ server <- function(input, output, session) {
           course_desc,
           semester,
           all_goals,
+          all_keywords,
           sustainability_classification,
           N.Sections,
           all_semesters,
@@ -2280,6 +2287,7 @@ server <- function(input, output, session) {
           "Course Description" = course_desc,
           Semester = semester,
           "All Goals" = all_goals,
+          "SDG Keywords" = all_keywords,
           "Sustainability Classification" = sustainability_classification,
           "Number of Sections" = N.Sections,
           "All Semesters" = all_semesters,
@@ -2296,6 +2304,7 @@ server <- function(input, output, session) {
         school %in% input$school_dl,
         department %in% input$dept_dl,
         sustainability_classification %in% input$sustainability_dl,
+        year %in% input$year_dl,
         goal %in% as.numeric(input$sdg_dl)
       ) %>%
       ungroup() %>%
@@ -2308,6 +2317,7 @@ server <- function(input, output, session) {
         course_desc,
         semester,
         all_goals,
+        all_keywords,
         sustainability_classification,
         N.Sections,
         all_semesters,
@@ -2322,6 +2332,7 @@ server <- function(input, output, session) {
         "Course Description" = course_desc,
         Semester = semester,
         "All Goals" = all_goals,
+        "SDG Keywords" = all_keywords,
         "Sustainability Classification" = sustainability_classification,
         "Number of Sections" = N.Sections,
         "All Semesters" = all_semesters,
