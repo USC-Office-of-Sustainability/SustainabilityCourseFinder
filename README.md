@@ -1,30 +1,20 @@
 USC Sustainability Course Finder
 ================
 
-- <a href="#introduction" id="toc-introduction">Introduction</a>
-- <a href="#installation" id="toc-installation">Installation</a>
-- <a href="#keyword-list" id="toc-keyword-list">Keyword List</a>
-- <a href="#cleaning-course-data" id="toc-cleaning-course-data">Cleaning
-  Course Data</a>
-- <a href="#cleaning-course-descriptions"
-  id="toc-cleaning-course-descriptions">Cleaning Course Descriptions</a>
-- <a href="#mapping-course-descriptions-with-text2sdg"
-  id="toc-mapping-course-descriptions-with-text2sdg">Mapping Course
-  Descriptions with text2sdg</a>
-- <a href="#sustainability-related-courses"
-  id="toc-sustainability-related-courses">Sustainability Related
-  Courses</a>
-- <a href="#general-education" id="toc-general-education">General
-  Education</a>
-- <a href="#creating-shiny-app" id="toc-creating-shiny-app">Creating Shiny
-  App</a>
-- <a href="#creating-a-github-repo"
-  id="toc-creating-a-github-repo">Creating a Github Repo</a>
-- <a href="#creating-a-readme" id="toc-creating-a-readme">Creating a
-  Readme</a>
-- <a href="#updating-data-and-shiny-app"
-  id="toc-updating-data-and-shiny-app">Updating Data and Shiny App</a>
-- <a href="#questions" id="toc-questions">Questions?</a>
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Keyword List](#keyword-list)
+- [Cleaning Course Data](#cleaning-course-data)
+- [Cleaning Course Descriptions](#cleaning-course-descriptions)
+- [Mapping Course Descriptions with
+  text2sdg](#mapping-course-descriptions-with-text2sdg)
+- [Sustainability Related Courses](#sustainability-related-courses)
+- [General Education](#general-education)
+- [Creating Shiny App](#creating-shiny-app)
+- [Creating a Github Repo](#creating-a-github-repo)
+- [Creating a Readme](#creating-a-readme)
+- [Updating Data and Shiny App](#updating-data-and-shiny-app)
+- [Questions?](#questions)
 
 <!-- # USC Sustainability Course Finder -->
 
@@ -93,10 +83,7 @@ lists publicly available SDG keywords that have been published online.
 
 Some of the lists have weights associated with every keyword based on
 their relevance to the SDG, while some do not. Also note that some of
-these keyword lists do not have keywords for SDG 17. In prior versions
-of this project, we attempted to mimic CMU’s method and use various
-Python and R packages to assign weights but in our current version we do
-not use weights.
+these keyword lists do not have keywords for SDG 17.
 
 | Source                                                                                                                                                        | Dataset                | CSV                                                                                                                                                |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -124,9 +111,10 @@ keywords, are shown below.
 |    1 | affluence           | \#E5243B |
 |    1 | affluent            | \#E5243B |
 
-The USC keyword list has been modified many times with the help of the
-Presidential Working Group (PWG) and is continually being improved to
-increase accuracy.
+The USC keyword list has been modified many times from feedback provided
+by students, staff and faculty, including those in the USC Presidential
+Working Group (PWG) Education Committee. This list is continually being
+improved to increase accuracy.
 
 In the 02_R directory’s file `01_cleaning_keywords.R`, notice that the
 keywords are converted to lowercase, punctuation is removed, and that
@@ -140,7 +128,7 @@ symbol causes problems when using
 library(dplyr)
 
 # cleaning keywords
-usc_pwg_keywords <- read.csv("USC_PWG-E_2023Keywords_06_30_23.csv")
+usc_pwg_keywords <- read.csv("USC_PWG-E_Keywords_1_24_24.csv")
 
 # check color
 usc_pwg_keywords %>% select(goal, color) %>% distinct()
@@ -414,19 +402,25 @@ master_course_sdg_data <- merge(hits_color, usc_courses, by.x = "document", by.y
 
 ## Sustainability Related Courses
 
-After mapping, we analyze the goals a course is mapped to and labels it
-as `SDG-Related`, `Sustainability-Focused`, or `Not Related`.
+After mapping, we analyze the goals that a course maps to and classify
+it as `Sustainability-Focused`,`Sustainability-Inclusive`,
+`SDG-Related`, or `Not Related`.
 
-We have tried multiple methods to determine sustainability
-classifications, and our current method is as follows:
+Our current method for classifying courses is as follows:
 
-- If a course description does not map to any SDGs, it is “Not
-  Related”.  
-- If a course description maps to at least 1 SDG, we categorize it as
-  “SDG-Related”.  
-- If a course maps to one or more social/economic SDG (1-5, 8-11,
-  16, 17) AND one or more environmental SDG (6, 7, 12, 13, 14, 15), then
-  it is labeled “Sustainability Focused”.
+- Sustainability-Focused: a course (title/description) maps to one or
+  more social/economic SDG (1-5, 8-11, 16, 17) AND one or more
+  environmental SDG (6, 7, 12, 13, 14, 15)
+
+- Sustainability-Inclusive: a course (title/description) maps to at
+  least 2 keywords across 2 SDGs (within either a social/economic OR an
+  environmental category)
+
+- SDG-Related: a course (title/description) maps to at 1 keyword for at
+  least 1 SDG
+
+- Not-Related: a course (title/description) does not map to any SDG
+  keywords
 
 Code for achieving these labels are found in the R script
 `02_using_text2sdg.R`.

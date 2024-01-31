@@ -57,7 +57,7 @@ The [tidyverse package](https://github.com/tidyverse/tidyverse){target="_blank"}
 
 The way in which we map course descriptions to the SDGs is through keyword lists containing words relevant to each SDG. The table below lists publicly available SDG keywords that have been published online.  
 
-Some of the lists have weights associated with every keyword based on their relevance to the SDG, while some do not. Also note that some of these keyword lists do not have keywords for SDG 17. In prior versions of this project, we attempted to mimic CMU's method and use various Python and R packages to assign weights but in our current version we do not use weights.
+Some of the lists have weights associated with every keyword based on their relevance to the SDG, while some do not. Also note that some of these keyword lists do not have keywords for SDG 17. 
 
 Source | Dataset | CSV
 ---|---|---
@@ -79,7 +79,7 @@ kw = keywords %>% select(goal, keyword, color) %>% (head)
 kable(kw)
 ```
 
-The USC keyword list has been modified many times with the help of the Presidential Working Group (PWG) and is continually being improved to increase accuracy. 
+The USC keyword list has been modified many times from feedback provided by students, staff and faculty, including those in the USC Presidential Working Group (PWG) Education Committee. This list is continually being improved to increase accuracy. 
 
 In the 02_R directory's file `01_cleaning_keywords.R`, notice that the keywords are converted to lowercase, punctuation is removed, and that duplicates are removed. Removing duplicates is very important for ensuring some courses do not get mapped twice. Furthermore, the pound symbol causes problems when using [text2sdg](https://www.text2sdg.io/){target='_blank'}'s `detect_any()` so keywords with `#` are removed.
 
@@ -99,7 +99,7 @@ The main problem was that one course's description was sometimes spread over two
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
 library(readxl)
-d <- read_excel("01_cleaning_raw_data/00_raw_usc_data/SOC_files/20232_SOC.xlsx", col_types = "text")
+d <- read_excel("01_cleaning_raw_data/00_raw_usc_data/SOC_files/20232_SOC_updated_10_23_23.xlsx", col_types = "text")
 # remove . in colname
 names(d) <- gsub("\\.", "", names(d))
 # rename total_enr
@@ -275,13 +275,17 @@ master_course_sdg_data <- merge(hits_color, usc_courses, by.x = "document", by.y
 
 ## Sustainability Related Courses
 
-After mapping, we analyze the goals a course is mapped to and labels it as `SDG-Related`, `Sustainability-Focused`, or `Not Related`.
+After mapping, we analyze the goals that a course maps to and classify it as `Sustainability-Focused`,`Sustainability-Inclusive`, `SDG-Related`, or `Not Related`.
 
-We have tried multiple methods to determine sustainability classifications, and our current method is as follows:  
+Our current method for classifying courses is as follows:  
 
-* If a course description does not map to any SDGs, it is "Not Related".  
-* If a course description maps to at least 1 SDG, we categorize it as "SDG-Related".  
-* If a course maps to one or more social/economic SDG (1-5, 8-11, 16, 17) AND one or more environmental SDG (6, 7, 12, 13, 14, 15), then it is labeled "Sustainability Focused".  
+* Sustainability-Focused: a course (title/description) maps to one or more social/economic SDG (1-5, 8-11, 16, 17) AND one or more environmental SDG (6, 7, 12, 13, 14, 15)
+
+* Sustainability-Inclusive: a course (title/description) maps to at least 2 keywords across 2 SDGs (within either a social/economic OR an environmental category)
+
+* SDG-Related: a course (title/description) maps to at 1 keyword for at least 1 SDG
+
+* Not-Related: a course (title/description) does not map to any SDG keywords
 
 Code for achieving these labels are found in the R script `02_using_text2sdg.R`.  
 
@@ -307,8 +311,6 @@ To make a github repository, follow [this tutorial](https://docs.github.com/en/g
 ## Creating a Readme
 
 To create a Readme, familiarize yourself with [Markdown](https://www.markdownguide.org/getting-started){target='_blank'} and [R Markdown](https://rmarkdown.rstudio.com/articles_intro.html){target='_blank'}. In `.Rmd` (R Markdown) files, you can specify the `output` of the document to be a `github_document` and when you "knit" the `.Rmd` file, it will automatically generate a `.md` (markdown) file in the directory which will be displayed on your github page! You can find more information [here](https://rmarkdown.rstudio.com/github_document_format.html). You can also refer to the README.Rmd file to see how Brian Tinsley created this original readme file.
-
-
 
 ## Updating Data and Shiny App
 
