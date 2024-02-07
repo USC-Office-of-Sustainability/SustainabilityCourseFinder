@@ -126,11 +126,11 @@ lapply(ff, function(x) {names(read.csv(x))})
 # clean 1 csv file
 readOneFileCSV <- function(filename) {
   d <- read.csv(filename)
+  # remove . in colname
+  names(d) <- gsub("\\.", "", names(d))
   # remove weird symbols
   d$COURSE_DESCRIPTION <- gsub("\\?\xc7\xd6", "'", d$COURSE_DESCRIPTION, useBytes = TRUE)
   d$COURSE_DESCRIPTION <- gsub("\\?\xc7\xf4", "-", d$COURSE_DESCRIPTION, useBytes = TRUE)
-  # remove . in colname
-  names(d) <- gsub("\\.", "", names(d))
   # remove whitespace
   d <- d %>%
     mutate_if(is.character, str_trim)
