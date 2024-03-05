@@ -2269,7 +2269,8 @@ server <- function(input, output, session) {
           department,
           courseID,
           course_title,
-          course_desc,
+          section_name,
+          course_description,
           semester,
           all_goals,
           all_keywords,
@@ -2284,7 +2285,8 @@ server <- function(input, output, session) {
           Department = department,
           "Course ID" = courseID,
           "Course Title" = course_title,
-          "Course Description" = course_desc,
+          "Section Name" = section_name,
+          "Course Description" = course_description,
           Semester = semester,
           "All Goals" = all_goals,
           "SDG Keywords" = all_keywords,
@@ -2314,7 +2316,8 @@ server <- function(input, output, session) {
         department,
         courseID,
         course_title,
-        course_desc,
+        section_name,
+        course_description,
         semester,
         all_goals,
         all_keywords,
@@ -2329,7 +2332,8 @@ server <- function(input, output, session) {
         Department = department,
         "Course ID" = courseID,
         "Course Title" = course_title,
-        "Course Description" = course_desc,
+        "Section Name" = section_name,
+        "Course Description" = course_description,
         Semester = semester,
         "All Goals" = all_goals,
         "SDG Keywords" = all_keywords,
@@ -2346,7 +2350,7 @@ server <- function(input, output, session) {
     autoWidth = TRUE,
     columnDefs = list(
       list(width = '100px', targets = c(0, 3)),
-      list(width = '250px', targets = c(4))
+      list(width = '250px', targets = c(5))
     ),
     language = list(zeroRecords = "No Courses")
   ))
