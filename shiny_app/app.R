@@ -1030,9 +1030,13 @@ server <- function(input, output, session) {
   output$course_desc <- renderText({
     recent_courses %>%
       filter(courseID == input$usc_classes) %>% #changed from section
-      select(course_desc) %>%
-      distinct() %>%
-      pull()
+      select(course_title, section_name, course_description) %>%
+      distinct() -> course_info
+    if (course_info$section_name == "") {
+      paste(course_info$course_title, "-", course_info$course_description)
+    } else {
+      paste0(course_info$course_title, " (", course_info$section_name, ") - ", course_info$course_description)
+    }
     
   })
   
