@@ -170,10 +170,10 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("About", tabName = "1"),
       menuItem("FAQ", tabName = "2"),
-      menuItem("Map Your Courses", tabName = "3"),
       menuItem("Find SDGs by Courses", tabName = "4"),
       menuItem("Find Courses by SDGs", tabName = "5"),
       menuItem("Search by GE Requirements", tabName = "6"),
+      menuItem("Map Your Courses", tabName = "3"),
       menuItem("All Sustainability-Related Courses", tabName = "7"),
       menuItem("Download Data", tabName = "downloaddata")
     )
