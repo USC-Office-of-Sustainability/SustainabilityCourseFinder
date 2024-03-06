@@ -29,6 +29,10 @@
         background-color: #fff;
 }
 
+.sidebar-menu {
+  white-space: normal;
+}
+
 #asgmtearth {
   display: flex;
   align-items: center;
