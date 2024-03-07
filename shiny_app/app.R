@@ -1399,7 +1399,7 @@ server <- function(input, output, session) {
     df <- ge_data %>%
       filter(full_name == input$ge_category) %>%
       filter(goal %in% input$ge_sdgs) %>%
-      group_by(courseID, course_title) %>%
+      group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       ungroup()
     top_10_courses <- df %>%
@@ -1480,20 +1480,24 @@ server <- function(input, output, session) {
     ge_data %>%
       filter(full_name == input$ge_category) %>%
       filter(goal %in% input$ge_sdgs) %>%
-      group_by(courseID, course_title) %>%
+      group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       arrange(desc(total_freq)) %>%
       ungroup() %>%
       rename(
         'Course ID' = courseID,
+        "Course Title" = course_title,
+        "Section Name" = section_name,
         Semester = semester,
         "All Goals" = all_goals,
         'Total SDG Keyword Frequency' = total_freq,
         "Sustainability Classification" = sustainability_classification,
-        "Course Description" = course_desc
+        "Course Description" = course_description
       ) %>%
       select(
         'Course ID',
+        'Course Title',
+        'Section Name',
         "Total SDG Keyword Frequency",
         "All Goals",
         "Sustainability Classification",
