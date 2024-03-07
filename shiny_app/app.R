@@ -1304,7 +1304,7 @@ server <- function(input, output, session) {
       )
     }
     df %>%
-      group_by(courseID) %>%
+      group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       ungroup() %>%
       select(courseID, total_freq) %>%
@@ -1343,7 +1343,7 @@ server <- function(input, output, session) {
         filter(course_level == tolower(input$course_level_input))
     }
     df %>%
-      group_by(courseID) %>%
+      group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       ungroup() %>%
       distinct(courseID, .keep_all = TRUE) %>%
@@ -1353,12 +1353,15 @@ server <- function(input, output, session) {
         "Sustainability Classification" = sustainability_classification,
         Semester = semester,
         "Course Title" = course_title,
+        "Section Name" = section_name,
         'Total SDG Keyword Frequency' = total_freq,
-        "Course Description" = course_desc,
+        "Course Description" = course_description,
         "Semesters Offered" = all_semesters
       ) %>%
       select(
         'Course ID',
+        'Course Title',
+        'Section Name',
         "Total SDG Keyword Frequency",
         "Sustainability Classification",
         "Course Description",
