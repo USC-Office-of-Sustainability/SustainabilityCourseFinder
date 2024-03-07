@@ -419,6 +419,11 @@ ui <- dashboardPage(
             # choices = unique(classes$courseID),
             options = list(maxOptions = 10000)
           ),
+          selectizeInput(
+            inputId = "usc_classes_section",
+            label = "Choose Specific Section (if applicable)",
+            choices = ""
+          ),
           h3(textOutput("semesters_offered")),
           
           h5(
@@ -777,6 +782,19 @@ server <- function(input, output, session) {
     selected = "ENST-150 - Environmental Issues in Society",
     server = TRUE
   )
+  observeEvent(
+    input$usc_classes,
+    {
+      updateSelectizeInput(
+        session,
+        'usc_classes_section',
+        choices = recent_courses %>% filter(all_goals != "") %>% mutate(id_title = paste(courseID, course_title, sep = " - ")) %>% filter(id_title == input$usc_classes) %>% select(section_name) %>% distinct() %>% pull(),
+        # selected = "", # make it default to the first option
+        server = TRUE
+        # how to disable this when there are no sections
+      )
+    })
+  
   # map classes in ascending order
   updateSelectizeInput(
     session,
@@ -1039,6 +1057,7 @@ server <- function(input, output, session) {
   output$course_desc <- renderText({
     recent_courses %>%
       filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>% #changed from section
+      filter(section_name == input$usc_classes_section) %>%
       select(course_title, section_name, course_description) %>%
       distinct() -> course_info
     if (course_info$section_name == "") {
@@ -1053,6 +1072,7 @@ server <- function(input, output, session) {
   output$semesters_offered <- renderText({
     sems <- recent_courses %>%
       filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(section_name == input$usc_classes_section) %>%
       select(all_semesters) %>%
       distinct() %>%
       pull()
@@ -1073,7 +1093,8 @@ server <- function(input, output, session) {
   # barplot for sdgs
   output$classes_to_goals <- renderPlot({
     df <- recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1])
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(section_name == input$usc_classes_section)
     plot_colors <- df %>%
       arrange(goal) %>%
       select(color) %>%
@@ -1122,7 +1143,8 @@ server <- function(input, output, session) {
   # keyword to sdg barplot
   output$classes_to_keywords <- renderPlot({
     df <- recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1])
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(section_name == input$usc_classes_section)
     plot_colors <- df %>%
       arrange(goal) %>%
       select(color) %>%
@@ -1169,6 +1191,7 @@ server <- function(input, output, session) {
   output$classes_to_wordcloud <- renderImage({
     df = recent_courses %>%
       filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(section_name == input$usc_classes_section) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, color, freq) %>%
       arrange(desc(freq)) %>%
@@ -1201,6 +1224,7 @@ server <- function(input, output, session) {
   output$classes_table = DT::renderDataTable({
     recent_courses %>%
       filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(section_name == input$usc_classes_section) %>%
       filter(!is.na(keyword)) %>%
       group_by(keyword) %>%
       summarize(SDGs = paste(sort(unique(goal)), collapse = ", ")) %>%
