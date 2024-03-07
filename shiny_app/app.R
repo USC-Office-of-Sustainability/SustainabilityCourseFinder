@@ -772,8 +772,9 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session,
     'usc_classes',
-    choices = recent_courses %>% filter(all_goals != "") %>% select(courseID) %>% distinct() %>% pull(),
-    selected = "ENST-150",
+    # choices = recent_courses %>% filter(all_goals != "") %>% select(courseID) %>% distinct() %>% pull(),
+    choices = recent_courses %>% filter(all_goals != "") %>% mutate(id_title = paste(courseID, course_title, sep = " - ")) %>% select(id_title) %>% distinct() %>% pull(),
+    selected = "ENST-150 - Environmental Issues in Society",
     server = TRUE
   )
   # map classes in ascending order
@@ -1037,7 +1038,7 @@ server <- function(input, output, session) {
   #this returns a dataframe with the descriptions of all the classes the user selected
   output$course_desc <- renderText({
     recent_courses %>%
-      filter(courseID == input$usc_classes) %>% #changed from section
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>% #changed from section
       select(course_title, section_name, course_description) %>%
       distinct() -> course_info
     if (course_info$section_name == "") {
@@ -1051,7 +1052,7 @@ server <- function(input, output, session) {
   # writes out the semesters offered
   output$semesters_offered <- renderText({
     sems <- recent_courses %>%
-      filter(courseID == input$usc_classes) %>%
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
       select(all_semesters) %>%
       distinct() %>%
       pull()
@@ -1072,7 +1073,7 @@ server <- function(input, output, session) {
   # barplot for sdgs
   output$classes_to_goals <- renderPlot({
     df <- recent_courses %>%
-      filter(courseID == input$usc_classes)
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1])
     plot_colors <- df %>%
       arrange(goal) %>%
       select(color) %>%
@@ -1114,14 +1115,14 @@ server <- function(input, output, session) {
   
   # title
   output$classes_to_goals_title <- renderText({
-    paste0("All SDGs Mapped to ", input$usc_classes)
+    paste0("All SDGs Mapped to ", strsplit(input$usc_classes, " - ")[[1]][1])
   })
   
   
   # keyword to sdg barplot
   output$classes_to_keywords <- renderPlot({
     df <- recent_courses %>%
-      filter(courseID == input$usc_classes)
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1])
     plot_colors <- df %>%
       arrange(goal) %>%
       select(color) %>%
@@ -1160,14 +1161,14 @@ server <- function(input, output, session) {
   
   # title
   output$classes_to_keywords_title <- renderText({
-    paste0(input$usc_classes, " SDG Keywords")
+    paste0(strsplit(input$usc_classes, " - ")[[1]][1], " SDG Keywords")
   })
   
   
   # class to wordcloud
   output$classes_to_wordcloud <- renderImage({
     df = recent_courses %>%
-      filter(courseID == input$usc_classes) %>%
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, color, freq) %>%
       arrange(desc(freq)) %>%
@@ -1199,7 +1200,7 @@ server <- function(input, output, session) {
   # data table at bottom
   output$classes_table = DT::renderDataTable({
     recent_courses %>%
-      filter(courseID == input$usc_classes) %>%
+      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
       filter(!is.na(keyword)) %>%
       group_by(keyword) %>%
       summarize(SDGs = paste(sort(unique(goal)), collapse = ", ")) %>%
