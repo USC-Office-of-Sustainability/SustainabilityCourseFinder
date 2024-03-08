@@ -23,6 +23,7 @@ library(ggrepel)
 library(shinyWidgets)
 # install.packages("scales")
 library(scales)
+library(shinyjs)
 
 
 keywords = read.csv("usc_keywords.csv")
@@ -400,7 +401,7 @@ ui <- dashboardPage(
       tabItem(
         tabName = "4",
         # tabPanel("All", fluidPage(
-        fluidPage(
+        fluidPage(useShinyjs(),
           h1("Find SDGs by Courses"),
           h4(""),
           h3(
@@ -785,10 +786,17 @@ server <- function(input, output, session) {
   observeEvent(
     input$usc_classes,
     {
+      section_choices <- recent_courses %>% filter(all_goals != "") %>% mutate(id_title = paste(courseID, course_title, sep = " - ")) %>% filter(id_title == input$usc_classes) %>% select(section_name) %>% distinct()
+      print(section_choices$section_name == "")
+      if (nrow(section_choices) == 1 & section_choices$section_name[1] == "") {
+        disable("usc_classes_section")
+      } else {
+        enable("usc_classes_section")
+      }
       updateSelectizeInput(
         session,
         'usc_classes_section',
-        choices = recent_courses %>% filter(all_goals != "") %>% mutate(id_title = paste(courseID, course_title, sep = " - ")) %>% filter(id_title == input$usc_classes) %>% select(section_name) %>% distinct() %>% pull(),
+        choices = section_choices %>% pull(),
         # selected = "", # make it default to the first option
         server = TRUE
         # how to disable this when there are no sections
@@ -1060,7 +1068,7 @@ server <- function(input, output, session) {
       filter(section_name == input$usc_classes_section) %>%
       select(course_title, section_name, course_description) %>%
       distinct() -> course_info
-    if (course_info$section_name == "") {
+    if (input$usc_classes_section == "") {
       paste(course_info$course_title, "-", course_info$course_description)
     } else {
       paste0(course_info$course_title, " (", course_info$section_name, ") - ", course_info$course_description)
