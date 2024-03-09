@@ -111,16 +111,43 @@ determine_classification2 <- function(x) {
     return("Sustainability-Focused")
   # } else if (length(strsplit(x['all_goals2'], ",")[[1]]) >= 1) { # SDG defined by 2 keywords
   #   return("Sustainability-Inclusive")
-  } else if (length(strsplit(x['all_keywords'], ",")[[1]]) >= 2) { # 2 keywords -> inclusive
-    return ("Sustainability-Inclusive")
-  # } else if (length(strsplit(x['all_keywords'], ",")[[1]]) >= 2 & length(separate_sdgs) >= 2) { # 2 keywords and 2 sdgs -> inclusive
+  # } else if (length(strsplit(x['all_keywords'], ",")[[1]]) >= 2) { # 2 keywords -> inclusive
   #   return ("Sustainability-Inclusive")
+  } else if (length(strsplit(x['all_keywords'], ",")[[1]]) >= 2 & length(separate_sdgs) >= 2) { # 2 keywords and 2 sdgs -> inclusive
+    return ("Sustainability-Inclusive")
+  } else if (length(separate_sdgs) >= 1) { # any sdg
+    return ("SDG-Related")
   } else {
     return("Not Related")
   }
 }
 # master_course_sdg_data$sustainability_classification <- sapply(master_course_sdg_data$all_goals, determine_classification)
 master_course_sdg_data$sustainability_classification <- apply(master_course_sdg_data, 1, determine_classification2)
+
+# update sustainability classification based on manual fixes
+# using courseID and course_title
+library(readxl)
+reviewed <- read_excel("USC_STARS_AC-1_AY21_AY22_AY23_Revised_1_29_24.xlsx")
+# reviewed$all_keywords <- sapply(reviewed$all_keywords, function(x) {
+#   paste(sort(strsplit(x, ",")[[1]]), collapse = ",")
+# })
+# only keep those that were changed
+reviewed$changed <- reviewed$Corrected_Sustainability_Classification != reviewed$Automated_Sustainability_Classification
+manually_fixed <- reviewed %>% 
+  filter(changed) %>%
+  select(courseID, course_title, Corrected_Sustainability_Classification) %>%
+  distinct()
+
+master_manual <- merge(master_course_sdg_data, manually_fixed, 
+                       by = c("courseID", "course_title"), all.x = TRUE)
+
+master_manual <- master_manual %>%
+  mutate(final_sustainability_classification = ifelse(is.na(Corrected_Sustainability_Classification), sustainability_classification, Corrected_Sustainability_Classification))
+
+master_course_sdg_data <- master_manual %>%
+  mutate(sustainability_classification = final_sustainability_classification) %>%
+  select(-Corrected_Sustainability_Classification, -final_sustainability_classification)
+
 # count the number of times the keyword appears in the text (clean course desc)
 master_course_sdg_data$freq <- str_count(master_course_sdg_data$text, master_course_sdg_data$keyword)
 # save for shiny app data
