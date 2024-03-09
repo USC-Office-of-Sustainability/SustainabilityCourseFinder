@@ -807,7 +807,8 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session,
     'user_classes',
-    choices = unique(sustainability_related$courseID) %>% sort(),
+    choices = sustainability_related %>% mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>% select(course_text) %>% distinct() %>% pull() %>% sort(),
+    # choices = unique(sustainability_related$courseID) %>% sort(),
     server = TRUE
   )
   
@@ -905,9 +906,10 @@ server <- function(input, output, session) {
       
       class_list <-
         sustainability_related %>% #changed this from master
-        filter(courseID %in% input$user_classes) %>% #changed from section
-        distinct(courseID, .keep_all = TRUE) %>%
-        select(courseID) %>%
+        mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+        filter(course_text %in% input$user_classes) %>% #changed from section
+        distinct(course_text, .keep_all = TRUE) %>%
+        select(course_text) %>%
         unique() %>%
         pull()
       return(paste(class_list, collapse = ", "))
@@ -916,29 +918,38 @@ server <- function(input, output, session) {
   
   # wordcloud for users classes
   output$users_wordcloud <- renderImage({
-    df = recent_courses %>%
-      filter(courseID %in% input$user_classes) %>%
-      filter(!is.na(keyword)) %>%
-      select(keyword, color, freq) %>%
-      arrange(desc(freq)) %>%
-      distinct(keyword, .keep_all = TRUE)
-    png("wordcloud.png")
-    if (nrow(df) == 0) {
-      ggplot()
+    if (length(input$user_classes) > 0) {
+      
+      df = recent_courses %>%
+        mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+        filter(course_text == input$user_classes) %>%
+        filter(!is.na(keyword)) %>%
+        select(keyword, color, freq) %>%
+        arrange(desc(freq)) %>%
+        distinct(keyword, .keep_all = TRUE)
+      png("wordcloud.png")
+      if (nrow(df) == 0) {
+        ggplot()
+      } else {
+        wordcloud(
+          words = df$keyword,
+          freq = df$freq,
+          min.freq = 1,
+          max.words = 50,
+          random.order = FALSE,
+          rot.per = 0,
+          scale = c(3, 1),
+          colors = df$color,
+          ordered.colors = TRUE
+        )
+      }
+      dev.off()
+      
     } else {
-      wordcloud(
-        words = df$keyword,
-        freq = df$freq,
-        min.freq = 1,
-        max.words = 50,
-        random.order = FALSE,
-        rot.per = 0,
-        scale = c(3, 1),
-        colors = df$color,
-        ordered.colors = TRUE
-      )
+      png("wordcloud.png")
+      ggplot()
+      dev.off()
     }
-    dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
     list(src = filename,
          width = "100%",
@@ -950,8 +961,12 @@ server <- function(input, output, session) {
     # validate(
     #   need(input$user_classes != "", label = "Course")
     # )
+    if (length(input$user_classes) == 0) {
+      return(ggplot())
+    }
     df <- recent_courses %>%
-      filter(courseID %in% input$user_classes) %>%
+      mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+      filter(course_text == input$user_classes) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, goal, color, freq)
     plot_colors <- df %>%
@@ -996,8 +1011,12 @@ server <- function(input, output, session) {
   
   # user to goals barplot
   output$user_to_goals <- renderPlot({
+    if (length(input$user_classes) == 0) {
+      return(ggplot())
+    }
     df <- recent_courses %>%
-      filter(courseID %in% input$user_classes) %>%
+      mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+      filter(course_text == input$user_classes) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, goal, color, freq)
     plot_colors <- df %>%
@@ -1033,24 +1052,33 @@ server <- function(input, output, session) {
   
   
   output$user_table <- DT::renderDataTable({
+    
     # use this dataframe so the course descriptions still show for unmapped classes
     # df = sustainability_related[sustainability_related$courseID %in% input$user_classes, ]
     # need to only grab one instance
-    
-    recent_courses %>%
-      filter(courseID %in% input$user_classes) %>%
-      # distinct(courseID, .keep_all = TRUE) %>%
-      rename(
-        "Course ID" = courseID,
-        "Course Description" = course_desc,
-        "All Goals" = all_goals,
-        "Sustainability Classification" = sustainability_classification
-      ) %>%
-      select("Course ID",
-             "All Goals", 
-             "Sustainability Classification",
-             "Course Description") %>%
-      distinct()
+    if (length(input$user_classes) > 0) {
+      recent_courses %>%
+        mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+        filter(course_text == input$user_classes) %>%
+        # distinct(courseID, .keep_all = TRUE) %>%
+        rename(
+          "Course ID" = courseID,
+          "Course Title" = course_title,
+          "Course Description" = course_description,
+          "Section Name" = section_name,
+          "All Goals" = all_goals,
+          "Sustainability Classification" = sustainability_classification
+        ) %>%
+        select("Course ID",
+               "Course Title",
+               "Section Name",
+               "All Goals", 
+               "Sustainability Classification",
+               "Course Description") %>%
+        distinct()
+    } else {
+      NULL
+    }
   }, rownames = FALSE,
   options = list(scrollX = TRUE))
   
