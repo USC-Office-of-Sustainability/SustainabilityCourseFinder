@@ -1675,7 +1675,7 @@ server <- function(input, output, session) {
     df <- df %>%
       group_by(sustainability_classification) %>%
       summarize(by_section = sum(N.Sections),
-                by_course = n())
+                by_course = length(unique(courseID)))
     df$sustainability_classification <-
       gsub("-", " ", df$sustainability_classification)
     # total_num <- sum(df$by_section)
@@ -1807,8 +1807,10 @@ server <- function(input, output, session) {
     }
     df %>%
       filter(sustainability_classification == "Sustainability-Focused") %>%
-      select(courseID, sustainability_classification) %>%
+      select(courseID, course_title, section_name, sustainability_classification) %>%
       rename("Course ID" = courseID,
+             "Course Title" = course_title,
+             "Section Name" = section_name,
              "Sustainability Classification" = sustainability_classification) %>%
       distinct()
   }, rownames = FALSE)
