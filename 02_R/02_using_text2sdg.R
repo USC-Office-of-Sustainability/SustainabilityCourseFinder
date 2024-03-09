@@ -14,7 +14,7 @@ usc_pwg_system <- usc_pwg_keywords %>%
   rename(sdg = goal) %>%
   select(system, sdg, query)
 
-usc_courses <- read.csv("usc_courses_cleaned_with_school.csv")
+usc_courses <- read.csv("usc_courses_cleaned_with_school_20243.csv")
 # used to join with hits
 usc_courses$rowID <- 1:nrow(usc_courses)
 
@@ -50,7 +50,7 @@ master_course_sdg_data <- merge(hits_color, usc_courses, by.x = "document", by.y
 # 2 keywords to count as sdg
 master_course_sdg_data <- merge(hits_color, usc_courses, by.x = "document", by.y = "rowID", all.y = TRUE) %>%
   rename(keyword = cleanfeatures, goal = sdg_num) %>%
-  select(document, school, courseID, course_title, instructor, section, semester, keyword, goal, color, course_desc, text, department, N.Sections, year, course_level, total_enrolled, all_semesters) %>%
+  # select(document, school, courseID, course_title, section_name, instructor, section, semester, keyword, goal, color, course_desc, text, department, N.Sections, year, course_level, total_enrolled, all_semesters) %>%
   arrange(courseID) %>%
   group_by(document, goal) %>%
   mutate(nkeywords = length(keyword)) %>%
@@ -165,21 +165,31 @@ single_rows <- master_course_sdg_data[,!(names(master_course_sdg_data) %in% c("k
 #           "shiny_app/usc_courses_full.csv",
 #           row.names = FALSE)
 write.csv(single_rows,
-          "usc_courses_full_any_2_keywords.csv",
+          "shiny_app/usc_courses_full.csv",
           row.names = FALSE)
 
 # all course's most recent semester
 # assuming most recent semester is the last semester listed in all_semesters
 most_recent_semester <- single_rows %>%
-  group_by(courseID) %>%
+  group_by(courseID, section_name) %>%
   summarize(n = n(),
             recentSemester = trimws(strsplit(all_semesters, ",")[[1]][n])) %>%
-  select(courseID, recentSemester)
+  select(courseID, section_name, recentSemester)
+
 # merge with course data
-recent_courses <- merge(most_recent_semester, master_course_sdg_data, by.x = c("courseID", "recentSemester"), by.y = c("courseID", "semester"))
+recent_courses <- merge(most_recent_semester, master_course_sdg_data, by.x = c("courseID", "section_name", "recentSemester"), by.y = c("courseID", "section_name", "semester"))
 # rename column
 names(recent_courses)[names(recent_courses) == 'recentSemester'] <- "semester"
 # save most recent course data for shiny app
 # write.csv(recent_courses, "shiny_app/recent_courses.csv", row.names=FALSE)
-write.csv(recent_courses, "recent_courses_any_2_keywords.csv", row.names=FALSE)
+write.csv(recent_courses, "shiny_app/recent_courses.csv", row.names=FALSE)
 
+# # let most recent courses be specific semesters
+# single_rows %>%
+#   filter(semester %in% c("SP23", "SU23", "F23", "SP24")) %>%
+#   group_by(courseID) %>%
+#   slice(n()) %>% 
+#   select(courseID, semester) -> most_recent_semester
+# recent_courses <- merge(most_recent_semester, master_course_sdg_data, by = c("courseID", "semester"))
+# names(recent_courses)
+# write.csv(recent_courses, "recent_courses_any_2_keywords.csv", row.names=FALSE)
