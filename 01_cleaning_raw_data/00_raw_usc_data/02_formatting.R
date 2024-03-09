@@ -1,8 +1,9 @@
 # cleaning 2020-2022 course data
 # different format from the 2018/2019 data
+library(dplyr)
 
 # data = read.csv("All_SOC_files_2020-2022_fixed.csv")
-combined_data <- read.csv("combined_data.csv")
+combined_data <- read.csv("combined_data_20243.csv")
 
 # filtering out courses with titles containing ..., titles matching ..., and course 
 # descriptions containing ...
@@ -62,7 +63,7 @@ clean_data = function (raw_data){
   # get total number of enrolled students across all sections for class
   # get number of sections
   data_clean %>%
-    group_by(COURSE_CODE, origin) %>%
+    group_by(COURSE_CODE, COURSE_TITLE, SECTION_NAME, origin) %>%
     mutate(total_enrolled = sum(TOTAL_ENR),
            N.Sections = n()) %>%
     filter(row_number()==1)
@@ -106,24 +107,38 @@ transform_data = function(course_data){
   # now create "semester" column in the classes dataframe
   course_data$semester = sapply(course_data$origin, get_semester)
   #create the "course_num" column from "rcl.class"
-  course_data$section = course_data$SECTION
+  # course_data$section = course_data$SECTION
   #create the "course_desc" column
-  course_data$course_desc=paste(course_data$COURSE_TITLE, "-", course_data$COURSE_DESCRIPTION)
+  course_data$course_desc = paste(course_data$COURSE_TITLE, 
+                                  course_data$SECTION_NAME, 
+                                  course_data$COURSE_DESCRIPTION, 
+                                  sep = " - ")
   #create class_title column
-  course_data$courseID = course_data$COURSE_CODE
+  # course_data$courseID = course_data$COURSE_CODE
+  # course_data$section_title = course_data$SECTION_NAME
   # create course column
-  course_data$course_title = course_data$COURSE_TITLE
+  # course_data$course_title = course_data$COURSE_TITLE
   # create department column
-  course_data$department = course_data$DEPARTMENT #changed this from departmentowner name
+  # course_data$department = course_data$DEPARTMENT #changed this from departmentowner name
+  # course_data$school = course_data$SCHOOL
   # create year column
   course_data$year = sapply(course_data$origin, get_year)
   # select relevant columns for the Shiny App
-  course_data = course_data[, c("courseID", "course_title", "semester", "section", "course_desc", "department", "N.Sections", "year", "total_enrolled")]
+  # course_data = course_data[, c("courseID", "course_title", "section_title", "semester", "section", "course_desc", "department", "school", "N.Sections", "year", "total_enrolled")]
   
   return (course_data)
 }
 
 data_final = transform_data(cleaned)
+
+# rename columns
+names(data_final) <- tolower(names(data_final))
+data_final <- data_final %>%
+  select(-min_units, -max_units, -mode, -link, -publish, -start_time, -end_time, -days, -total_enr, -modality, -assigned_room, -total_enr1) %>%
+  rename(courseID = course_code,
+         N.Sections = n.sections,
+         instructor = instructor_name
+         )
 
 
 # also want to get "all semesters" column in the usc_courses dataframe
@@ -159,6 +174,6 @@ get_course_level <- function(course) {
 # now add the course levels to data
 data_final$course_level = sapply(data_final$courseID, get_course_level)
 
-write.csv(data_final, "usc_courses.csv",row.names = F)
+write.csv(data_final, "usc_courses_20243.csv",row.names = F)
 
 

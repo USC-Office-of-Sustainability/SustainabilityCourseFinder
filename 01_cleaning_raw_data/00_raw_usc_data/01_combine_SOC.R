@@ -1,9 +1,92 @@
 # combine SOC files
-library(readxl)
+# library(readxl)
 library(tidyr)
-library(chron)
+# library(chron)
 library(dplyr)
 library(stringr)
+
+## ............................................................................
+## clean SOC plain text files
+## ............................................................................
+# list of plain text files
+ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/SOC_txt_files", 
+                 full.names = TRUE)
+# check column names -> no deptownername column
+lapply(ff, function(x) {
+  readLines(x, n = 1)
+})
+readOneFile <- function(filename) {
+  # get header
+  header <- readLines(filename, n = 1)
+  # split by 4 spaces
+  headerNames <- strsplit(header, "    ")[[1]]
+  
+  widths <- sapply(headerNames, function(x) {
+    nchar(x)+4 # 4 spaces
+  })
+  
+  # clean ......
+  headerNames <- gsub("\\.", "", headerNames)
+  
+  d <- read.fwf(filename, widths = widths, skip = 1, 
+                col.names = headerNames, strip.white = TRUE,
+                colClasses = "character")
+  # replace "" with NA
+  d <- d %>% mutate(across(everything(), ~na_if(.,"")))
+  # remove rows that are all NA
+  df <- d[rowSums(!is.na(d)) != 0, ]
+  # remove last row
+  if (grepl("listed", df$SCHOOL[nrow(df)])) {
+    df <- head(df, - 1)
+  }
+  
+  # fill empty columns based on above column
+  df2 <- df %>%
+    tidyr::fill(SECTION, COURSE_CODE, .direction = "down")
+  
+  # uppercase to make them consistent
+  names(df2) <- toupper(names(df2))
+  
+  df3 <- df2 %>%
+    group_by(SECTION, COURSE_CODE) %>%
+    summarize(SCHOOL = paste(SCHOOL[!is.na(SCHOOL)], collapse = " "),
+              SESSION = first(SESSION),
+              MIN_UNITS = first(MIN_UNITS),
+              MAX_UNITS = first(MAX_UNITS),
+              COURSE_TITLE = paste(COURSE_TITLE[!is.na(COURSE_TITLE)], collapse = " "),
+              MODE = first(MODE),
+              LINK = first(LINK),
+              PUBLISH = first(PUBLISH.),
+              START_TIME = paste(START_TIME[!is.na(START_TIME)], collapse = " "),
+              END_TIME = paste(END_TIME[!is.na(END_TIME)], collapse = " "),
+              DAYS = paste(DAYS[!is.na(DAYS)], collapse = " "),
+              TOTAL_ENR = first(TOTAL_ENR),
+              MODALITY = first(MODALITY),
+              INSTRUCTOR_NAME = paste(INSTRUCTOR_NAME[!is.na(INSTRUCTOR_NAME)], collapse = ";"),
+              ASSIGNED_ROOM = paste(ASSIGNED_ROOM[!is.na(ASSIGNED_ROOM)], collapse = " "),
+              TOTAL_ENR1 = first(TOTAL_ENR.1),
+              COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "),
+              SECTION_NAME = paste(SECTION.NAME[!is.na(SECTION.NAME)], collapse = " "))
+  # department is first part of course code
+  # CHE in CHE-490
+  df3$DEPARTMENT <- sapply(df3$COURSE_CODE, function(x) {
+    strsplit(x, "-")[[1]][1]
+  })
+  # origin comes from filename
+  # 20193 in 20193_SOC.xlsx
+  df3$origin <- strsplit(basename(filename), "_")[[1]][1]
+  # replace NA with ""
+  # apply(df3, 2, anyNA) # which columns have NA
+  df3$MODALITY <- df3$MODALITY %>% replace_na("")
+  df3$LINK <- df3$LINK %>% replace_na("")
+  # cleaned file location + name
+  cleanfile <- paste0("01_cleaning_raw_data/00_raw_usc_data/clean_SOC_txt_files/", strsplit(basename(filename), "_")[[1]][1], ".csv")
+  write.csv(df3, cleanfile, row.names = FALSE)
+  return(cleanfile)
+}
+
+# clean all plain txt files
+lapply(ff, readOneFile)
 
 ## ............................................................................
 ## clean SOC excel files
@@ -14,7 +97,7 @@ ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/SOC_files",
 # check column names -> no deptownername column
 lapply(ff, function(x) {names(read_excel(x))})
 # clean 1 excel file
-readOneFile <- function(filename) {
+readOneFileExcel <- function(filename) {
   d <- read_excel(filename, col_types = "text")
   # remove . in colname
   names(d) <- gsub("\\.", "", names(d))
@@ -76,6 +159,7 @@ readOneFile <- function(filename) {
   # apply(df4,2,unique)
   
   # keep all info in assigned room, days, start + end time columns
+  df2$Section.Name <- df2$`Section Name`
   df3 <- df2 %>%
     group_by(SECTION, COURSE_CODE) %>%
     summarize(SCHOOL = paste(SCHOOL[!is.na(SCHOOL)], collapse = " "),
@@ -94,7 +178,8 @@ readOneFile <- function(filename) {
               INSTRUCTOR_NAME = paste(INSTRUCTOR_NAME[!is.na(INSTRUCTOR_NAME)], collapse = ";"),
               ASSIGNED_ROOM = paste(ASSIGNED_ROOM[!is.na(ASSIGNED_ROOM)], collapse = " "),
               TOTAL_ENR1 = first(TOTAL_ENR2),
-              COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "))
+              COURSE_DESCRIPTION = paste(COURSE_DESCRIPTION[!is.na(COURSE_DESCRIPTION)], collapse = " "),
+              SECTION_NAME = paste(Section.Name[!is.na(Section.Name)], collapse = " "))
   # department is first part of course code
   # CHE in CHE-490
   df3$DEPARTMENT <- sapply(df3$COURSE_CODE, function(x) {
@@ -113,7 +198,7 @@ readOneFile <- function(filename) {
   return(cleanfile)
 }
 # clean all excel files
-lapply(ff, readOneFile)
+lapply(ff, readOneFileExcel)
 
 ## ............................................................................
 ## clean SOC csv files
@@ -243,14 +328,15 @@ lapply(ff, readOneFileCSV)
 ## combine cleaned files
 ## ............................................................................
 # list of cleaned csv files
-ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/clean_data", 
+# 20242 needs section name!!
+ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/clean_SOC_txt_files", 
                  pattern = "csv", full.names = TRUE)
 # read data
-tmp <- lapply(ff, read.csv)
+tmp <- lapply(ff, read.csv, colClasses = "character")
 
 # combine
 combined_data <- data.table::rbindlist(tmp, fill = TRUE)
 
 write.csv(combined_data,
-          "combined_data.csv",
+          "combined_data_20243.csv",
           row.names = FALSE)
