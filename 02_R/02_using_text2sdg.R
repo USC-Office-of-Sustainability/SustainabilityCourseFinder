@@ -172,8 +172,7 @@ write.csv(single_rows,
 # assuming most recent semester is the last semester listed in all_semesters
 most_recent_semester <- single_rows %>%
   group_by(courseID, section_name) %>%
-  summarize(n = n(),
-            recentSemester = trimws(strsplit(all_semesters, ",")[[1]][n])) %>%
+  summarize(recentSemester = trimws(tail(strsplit(all_semesters, ",")[[1]], 1))) %>%
   select(courseID, section_name, recentSemester)
 
 # merge with course data
