@@ -428,7 +428,11 @@ ui <- dashboardPage(
           h3(textOutput("semesters_offered")),
           
           h5(
-            "*special topics courses (course levels 499 and 599) often change, but the course data comes from the current semester for all courses."
+            "*Special topics courses (course levels 499 and 599) often change. Please confirm with the",
+            a("USC Schedule of Classes", 
+              href="https://classes.usc.edu/",
+              target="_blank"),
+            "for which special topic is currently being offered."
           ),
           
           br(),
