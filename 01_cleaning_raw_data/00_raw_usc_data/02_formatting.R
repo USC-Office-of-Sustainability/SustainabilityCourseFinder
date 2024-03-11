@@ -145,7 +145,7 @@ data_final <- data_final %>%
 get_all_semesters <- function(data) {
   # data$semester <- factor(data$semester, levels = c("SU20", "F20", "SP21", "SU21", "F21", "SP22", "SU22", "F22", "SP23", "SU23", "F23"))
   data %>%
-    group_by(courseID) %>%
+    group_by(courseID, section_name) %>%
     mutate(all_semesters = paste(unique(semester), collapse = ", ")) %>%
     ungroup()
 }
