@@ -1437,15 +1437,17 @@ server <- function(input, output, session) {
     df <- ge_data %>%
       filter(full_name == input$ge_category) %>%
       filter(goal %in% input$ge_sdgs) %>%
+      mutate(courseID_section = ifelse(section_name == "", courseID, paste0(courseID, " - ", section_name))) %>%
+      # mutate(courseID_section = paste(courseID, section_name, sep = " - ")) %>%
       group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       ungroup()
     top_10_courses <- df %>%
-      select(courseID, total_freq) %>%
+      select(courseID_section, total_freq) %>%
       distinct() %>%
       arrange(desc(total_freq)) %>%
       head(num_top_classes) %>%
-      select(courseID) %>%
+      select(courseID_section) %>%
       pull()
     if (length(top_10_courses) == 0) {
       return (
@@ -1468,15 +1470,15 @@ server <- function(input, output, session) {
       )
     }
     plot_colors <- df %>%
-      filter(courseID %in% top_10_courses) %>%
+      filter(courseID_section %in% top_10_courses) %>%
       arrange(goal) %>%
       select(color) %>%
       distinct() %>%
       pull()
     df %>%
-      filter(courseID %in% top_10_courses) %>%
+      filter(courseID_section %in% top_10_courses) %>%
       ggplot(aes(
-        x = reorder(courseID, total_freq),
+        x = reorder(courseID_section, total_freq),
         y = freq,
         fill = factor(as.numeric(goal))
       )) +
@@ -1484,8 +1486,7 @@ server <- function(input, output, session) {
       coord_flip() +
       scale_fill_manual(values = plot_colors) +
       scale_x_discrete(
-        labels = function(x)
-          str_wrap(x, width = 30)
+        labels = function(x) stringr::str_trunc(x,25)
       ) +
       labs(fill = "SDG",
            x = "Course",
