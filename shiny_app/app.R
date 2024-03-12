@@ -809,7 +809,7 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session,
     'user_classes',
-    choices = sustainability_related %>% mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>% select(course_text) %>% distinct() %>% pull() %>% sort(),
+    choices = classes %>% mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>% select(course_text) %>% distinct() %>% pull() %>% sort(),
     # choices = unique(sustainability_related$courseID) %>% sort(),
     server = TRUE
   )
@@ -907,7 +907,7 @@ server <- function(input, output, session) {
       #first make sure they typed something in
       
       class_list <-
-        sustainability_related %>% #changed this from master
+        classes %>% #changed this from master
         mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
         filter(course_text %in% input$user_classes) %>% #changed from section
         distinct(course_text, .keep_all = TRUE) %>%
@@ -922,9 +922,9 @@ server <- function(input, output, session) {
   output$users_wordcloud <- renderImage({
     if (length(input$user_classes) > 0) {
       
-      df = recent_courses %>%
+      df = classes %>%
         mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-        filter(course_text == input$user_classes) %>%
+        filter(course_text %in% input$user_classes) %>%
         filter(!is.na(keyword)) %>%
         select(keyword, color, freq) %>%
         arrange(desc(freq)) %>%
@@ -966,9 +966,9 @@ server <- function(input, output, session) {
     if (length(input$user_classes) == 0) {
       return(ggplot())
     }
-    df <- recent_courses %>%
+    df <- classes %>%
       mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-      filter(course_text == input$user_classes) %>%
+      filter(course_text %in% input$user_classes) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, goal, color, freq)
     plot_colors <- df %>%
@@ -1016,9 +1016,9 @@ server <- function(input, output, session) {
     if (length(input$user_classes) == 0) {
       return(ggplot())
     }
-    df <- recent_courses %>%
+    df <- classes %>%
       mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-      filter(course_text == input$user_classes) %>%
+      filter(course_text %in% input$user_classes) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, goal, color, freq)
     plot_colors <- df %>%
@@ -1059,9 +1059,9 @@ server <- function(input, output, session) {
     # df = sustainability_related[sustainability_related$courseID %in% input$user_classes, ]
     # need to only grab one instance
     if (length(input$user_classes) > 0) {
-      recent_courses %>%
+      classes %>%
         mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-        filter(course_text == input$user_classes) %>%
+        filter(course_text %in% input$user_classes) %>%
         # distinct(courseID, .keep_all = TRUE) %>%
         rename(
           "Course ID" = courseID,
