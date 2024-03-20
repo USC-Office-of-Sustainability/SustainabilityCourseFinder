@@ -28,6 +28,8 @@ remove_punctuation <- function(tt) {
 
 # fix typo
 usc_courses$course_desc <- gsub("parient", "patient", usc_courses$course_desc)
+usc_courses$course_desc <- gsub("&", "and", usc_courses$course_desc)
+usc_courses$course_desc <- gsub("[sS]usta?i?na?bi?li?ty", "sustainability", usc_courses$course_desc)
 
 usc_courses$clean_course_desc <- 
   apply_context_dependency(remove_punctuation(usc_courses$course_desc))
