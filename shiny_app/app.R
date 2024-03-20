@@ -970,7 +970,8 @@ server <- function(input, output, session) {
       mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
       filter(course_text %in% input$user_classes) %>%
       filter(!is.na(keyword)) %>%
-      select(keyword, goal, color, freq)
+      select(keyword, goal, color, freq) %>%
+      distinct()
     plot_colors <- df %>%
       arrange(goal) %>%
       select(color) %>%
@@ -1020,7 +1021,8 @@ server <- function(input, output, session) {
       mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
       filter(course_text %in% input$user_classes) %>%
       filter(!is.na(keyword)) %>%
-      select(keyword, goal, color, freq)
+      select(keyword, goal, color, freq) %>%
+      distinct()
     plot_colors <- df %>%
       arrange(goal) %>%
       select(color) %>%
