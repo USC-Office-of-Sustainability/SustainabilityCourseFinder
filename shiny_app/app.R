@@ -926,7 +926,11 @@ server <- function(input, output, session) {
         mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
         filter(course_text %in% input$user_classes) %>%
         filter(!is.na(keyword)) %>%
-        select(keyword, color, freq) %>%
+        select(course_text, keyword, goal, color, freq) %>%
+        distinct() %>%
+        group_by(keyword, goal, color) %>%
+        summarize(freq = sum(freq)) %>%
+        distinct() %>%
         arrange(desc(freq)) %>%
         distinct(keyword, .keep_all = TRUE)
       png("wordcloud.png")
