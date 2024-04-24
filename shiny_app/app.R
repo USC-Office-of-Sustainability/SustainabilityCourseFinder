@@ -191,8 +191,9 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "custom.css"),
       # link css stylesheet
       tags$link(rel = "stylesheet", # link icon library
-                href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
-    ),
+                href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
+      includeScript("google-analytics.html")
+    ), 
     tabItems(
       tabItem(
         tabName = "1",
