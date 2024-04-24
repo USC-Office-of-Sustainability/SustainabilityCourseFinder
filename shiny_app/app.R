@@ -755,7 +755,7 @@ ui <- dashboardPage(
         ". You can also support the Office of Sustainability by donating",
         a(
           "here",
-          href = "https://green.usc.edu/get-involved/give-to-the-office-of-sustainability/",
+          href = "https://sustainability.usc.edu/give-now/",
           .noWS = "after",
           target = "_blank"
         ),
