@@ -4,7 +4,7 @@ library(tidyverse)
 library(stringr)
 library(stringi)
 
-usc_courses = read.csv("usc_courses_with_school_20243.csv")
+usc_courses = read.csv("usc_courses_with_school_updated_20243.csv")
 # usc_courses = read.csv("usc_courses.csv")
 
 # context dependency
