@@ -109,7 +109,8 @@ classes$semester <-
       "F23",
       "SP24",
       "SU24",
-      "F24"
+      "F24",
+      "SP25"
     )
   )
 

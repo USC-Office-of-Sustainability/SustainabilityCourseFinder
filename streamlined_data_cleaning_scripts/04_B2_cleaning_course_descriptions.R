@@ -1,0 +1,38 @@
+# cleaning the course descriptions for mapping
+
+library(tidyverse)
+library(stringr)
+library(stringi)
+
+usc_courses = read.csv("streamlined_data/03_B1_20251_only.csv")
+# usc_courses = read.csv("usc_courses.csv")
+
+# context dependency
+# replace certain phrases with new phrases
+apply_context_dependency <- function(tt) {
+  tt <- tolower(tt)
+  corrections <- read.csv("data_raw/context_dependencies_05_16_24.csv")
+  corrections$before <- tolower(corrections$before)
+  corrections$after <- tolower(corrections$after)
+  tt <- stri_replace_all_regex(tt,
+                               pattern = corrections$before,
+                               replacement = corrections$after,
+                               vectorize = FALSE)
+  tt
+}
+
+# remove all punctuation except '
+remove_punctuation <- function(tt) {
+  gsub("[^[:alnum:][:space:]']", " ", tt)
+}
+
+# fix typo
+usc_courses$course_desc <- gsub("parient", "patient", usc_courses$course_desc)
+usc_courses$course_desc <- gsub("&", "and", usc_courses$course_desc)
+usc_courses$course_desc <- gsub("[sS]usta?i?na?bi?li?ty", "sustainability", usc_courses$course_desc)
+
+usc_courses$clean_course_desc <- 
+  apply_context_dependency(remove_punctuation(usc_courses$course_desc))
+
+write.csv(usc_courses, "streamlined_data/04_B2_20251_only.csv", row.names = FALSE)
+
