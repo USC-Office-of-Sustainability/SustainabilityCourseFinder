@@ -1,4 +1,4 @@
-# USC SHINY WEB APP updated 11/9/23
+# USC SHINY WEB APP updated 10/4/24
 
 # require(devtools)
 # install_github("lchiffon/wordcloud2")
@@ -91,27 +91,16 @@ classes$sustainability_classification <-
     classes$sustainability_classification,
     levels = c("Sustainability-Focused", "SDG-Related", "Not Related")
   )
+
+# read semesters from csv file sorted_semesters.csv
+semesters <- read.csv("sorted_semesters.csv")
+semesters <- c(semesters)
+
 # add semesters
 classes$semester <-
   factor(
     classes$semester,
-    levels = c(
-      "SU20",
-      "F20",
-      "SP21",
-      "SU21",
-      "F21",
-      "SP22",
-      "SU22",
-      "F22",
-      "SP23",
-      "SU23",
-      "F23",
-      "SP24",
-      "SU24",
-      "F24",
-      "SP25"
-    )
+    levels = semesters
   )
 
 # data for GE's
