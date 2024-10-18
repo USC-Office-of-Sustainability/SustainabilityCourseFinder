@@ -1,5 +1,5 @@
 # fix school column
-usc_courses_cleaned <- read.csv("streamlined_data/02_A2_20251.csv")
+usc_courses_cleaned <- read.csv("streamlined_data/02_20251.csv")
 
 # there's one school that is "" -> HUC -> Dornsife
 Dornsife = c("LASN", "LAS", "LASO", "LASH", "LASS", "LASO",
@@ -112,5 +112,5 @@ usc_courses_with_school <- usc_courses_with_school %>%
 #   select(school, courseID, course_title, instructor, section, department, semester, course_desc, N.Sections, year, course_level, total_enrolled, all_semesters)
 
 write.csv(usc_courses_with_school,
-          "streamlined_data/03_B1_20251.csv",
+          "streamlined_data/03_20251.csv",
           row.names = FALSE)

@@ -3,7 +3,7 @@
 library(dplyr)
 
 # data = read.csv("All_SOC_files_2020-2022_fixed.csv")
-combined_data <- read.csv("streamlined_data/01_A1_20251.csv")
+combined_data <- read.csv("streamlined_data/01_20251.csv")
 
 # filtering out courses with titles containing ..., titles matching ..., and course 
 # descriptions containing ...
@@ -183,6 +183,6 @@ get_course_level <- function(course) {
 # now add the course levels to data
 data_final$course_level = sapply(data_final$courseID, get_course_level)
 
-write.csv(data_final, "streamlined_data/02_A2_20251.csv",row.names = F)
+write.csv(data_final, "streamlined_data/02_20251.csv",row.names = F)
 
 
