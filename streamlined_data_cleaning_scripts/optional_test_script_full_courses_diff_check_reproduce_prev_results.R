@@ -1,3 +1,6 @@
+# check usc_courses_full.csv difference
+# used to compare the process to reproduce prev shiny_app data
+
 # Load necessary library
 library(dplyr)
 
