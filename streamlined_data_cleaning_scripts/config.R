@@ -1,13 +1,15 @@
-
-
-
 S_00_parse_SOC_INPUT_FILE_PATH    <- "streamlined_data/pending_SOC_txt_files/"
 S_00_parse_SOC_OUTPUT_FILE_PATH   <- "streamlined_data/cleaned_SOC_files/"
+
 S_01_combine_SOC_OUTPUT_FILE_PATH <- "streamlined_data/01_20251.csv"
+
 S_02_formatting_OUTPUT_FILE_PATH <- "streamlined_data/02_20251.csv"
+
 S_03_fix_school_OUTPUT_FILE_PATH <- "streamlined_data/03_20251.csv"
+
 S_04_update_course_INPUT_TEMPLATE_FILE_PATH <- "data_raw/Template_for_Adding_Courses_to_Sustainability_Course_Finder.xlsx"
 S_04_update_course_OUTPUT_FILE_PATH <- "streamlined_data/04_20251.csv"
+
 S_05_cleaning_course_descriptions_INPUT_CONTEXT_DEPENDENCIES_FILE_PATH <- "data_raw/context_dependencies_01_19_24.csv"
 S_05_cleaning_course_descriptions_OUTPUT_FILE_PATH <- "streamlined_data/05_20251.csv"
 
