@@ -79,23 +79,14 @@ cleaned = clean_data(combined_data)
 get_semester <- function(x){
   if (x%%10 == 3) {
     # fall
-    res = paste("F", substr(as.character(x), 3, 4), sep = "")
+    paste("F", substr(as.character(x), 3, 4), sep = "")
   } else if (x%%10 == 2) {
     # summer
-    res = paste("SU", substr(as.character(x), 3, 4), sep = "")
+    paste("SU", substr(as.character(x), 3, 4), sep = "")
   } else if (x%%10 == 1) {
     # spring
-    res = paste("SP", substr(as.character(x), 3, 4), sep = "")
+    paste("SP", substr(as.character(x), 3, 4), sep = "")
   }
-  
-#  if (res == "SP24"){
-#    res = "SP24FAKE" 
-#  }
-#  if (res == "SP25"){
-#    res = "SP25FAKE"
-#  }
-  print(res)
-  return(res)
 }
 
 # helper function to get "year" column in form AY20, AY21 etc.
