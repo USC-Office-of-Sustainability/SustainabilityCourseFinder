@@ -1,11 +1,15 @@
+source("streamlined_data_cleaning_scripts/config.R")
+
 # courses with section names are fixed by new SOC files
 # courses with different course descriptions are not fixed by new SOC files
 # add/replace courses after adding school column
 # add course from spreadsheet
 library(readxl)
 library(dplyr)
-courses <- read.csv("streamlined_data/03_20251.csv")
-courses_to_update <- read_excel("data_raw/Template_for_Adding_Courses_to_Sustainability_Course_Finder.xlsx")
+
+
+courses <- read.csv(S_03_fix_school_OUTPUT_FILE_PATH)
+courses_to_update <- read_excel(S_04_update_course_INPUT_TEMPLATE_FILE_PATH)
 
 # add and replace accordingly
 # add new row
@@ -70,7 +74,7 @@ courses_new <- courses_new %>%
   ungroup()
 
 write.csv(courses_new,
-          "streamlined_data/04_20251.csv",
+          S_04_update_course_OUTPUT_FILE_PATH,
           row.names = FALSE)
 
 # remove duplicates

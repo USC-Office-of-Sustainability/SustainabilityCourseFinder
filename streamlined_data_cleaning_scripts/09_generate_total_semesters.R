@@ -1,8 +1,10 @@
+source("streamlined_data_cleaning_scripts/config.R")
+
 # read file of shiny_app/usc_courses_full.csv
 # get unique values of the value in the column "semester"
 library(dplyr)
 
-data = read.csv("shiny_app/usc_courses_full.csv")
+data = read.csv(S_07_using_text2sdg_OUTPUT_USC_COURSES_FULL_FILE_PATH)
 res = unique(data$semester)
 # Data input
 semesters <- res
@@ -29,5 +31,5 @@ sorted_semesters <- sorted_df$semester
 print(sorted_semesters)
 
 # save sorted_semesters to csv
-write.csv(sorted_semesters, "shiny_app/sorted_semesters.csv", row.names = FALSE, col.names = FALSE)
+write.csv(sorted_semesters, S_09_generate_total_semesters_OUTPUT_SORTED_SEMESTER_FILE_PATH, row.names = FALSE, col.names = FALSE)
 

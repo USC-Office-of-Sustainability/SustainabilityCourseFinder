@@ -1,3 +1,4 @@
+source("streamlined_data_cleaning_scripts/config.R")
 # combine SOC files
 # library(readxl)
 library(tidyr)
@@ -5,12 +6,13 @@ library(tidyr)
 library(dplyr)
 library(stringr)
 
+
 ## ............................................................................
 ## combine cleaned files
 ## ............................................................................
 # list of cleaned csv files
 # 20242 needs section name!!
-ff <- list.files("streamlined_data/cleaned_SOC_files/", 
+ff <- list.files(S_00_parse_SOC_OUTPUT_FILE_PATH, 
                  pattern = "csv", full.names = TRUE)
 # read data
 tmp <- lapply(ff, read.csv, colClasses = "character")
@@ -19,5 +21,5 @@ tmp <- lapply(ff, read.csv, colClasses = "character")
 combined_data <- data.table::rbindlist(tmp, fill = TRUE)
 
 write.csv(combined_data,
-          "streamlined_data/01_20251.csv",
+          S_01_combine_SOC_OUTPUT_FILE_PATH,
           row.names = FALSE)

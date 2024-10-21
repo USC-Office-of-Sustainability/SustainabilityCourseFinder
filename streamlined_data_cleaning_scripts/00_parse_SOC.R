@@ -1,3 +1,4 @@
+source("streamlined_data_cleaning_scripts/config.R")
 # parse SOC files
 # library(readxl)
 library(tidyr)
@@ -9,7 +10,7 @@ library(stringr)
 ## clean SOC plain text files
 ## ............................................................................
 # list of plain text files
-ff <- list.files("streamlined_data/pending_SOC_txt_files", 
+ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH, 
                  full.names = TRUE)
 # check column names -> no deptownername column
 lapply(ff, function(x) {
@@ -80,7 +81,7 @@ readOneFile <- function(filename) {
   df3$MODALITY <- df3$MODALITY %>% replace_na("")
   df3$LINK <- df3$LINK %>% replace_na("")
   # cleaned file location + name
-  cleanfile <- paste0("streamlined_data/cleaned_SOC_files/", strsplit(basename(filename), "_")[[1]][1], ".csv")
+  cleanfile <- paste0(S_00_parse_SOC_OUTPUT_FILE_PATH, strsplit(basename(filename), "_")[[1]][1], ".csv")
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }
@@ -92,7 +93,7 @@ lapply(ff, readOneFile)
 ## clean SOC excel files
 ## ............................................................................
 # list of xlsx files
-ff <- list.files("streamlined_data/pending_SOC_txt_files", 
+ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH, 
                  pattern = "xlsx", full.names = TRUE)
 # check column names -> no deptownername column
 lapply(ff, function(x) {names(read_excel(x))})
@@ -193,7 +194,7 @@ readOneFileExcel <- function(filename) {
   df3$MODALITY <- df3$MODALITY %>% replace_na("")
   df3$Link <- df3$Link %>% replace_na("")
   # cleaned file location + name
-  cleanfile <- paste0("streamlined_data/cleaned_SOC_files/", strsplit(basename(filename), "_")[[1]][1], ".csv")
+  cleanfile <- paste0(S_00_parse_SOC_OUTPUT_FILE_PATH, strsplit(basename(filename), "_")[[1]][1], ".csv")
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }
@@ -204,7 +205,7 @@ lapply(ff, readOneFileExcel)
 ## clean SOC csv files
 ## ............................................................................
 # list of csv files
-ff <- list.files("streamlined_data/pending_SOC_txt_files", 
+ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH, 
                  pattern = "csv", full.names = TRUE)
 # check column names
 lapply(ff, function(x) {names(read.csv(x))})
@@ -317,7 +318,7 @@ readOneFileCSV <- function(filename) {
   df3$MODALITY <- df3$MODALITY %>% replace_na("")
   df3$Link <- df3$Link %>% replace_na("")
   # cleaned file location + name
-  cleanfile <- paste0("streamlined_data/cleaned_SOC_files/", strsplit(basename(filename), "_")[[1]][1], ".csv")
+  cleanfile <- paste0(S_00_parse_SOC_OUTPUT_FILE_PATH, strsplit(basename(filename), "_")[[1]][1], ".csv")
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }

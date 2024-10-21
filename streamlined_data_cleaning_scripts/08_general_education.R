@@ -1,8 +1,13 @@
+source("streamlined_data_cleaning_scripts/config.R")
+
 # general education requirements
 # ge class based on most recent class info
 library(tidyverse)
 library(readxl)
-data = read_excel("data_raw/CATALOG_CLASS_GECAT_20231.xlsx")
+
+
+
+data = read_excel(S_08_general_education_INPUT_CATALOG_CLASS_GECAT_FILE_PATH)
 
 data = data %>% select(RCA_COURSE, RCA_TITLE, RCA_GECAT_C)
 data = data %>% rename(courseID = RCA_COURSE, course_title = RCA_TITLE, geID = RCA_GECAT_C)
@@ -62,7 +67,7 @@ df = left_join(data, key, by="id")
 # ge_multi <- merge(df, master, by = c("courseID", "course_title"), all.x = TRUE)
 # ge_single <- merge(df, sustainability_related, by = c("courseID", "course_title"), all.x = TRUE)
 
-recent_courses <- read.csv("shiny_app/recent_courses.csv")
+recent_courses <- read.csv(S_07_using_text2sdg_OUTPUT_RECENT_COURSES_FILE_PATH)
 # course title's have extra spaces at the beginning/end
 recent_courses$course_title <- trimws(recent_courses$course_title)
 # merge ge data with recent course data
@@ -77,6 +82,6 @@ ge_recent$sustainability_classification <-
 
 # save ge data for shiny app
 # write.csv(ge_recent, "shiny_app/ge_data.csv", row.names = FALSE)
-write.csv(ge_recent, "shiny_app/ge_data.csv", row.names = FALSE)
+write.csv(ge_recent, S_08_general_education_OUTPUT_GE_DATA_FILE_PATH, row.names = FALSE)
 
 

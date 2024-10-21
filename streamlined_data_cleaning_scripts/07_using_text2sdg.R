@@ -1,3 +1,5 @@
+source("streamlined_data_cleaning_scripts/config.R")
+
 # map course description using text2sdg
 # add sustainability classification
 # get most recent course data
@@ -5,7 +7,8 @@ library(text2sdg)
 library(dplyr)
 library(stringr)
 
-usc_pwg_keywords <- read.csv("shiny_app/usc_keywords.csv")
+
+usc_pwg_keywords <- read.csv(S_06_cleaning_keywords_OUTPUT_FILE_PATH)
 
 # create system for text2sdg
 usc_pwg_system <- usc_pwg_keywords %>%
@@ -14,7 +17,7 @@ usc_pwg_system <- usc_pwg_keywords %>%
   rename(sdg = goal) %>%
   select(system, sdg, query)
 
-usc_courses <- read.csv("streamlined_data/05_20251.csv")
+usc_courses <- read.csv(S_05_cleaning_course_descriptions_OUTPUT_FILE_PATH)
 # used to join with hits
 usc_courses$rowID <- 1:nrow(usc_courses)
 
@@ -127,7 +130,7 @@ master_course_sdg_data$sustainability_classification <- apply(master_course_sdg_
 # update sustainability classification based on manual fixes
 # using courseID and course_title
 library(readxl)
-reviewed <- read_excel("data_raw/USC_STARS_AC-1_AY21_AY22_AY23_Revised_1_29_24.xlsx")
+reviewed <- read_excel(S_07_using_text2sdg_INPUT_USC_STARS_FILE_PATH)
 # reviewed$all_keywords <- sapply(reviewed$all_keywords, function(x) {
 #   paste(sort(strsplit(x, ",")[[1]]), collapse = ",")
 # })
@@ -156,14 +159,14 @@ master_course_sdg_data <- master_course_sdg_data %>%
   distinct()
 course_sdg_data <- master_course_sdg_data %>%
   select(document, courseID, semester, year, keyword, goal, color, freq)
-write.csv(course_sdg_data, "shiny_app/course_sdg_data.csv", row.names = FALSE)
+write.csv(course_sdg_data, S_07_using_text2sdg_OUTPUT_COURSE_SDG_DATA_FILE_PATH, row.names = FALSE)
 # write.csv(course_sdg_data, "course_sdg_data_any_2_keywords.csv", row.names = FALSE)
 
 # save distinct rows for shiny app data
 single_rows <- master_course_sdg_data[,!(names(master_course_sdg_data) %in% c("keyword", "goal", "color", "freq", "nkeywords", "goal2"))] %>% distinct()
 
 write.csv(single_rows,
-          "shiny_app/usc_courses_full.csv",
+          S_07_using_text2sdg_OUTPUT_USC_COURSES_FULL_FILE_PATH,
           row.names = FALSE)
 
 
@@ -179,5 +182,5 @@ recent_courses <- merge(most_recent_semester, master_course_sdg_data, by.x = c("
 # rename column
 names(recent_courses)[names(recent_courses) == 'recentSemester'] <- "semester"
 # save most recent course data for shiny app
-write.csv(recent_courses, "shiny_app/recent_courses.csv", row.names=FALSE)
+write.csv(recent_courses, S_07_using_text2sdg_OUTPUT_RECENT_COURSES_FILE_PATH, row.names=FALSE)
 

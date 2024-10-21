@@ -5,6 +5,18 @@ library(dplyr)
 csv1 <- read.csv("shiny_app/usc_courses_full.csv", stringsAsFactors = FALSE)
 csv2 <- read.csv("shiny_app/old data 2019-2024/usc_courses_full.csv", stringsAsFactors = FALSE)
 
+# Define a function to sort keywords
+sort_keywords <- function(keywords) {
+  # Split the string into a vector of words, trim spaces, and sort
+  sorted_words <- sort(trimws(unlist(strsplit(keywords, ","))))
+  # Combine the sorted words back into a single string
+  paste(sorted_words, collapse = ",")
+}
+
+# Apply the function to the 'all_keywords' column of each CSV
+csv1$all_keywords <- sapply(csv1$all_keywords, sort_keywords)
+csv2$all_keywords <- sapply(csv2$all_keywords, sort_keywords)
+
 
 # Define the column names as a vector
 # columns_to_compare <- c(
