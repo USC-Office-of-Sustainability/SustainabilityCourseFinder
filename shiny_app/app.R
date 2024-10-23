@@ -271,7 +271,7 @@ ui <- dashboardPage(
           
           h3(
             strong("How was this dashboard created?"),
-            "This dashboard was created with R Shiny, based on source code in R through a collaboration of USC’s Office of Sustainability (Source Code Developers: PSIP Interns\u2014Brian Tinsley and Alison Chen, with USC's Sustainablity Data Analyst\u2014Dr. Julie Hopper) with Carnegie Mellon University (Source Code Developers: Director of Sustainability Initiatives\u2014Alex Hinicker and Undergraduate Alumni\u2014Peter Wu). Following the initial development of this dashboard, USC staff in the Office of Sustainability and faculty in the Presidential Working Group (PWG) on Sustainability in Education reviewed the dashboard and keywords. All of the datasets and source code used in this dashboard are open-source and can be found through",
+            "This dashboard was created with R Shiny, based on source code in R through a collaboration of USC’s Office of Sustainability (Source Code Developers: PSIP Interns\u2014Brian Tinsley, Alison Chen and Feiyang Wang, with USC's Sustainablity Data Analyst\u2014Dr. Julie Hopper) with Carnegie Mellon University (Source Code Developers: Director of Sustainability Initiatives\u2014Alex Hinicker and Undergraduate Alumni\u2014Peter Wu). Following the initial development of this dashboard, USC staff in the Office of Sustainability and faculty in the Presidential Working Group (PWG) on Sustainability in Education reviewed the dashboard and keywords. All of the datasets and source code used in this dashboard are open-source and can be found through",
             a("our Github page.",
               href = "https://github.com/USC-Office-of-Sustainability/USC-SDGmap",
               target = "_blank")

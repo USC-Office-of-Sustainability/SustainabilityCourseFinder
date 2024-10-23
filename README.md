@@ -105,11 +105,11 @@ keywords, are shown below.
 | goal | keyword             | color    |
 |-----:|:--------------------|:---------|
 |    1 | access to clothing  | \#E5243B |
+|    1 | housing stability   | \#E5243B |
 |    1 | access to housing   | \#E5243B |
 |    1 | access to resources | \#E5243B |
 |    1 | access to shelter   | \#E5243B |
 |    1 | affluence           | \#E5243B |
-|    1 | affluent            | \#E5243B |
 
 The USC keyword list has been modified many times from feedback provided
 by students, staff and faculty, including those in the USC Presidential
@@ -128,7 +128,7 @@ symbol causes problems when using
 library(dplyr)
 
 # cleaning keywords
-usc_pwg_keywords <- read.csv("USC_PWG-E_Keywords_1_24_24.csv")
+usc_pwg_keywords <- read.csv("keywords/USC_PWG-E_Keywords_3_5_24.csv")
 
 # check color
 usc_pwg_keywords %>% select(goal, color) %>% distinct()

@@ -21,7 +21,7 @@ csv2$all_keywords <- sapply(csv2$all_keywords, sort_keywords)
 # Filter out rows where semester is "SP25" from csv1
 csv1 <- csv1 %>% filter(semester != "SP25")
 
-# Define the columns to compare, excluding "all_semesters"
+# Define the columns to compare, excluding total_enrolled and all_semesters and document
 columns_to_compare <- c(
   "courseID", "course_title", "section", "school", 
   "session", "instructor", "course_description", "section_name", 
@@ -30,8 +30,6 @@ columns_to_compare <- c(
   "course_level", "clean_course_desc", "text", "all_keywords", 
   "all_goals", "sustainability_classification"
 )
-
-# do not compare total_enrolled and all_semesters and document
 
 print(colnames(csv1))
 print(colnames(csv2))
