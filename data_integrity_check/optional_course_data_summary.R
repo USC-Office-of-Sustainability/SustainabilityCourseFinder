@@ -27,12 +27,18 @@ data <- data %>%
     TRUE ~ course_level  # Keep the other levels as is
   ))
 
+# Filter rows based on the condition:
+# 1. Include rows with total_enrolled > 0
+# 2. Include rows where origin is either 20243 or 20251, even if total_enrolled == 0
+filtered_data <- data %>%
+  filter(total_enrolled > 0 | origin %in% c(20243, 20251))
+
 # Grouping data by year, course level, and sustainability classification
-course_analysis <- data %>%
+course_analysis <- filtered_data %>%
   group_by(year, course_level, sustainability_classification) %>%
   summarise(
-    total_courses = n(),
-    total_sections = sum(N.Sections, na.rm = TRUE)
+    total_courses = n(),  # Count of courses
+    total_sections = sum(N.Sections, na.rm = TRUE)  # Sum of sections
   ) %>%
   arrange(year, course_level, sustainability_classification)
 
@@ -41,3 +47,4 @@ write.csv(course_analysis, "data_integrity_check/course_data_summary.csv", row.n
 
 # Print the first few rows to verify the output
 print(course_analysis)
+
