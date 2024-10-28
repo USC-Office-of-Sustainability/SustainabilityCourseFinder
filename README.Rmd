@@ -21,7 +21,7 @@ library(knitr)
 ## Introduction
 
 Peter Wu at Carnegie Mellon wrote the initial code that inspired this project, and his original R package can be found on [Github](https://github.com/pwu97/SDGmapR){target='_blank'}. 
-At USC, Brian Tinsley, Alison Chen and Dr. Julie Hopper in the Office of Sustainability switched to using the new [text2sdg](https://www.text2sdg.io/){target='_blank'} package to raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
+At USC, Brian Tinsley, Alison Chen, Feiyang Wang, and Dr. Julie Hopper in the Office of Sustainability switched to using the new [text2sdg](https://www.text2sdg.io/){target='_blank'} package to raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
 
 Check out the [Sustainability Course Finder](https://usc-sustainability.shinyapps.io/Sustainability-Course-Finder/){target="_blank"} to see the the product of our work! Also find an article about our web app [here](https://news.usc.edu/207748/new-usc-sustainability-course-finder/){target="_blank"}!
 
@@ -81,9 +81,9 @@ kable(kw)
 
 The USC keyword list has been modified many times from feedback provided by students, staff and faculty, including those in the USC Presidential Working Group (PWG) Education Committee. This list is continually being improved to increase accuracy. 
 
-In the 02_R directory's file `01_cleaning_keywords.R`, notice that the keywords are converted to lowercase, punctuation is removed, and that duplicates are removed. Removing duplicates is very important for ensuring some courses do not get mapped twice. Furthermore, the pound symbol causes problems when using [text2sdg](https://www.text2sdg.io/){target='_blank'}'s `detect_any()` so keywords with `#` are removed.
+In the data_processing_scripts directory's file `06_cleaning_keywords.R`, notice that the keywords are converted to lowercase, punctuation is removed, and that duplicates are removed. Removing duplicates is very important for ensuring some courses do not get mapped twice. Furthermore, the pound symbol causes problems when using [text2sdg](https://www.text2sdg.io/){target='_blank'}'s `detect_any()` so keywords with `#` are removed.
 
-```{r, code = readLines("02_R/01_cleaning_keywords.R"), eval=F}
+```{r, code = readLines("data_processing_scripts/06_cleaning_keywords.R"), eval=F}
 ```
 
 ## Cleaning Course Data
@@ -91,15 +91,15 @@ In the 02_R directory's file `01_cleaning_keywords.R`, notice that the keywords 
 While we do not expect another school's data to be of the same format as the raw files at USC, we are still including some details on how we cleaned the files in hopes that it may address some common problems others might have with their data.  
 
 <!-- add link to a file? -->
-Course data was retrieved from the USC’s Office of Academic Records and Registrar, and the raw data files, as well as the R scripts to clean them, can be found in the `01_cleaning_raw_data/00_raw_usc_data` folder [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/01_cleaning_raw_data/00_raw_usc_data){target='_blank'}.
-The raw data files had lots of problems with spacing and column names, and we addressed these issues in `01_combine_SOC.R`.  
+Course data was retrieved from the USC’s Office of Academic Records and Registrar can be found in the data_raw/raw_SOC_txt_files folder. The R scripts to clean them is `data_processing_scripts/00_parse_SOC.R` [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/data_processing_scripts/00_parse_SOC.R){target='_blank'}.
+The raw data files had lots of problems with spacing and column names, and we addressed these issues in `00_parse_SOC.R`.  
 
 The main problem was that one course's description was sometimes spread over two cells instead of one row per course. This occurred in multiple columns. For instance, the data looked like this:
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
 library(readxl)
-d <- read_excel("01_cleaning_raw_data/00_raw_usc_data/SOC_files/20232_SOC_updated_10_23_23.xlsx", col_types = "text")
+d <- read_excel("data_raw/raw_SOC_csv_xlsx_files/20232_SOC_updated_10_23_23.xlsx", col_types = "text")
 # remove . in colname
 names(d) <- gsub("\\.", "", names(d))
 # rename total_enr
@@ -154,20 +154,20 @@ The process is the same for both CSV and Excel files. The only difference is tha
 Once all the files have been cleaned and saved in a new folder clean_data, we can combine them all into one dataframe with the following code:
 
 ```{r, eval=FALSE}
-ff <- list.files("01_cleaning_raw_data/00_raw_usc_data/clean_data", 
+ff <- list.files(S_00_parse_SOC_OUTPUT_FILE_PATH, 
                  pattern = "csv", full.names = TRUE)
 # read data
-tmp <- lapply(ff, read.csv)
+tmp <- lapply(ff, read.csv, colClasses = "character")
 
 # combine
 combined_data <- data.table::rbindlist(tmp, fill = TRUE)
 
 write.csv(combined_data,
-          "combined_data.csv",
+          S_01_combine_SOC_OUTPUT_FILE_PATH,
           row.names = FALSE)
 ```
 
-In the next R file, `02_formatting.R`, we read in the combined clean CSV and reformat it. In this file, we change column names, count the number of students and sections for each section, cut out courses listed purely for enrollment credit, and we create the "semester," "all_semesters," and "course_level" columns. To see this code please see the R script [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/01_cleaning_raw_data/00_raw_usc_data/02_formatting.R){target='_blank'}. In this script, some of the cleaning is done in one function, `clean_data`, and some cleaning processes are done with helper functions like `get_semester` and `get_course_level`.
+In the next R file, `02_formatting.R`, we read in the combined clean CSV and reformat it. In this file, we change column names, count the number of students and sections for each section, cut out courses listed purely for enrollment credit, and we create the "semester," "all_semesters," and "course_level" columns. To see this code please see the R script [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/data_processing_scripts/02_formatting.R){target='_blank'}. In this script, some of the cleaning is done in one function, `clean_data`, and some cleaning processes are done with helper functions like `get_semester` and `get_course_level`.
 
 One important piece of this file is excluding certain courses. For example, courses with titles containing "Directed Research" and Individual Instruction", courses with exact titles "Advanced Research Experience" and Board Development", courses with descriptions containing "Directed undergraduate research" and "Directed graduate research", and courses with course IDs ending in 490, 790, and 594 are all removed. You can add additional rules to the clean_data function:
 
@@ -186,15 +186,13 @@ data_clean <- raw_data %>%
              !grepl("-[47]90|-594", COURSE_CODE))
 ```
 
-Note that when you make an update to data like such, you must go and rerun the next R scripts with the new data to update all of the data frames for the shiny app. 
-Once we create the cleaned `usc_courses.csv`, we duplicate it and move it up one directory so that we can run more code on it.
 
-In the above directory, `01_cleaning_raw_data`, there is an R script that shows you how to add a course to the dataframe `01_adding_course.R`. It is important that you include ALL COLUMNS when adding new entries -- otherwise the data will get messy. 
+In the same directory, there is an R script `optional_adding_course.R` that shows you how to add a course to the dataframe. It is important that you include ALL COLUMNS when adding new entries -- otherwise the data will get messy. 
 
 
 ## Cleaning Course Descriptions
 
-Once we have the cleaned dataframe with correct column names, we now clean the course descriptions in `01_cleaning_raw_data/03_cleaning_course_descriptions.R` to increase the accuracy of the mapping we will perform to the keyword list.
+Once we have the cleaned dataframe with correct column names, we now clean the course descriptions in `data_processing_scripts/05_cleaning_course_descriptions.R` to increase the accuracy of the mapping we will perform to the keyword list.
 
 This file corrects context-dependency issues that lead to inaccurate mappings of courses to SDGs. For example, courses with the phrases "business environment" or "learning environment" should not be mapped to the word "environment" and its related SDGs. 
 
@@ -217,15 +215,13 @@ remove_punctuation <- function(tt) {
 
 The `apply_context_dependency` function uses `stri_replace_all_regex` to replace advertising ecosystem with advertising domain in all course descriptions. There is a file called `context_dependencies.csv` which lists all the replacements to be made as two columns: before and after. You can use regex capture groups for more generic matches. Warning: the more context dependencies in the csv file, the slower this function will run. 
 
-Once we have the output from this cleaning, `usc_courses_cleaned.csv`, we duplicate it and move it to the `data` directory where we will be working from now on. Now, all of our R scripts will be from the `02_R` directory and our data will be in this data directory. 
-
 
 ## Mapping Course Descriptions with text2sdg
 
 Our previous strategy to map course descriptions took over 6 hours to run. We now use [text2sdg](https://www.text2sdg.io/){target='_blank'}'s `detect_any` function to map course descriptions in less than 5 minutes.
 
 Now, we are ready to map the clean course descriptions void of punctuation errors and major context dependencies to our keyword list and the 17 SDGs. 
-In the `02_R` directory, find the code to map course descriptions in `02_using_text2sdg.R`.  
+The code to map course descriptions is in `data_processing_scripts/07_using_text2sdg.R`.  
 First we need to create a system to use the USC keywords. The system needs to have 3 columns: system name, SDG, and query.
 
 ```{r eval=FALSE}
@@ -287,13 +283,13 @@ Our current method for classifying courses is as follows:
 
 * Not-Related: a course (title/description) does not map to any SDG keywords
 
-Code for achieving these labels are found in the R script `02_using_text2sdg.R`.  
+Code for achieving these labels are found in the R script `data_processing_scripts/07_using_text2sdg.R`.
 
 Lastly, we also want a count of the number of occurrences of each keyword in the course description using `str_count`.
 
 ## General Education
 
-We were given completely a different set of data for USC's general education requirements. Code for obtaining the GE categories and course titles is found in `03_general_education.R`. In this script, we join the GE data with the course and sustainability data and then go through and ensure that unmapped courses have "Not Related" as the sustainability classification. The resulting dataframe is used in the Shiny App for the general education page. 
+We were given completely a different set of data for USC's general education requirements. Code for obtaining the GE categories and course titles is found in  `data_processing_scripts/08_general_education.R`. In this script, we join the GE data with the course and sustainability data and then go through and ensure that unmapped courses have "Not Related" as the sustainability classification. The resulting dataframe is used in the Shiny App for the general education page. 
 
 ## Creating Shiny App
 
@@ -301,7 +297,7 @@ We can assure that anyone using this github repository can replicate the shiny a
 
 If you follow along with the code in the `app.R` file in the "shiny_app" directory, you will understand the structure and functionality of a shiny app.  
 
-One important tip for making various plots in the dashboard is that it is often helpful to create a new R script to generate a dataframe that is easier to work with for the purposes of that plot / function. In the `02_R` directory, the file `sustainability_related_classes.R` containts code to generate `classes_by_sdgs.csv` which is used for one of the barcharts in the dashboard. We found it incredibly helpful to write code to generate plots in another file so you can quickly go through trial and error instead of opening the dashboard every time. Lastly, **Google, ChatGPT and stackOverflow are your coding friends**... Plenty of people out there are struggling with the same things you struggle with in R and Rshiny. 
+One important tip for making various plots in the dashboard is that it is often helpful to create a new R script to generate a dataframe that is easier to work with for the purposes of that plot / function. In the `data_processing_scripts` directory, the file `test_sustainability_related_classes.R` containts code to generate `classes_by_sdgs.csv` which is used for one of the barcharts in the dashboard. We found it incredibly helpful to write code to generate plots in another file so you can quickly go through trial and error instead of opening the dashboard every time. Lastly, **Google, ChatGPT and stackOverflow are your coding friends**... Plenty of people out there are struggling with the same things you struggle with in R and Rshiny. 
 
 
 ## Creating a Github Repo
@@ -316,7 +312,7 @@ To create a Readme, familiarize yourself with [Markdown](https://www.markdowngui
 
 When the keywords or course data are updated, the way we have been updating the shiny app is by rerunning all of the files in order with the new data. When doing so, we remove the old files from the `Data` folder and the `shiny_app` folder, but we recommend storing them in a backup folder elsewhere in the case that the new run of code doesn't work. 
 
-Which files you will have to rerun is determined by what data you are updating. If the raw course data is updated, you will need to start from the beginning (at `01_cleaning_raw_data/00_raw_usc_data/01_cleaning_scattered_files.R`) and clean and combine all of the school data again. Similarly, if you are adding / fixing keyword mapping issues with context dependencies, you will need to clean the course data again (starting at `01_cleaning_raw_data/03_cleaning_course_descriptions.R`). If you are only updating the keywords list, then you only need to rerun code starting at the mapping of course descriptions (starting at `02_R/01_cleaning_keywords.R`). 
+Which files you will have to rerun is determined by what data you are updating. If the raw course data is updated, you will need to start from the beginning (at `data_processing_scripts/00_parse_SOC.R`) and clean and combine all of the school data again. Similarly, if you are adding / fixing keyword mapping issues with context dependencies, you will need to clean the course data again (starting at `data_processing_scripts/05_cleaning_course_descriptions.R`). If you are only updating the keywords list, then you only need to rerun code starting at the mapping of course descriptions (starting at `data_processing_scripts/06_cleaning_keywords.R`). 
 
 ## Questions?
 
