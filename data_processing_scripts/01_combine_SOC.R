@@ -22,6 +22,7 @@ combined_data <- data.table::rbindlist(tmp, fill = TRUE)
 
 # filter out the columns with COURSE_CODE == "BISC-369"
 combined_data <- combined_data %>%
+  # the course is not offered
   filter(COURSE_CODE != "BISC-369") 
 #  filter(!(origin %in% c("20251", "20243") == FALSE & TOTAL_ENR == 0))
 
