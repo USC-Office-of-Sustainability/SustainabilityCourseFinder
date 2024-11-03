@@ -90,6 +90,8 @@ In the data_processing_scripts directory's file `06_cleaning_keywords.R`, notice
 
 While we do not expect another school's data to be of the same format as the raw files at USC, we are still including some details on how we cleaned the files in hopes that it may address some common problems others might have with their data.  
 
+Please note: our current data processing pipelines use the txt files and those are our most updated data files. The excel and csv files in the raw data folder are only for other institutions to practice with in case they have similar file types as they may not be the most recent versions.
+
 <!-- add link to a file? -->
 Course data was retrieved from the USC’s Office of Academic Records and Registrar can be found in the data_raw/raw_SOC_txt_files folder. The R scripts to clean them is `data_processing_scripts/00_parse_SOC.R` [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/data_processing_scripts/00_parse_SOC.R){target='_blank'}.
 The raw data files had lots of problems with spacing and column names, and we addressed these issues in `00_parse_SOC.R`.  
