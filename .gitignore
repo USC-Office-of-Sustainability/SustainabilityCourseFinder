@@ -7,7 +7,4 @@ DESCRIPTION
 shiny_app/old data 2019-2024
 01_cleaning_raw_data
 02_R
-data_raw/archived
-difference_rows_with_source.csv
-README_prev.md
-shiny_app/usc_courses_full_old.csv
+/data_integrity_check/analysis_results
