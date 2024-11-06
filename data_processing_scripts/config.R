@@ -14,7 +14,7 @@ S_05_cleaning_course_descriptions_INPUT_CONTEXT_DEPENDENCIES_FILE_PATH <- "data_
 S_05_cleaning_course_descriptions_OUTPUT_FILE_PATH <- "data_processed/05_20251.csv"
 
 
-S_06_cleaning_keywords_INPUT_USC_PWG_E_Keywords_FILE_PATH <- "data_raw/USC_PWG-E_Keywords_5_16_24_fixed_char_err.csv"
+S_06_cleaning_keywords_INPUT_USC_PWG_E_Keywords_FILE_PATH <- "data_raw/USC_PWG-E_Keywords_11_5_24.csv"
 S_06_cleaning_keywords_OUTPUT_FILE_PATH <- "shiny_app/usc_keywords.csv"
 
 S_07_using_text2sdg_INPUT_USC_STARS_FILE_PATH <- "data_raw/USC_STARS_AC-1_AY21_AY22_AY23_Revised_1_29_24.xlsx"
