@@ -5,7 +5,8 @@
 # library(wordcloud2)
 
 # Run App with the Run App button at the top of the screen
-
+library(dplyr)
+library(readxl)
 library(tidyverse)
 library(shiny)
 library(shinydashboard)
@@ -157,11 +158,11 @@ feedback_form_link <- "https://forms.gle/keZXBY9uHa9DWsMg6"
 # Define UI for application that draws a histogram
 ui <- dashboardPage(
   skin = "black",
-  
+
   # Application title
   dashboardHeader(title = "USC Sustainability Course Finder", titleWidth = 350),
-  
-  
+
+
   dashboardSidebar(
     width = 350,
     sidebarMenu(
@@ -175,7 +176,7 @@ ui <- dashboardPage(
       menuItem("Download Data", tabName = "downloaddata")
     )
   ),
-  
+
   dashboardBody(
     tags$head(
       tags$link(rel = "stylesheet",
@@ -185,7 +186,7 @@ ui <- dashboardPage(
       tags$link(rel = "stylesheet", # link icon library
                 href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
       includeHTML("google-analytics.html")
-    ), 
+    ),
     tabItems(
       tabItem(
         tabName = "1",
@@ -221,10 +222,10 @@ ui <- dashboardPage(
                        "is USC’s sustainability framework for creating a healthy, just and thriving campus and world.",  strong("It’s a big assignment. We’re all in!")
                      )
                    )),
-          
+
           # br(),
           # br(),
-          
+
           h1("Mapping the 17 SDGs"),
           h3(
             "The SDGs were adopted by all United Nations Member States in 2015, providing a shared blueprint for peace and prosperity for people and the planet, now and into the future. The SDGs are an urgent call for action by all countries\u2014developed and developing\u2014 in a global partnership. They recognize that ending poverty and other deprivations must go hand-in-hand with strategies that improve health and education, reduce inequality, and spur economic growth\u2014 all while tackling climate change and working to preserve our oceans and forests."
@@ -232,7 +233,7 @@ ui <- dashboardPage(
           h3(
             "Below displays a wordcloud for the keywords for each SDG. The keywords were edited by USC’s Office of Sustainability staff and interns as well as the USC Presidential Working Group. These keywords evolved from lists suggested by Elsevier and Carnegie Mellon University."
           ),
-          
+
           # h3("Below displays a wordcloud for the top keywords for each SDG.
           #   The keywords come from the ", a("CMU250 keywords list,", href="https://github.com/CMUSustainability/SDGmapR/tree/main/data", target="_blank"),
           #    "and the weights of the words relative to each SDG
@@ -258,8 +259,8 @@ ui <- dashboardPage(
         ) #end fluid page
       ),
       # end tabitem 1
-      
-      
+
+
       tabItem(
         tabName = "2",
         fluidPage(
@@ -268,7 +269,7 @@ ui <- dashboardPage(
             strong("How do I use this dashboard?"),
             "You can choose your search function in the main menu in the upper-left corner of this dashboard. Here you can either find courses by the 17 different SDGs (Find Courses by SDGs) or see which SDGs map to a selected course (Find SDGs by Courses). To see how many courses at USC are sustainability-focused or SDG-related, please click on the bottom menu option \"All Sustainability-Related Courses\"."
           ),
-          
+
           h3(
             strong("How was this dashboard created?"),
             "This dashboard was created with R Shiny, based on source code in R through a collaboration of USC’s Office of Sustainability (Source Code Developers: PSIP Interns\u2014Brian Tinsley, Alison Chen and Feiyang Wang, with USC's Sustainablity Data Analyst\u2014Dr. Julie Hopper) with Carnegie Mellon University (Source Code Developers: Director of Sustainability Initiatives\u2014Alex Hinicker and Undergraduate Alumni\u2014Peter Wu). Following the initial development of this dashboard, USC staff in the Office of Sustainability and faculty in the Presidential Working Group (PWG) on Sustainability in Education reviewed the dashboard and keywords. All of the datasets and source code used in this dashboard are open-source and can be found through",
@@ -283,22 +284,22 @@ ui <- dashboardPage(
               href = "https://sdgs.un.org/goals#icons",
               target = "_blank")
           ),
-          
+
           h3(
             strong("Which USC courses are included in this dashboard?"),
             "All USC courses except for \"Directed Research,\" Master's Thesis,\" and \"Doctoral Dissertation\" courses. Although some courses do not map to the SDGs, they are still included in data analysis. "
           ),
-          
+
           h3(
             strong("How often is this dashboard updated?"),
             "Data is updated at least once a semester after registration is complete for the following semester, and more frequently upon feedback."
           ),
-          
+
           h3(
             strong("How are USC's courses mapped to the 17 SDGs?"),
             "Please visit our \"Home\" page to learn more."
           ),
-          
+
           h3(
             strong(
               "I’m a faculty member, how can I use or provide feedback on this dashboard?"
@@ -307,14 +308,14 @@ ui <- dashboardPage(
             a("this form", href = feedback_form_link, target = "_blank"),
             "or email us at oosdata@usc.edu."
           ),
-          
+
           h3(
             strong(
               "I’d like to integrate sustainability into my courses. Where can I get help with this?"
             ),
             "If you’re interested in integrating sustainability into an existing course, contact the Office of Sustainability’s Experiential Learning Manager, Dr. Chelsea Graham at cmgraham@usc.edu."
           ),
-          
+
           h3(
             strong("What if I have more Questions/Comments or Suggestions?"),
             "Please fill out our ",
@@ -325,8 +326,8 @@ ui <- dashboardPage(
         ) #end fluidpage
       ),
       #end tabitem 2
-      
-      
+
+
       tabItem(
         tabName = "3",
         fluidPage(
@@ -371,7 +372,7 @@ ui <- dashboardPage(
           fluidRow(align = "center",
                    column(
                      6,
-                     
+
                      h2(strong("All SDGs Mapped to Your Courses")),
                      plotOutput(outputId = "user_to_goals"),
                      uiOutput("keyword_freq_axis_title1")
@@ -387,8 +388,8 @@ ui <- dashboardPage(
         )#end fluid page
       ),
       # end tabitem 3
-      
-      
+
+
       tabItem(
         tabName = "4",
         # tabPanel("All", fluidPage(
@@ -417,15 +418,15 @@ ui <- dashboardPage(
             choices = ""
           ),
           h3(textOutput("semesters_offered")),
-          
+
           h5(
             "*Special topics courses (course levels 499 and 599) often change. Please confirm with the",
-            a("USC Schedule of Classes", 
+            a("USC Schedule of Classes",
               href="https://classes.usc.edu/",
               target="_blank"),
             "for which special topic is currently being offered."
           ),
-          
+
           br(),
           h3(strong("Course Title and Description:")),
           h3(textOutput("course_desc")),
@@ -444,7 +445,7 @@ ui <- dashboardPage(
               # h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
               uiOutput("keyword_freq_axis_title3")
             )
-            
+
             # column(6, plotOutput(outputId = "test_run"), br())
           )),
           fluidRow(align = "center", bootstrapPage(
@@ -466,8 +467,8 @@ ui <- dashboardPage(
         ) # end fluidpage
       ),
       #end tabitem 4
-      
-      
+
+
       tabItem(
         tabName = "5",
         fluidPage(
@@ -527,18 +528,18 @@ ui <- dashboardPage(
         ) #end fluidpage
       ),
       #end tabitem5
-      
+
       tabItem(
         tabName = "6",
         fluidPage(
           h1("Search by GE Requirements"),
-          
+
           # h3("All students at USC are required to fulfill their general education (GE) requirements."),
           h3(
             "Select a GE category below to see the sustainability related courses which satisfy that requirement. GE courses that did not map to the SDGs via our keywords are not shown, but you can find them in the course catalogue ",
             a("here.", href = "https://dornsife.usc.edu/2015ge/2015ge-requirements/")
           ),
-          
+
           uiOutput("disclaimer5"),
           selectInput(
             inputId = "ge_category",
@@ -554,7 +555,7 @@ ui <- dashboardPage(
             options = list(maxOptions = 10000, `actions-box` = TRUE),
             multiple = T
           ),
-          
+
           br(),
           br(),
           h3(strong(textOutput("top_ge_chart"))),
@@ -574,8 +575,8 @@ ui <- dashboardPage(
         ) #end fluid page
       ),
       #end tabitem 6
-      
-      
+
+
       tabItem(
         tabName = "7",
         fluidPage(
@@ -605,7 +606,7 @@ ui <- dashboardPage(
           br(),
           # choicesOpt = list(
           # style = rep(("font-size:24px; line-height: 1.5;"),2)))),
-          
+
           fluidRow(
             column(6,
                    h2(
@@ -769,45 +770,124 @@ ui <- dashboardPage(
 
 # Define server logic
 server <- function(input, output, session) {
-  ## updating inputs to speed up program
+  cross_enroll_data <- read_excel("USC_SOC_SIS_CROSS_ENROLLMENT.xlsx")
+  cross_enroll_mapping <- cross_enroll_data %>%
+    rename(courseID = `Course ID.`, cross_enroll_id = `Cross-Enroll`) %>%
+    select(courseID, cross_enroll_id)
+
+
+  transform_string <- function(input_text) {
+    gsub(" \\(.*?\\)", "", input_text)
+  }
+
+
+  cross_enroll_choices_recent_courses <- cross_enroll_data %>%
+    rename(courseID = `Course ID.`, cross_enroll_id = `Cross-Enroll`) %>%
+    inner_join(recent_courses, by = "courseID") %>%
+    filter(all_goals != "") %>%
+    mutate(
+      cross_enroll_choice = paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ") - ", course_title)
+    ) %>%
+    select(cross_enroll_choice) %>%
+    distinct()
+
+  # Combine with original courses (without cross-enrollment)
+  original_recent_courses_choices <- recent_courses %>%
+    filter(all_goals != "") %>%
+    # filter(!courseID %in% cross_enroll_data$`Course ID.`) %>%
+    mutate(cross_enroll_choice = paste0(courseID, " - ", course_title)) %>%
+    select(cross_enroll_choice) %>%
+    distinct()
+
+  # Merge the two lists
+  recent_courses_with_cross <- bind_rows(cross_enroll_choices_recent_courses, original_recent_courses_choices) %>%
+    distinct() %>%
+    pull(cross_enroll_choice) %>%
+    sort()
+
+  # Update selectize input for 'usc_classes'
   updateSelectizeInput(
     session,
     'usc_classes',
-    # choices = recent_courses %>% filter(all_goals != "") %>% select(courseID) %>% distinct() %>% pull(),
-    choices = recent_courses %>% filter(all_goals != "") %>% mutate(id_title = paste(courseID, course_title, sep = " - ")) %>% select(id_title) %>% distinct() %>% pull(),
+    choices = recent_courses_with_cross,
     selected = "ENST-150 - Environmental Issues in Society",
     server = TRUE
   )
+
+
   observeEvent(
     input$usc_classes,
-    {
-      section_choices <- recent_courses %>% filter(all_goals != "") %>% mutate(id_title = paste(courseID, course_title, sep = " - ")) %>% filter(id_title == input$usc_classes) %>% select(section_name) %>% distinct()
-      print(section_choices$section_name == "")
-      if (nrow(section_choices) == 1 & section_choices$section_name[1] == "") {
-        disable("usc_classes_section")
-      } else {
-        enable("usc_classes_section")
-      }
-      updateSelectizeInput(
-        session,
-        'usc_classes_section',
-        choices = section_choices %>% pull(),
-        # selected = "", # make it default to the first option
-        server = TRUE
-        # how to disable this when there are no sections
-      )
-    })
-  
+  {
+    usc_classes_processed <- transform_string(input$usc_classes)
+    print(usc_classes_processed)
+
+    section_choices <- recent_courses %>%
+      filter(all_goals != "") %>%
+      mutate(id_title = paste(courseID, course_title, sep = " - ")) %>%
+      filter(id_title == usc_classes_processed) %>%
+      select(section_name) %>%
+      distinct()
+
+    if (nrow(section_choices) == 1 & section_choices$section_name[1] == "") {
+      disable("usc_classes_section")
+    } else {
+      enable("usc_classes_section")
+    }
+
+
+
+    updateSelectizeInput(
+      session,
+      'usc_classes_section',
+      choices = section_choices %>% pull(),
+      server = TRUE
+    )
+  })
+
+
+
+
+
+
+
+
+  cross_enroll_choices_user_classes <- cross_enroll_data %>%
+    rename(courseID = `Course ID.`, cross_enroll_id = `Cross-Enroll`) %>%
+    inner_join(classes, by = "courseID") %>%
+    mutate(
+      cross_enroll_choice = paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ") - ", course_title, " - ", section_name)
+    ) %>%
+    select(cross_enroll_choice) %>%
+    distinct()
+
+  # Combine with original courses (without cross-enrollment)
+  original_user_classes_choices <- classes %>%
+    mutate(cross_enroll_choice = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+    filter(!courseID %in% cross_enroll_data$`Course ID.`) %>%
+    select(cross_enroll_choice) %>%
+    distinct()
+
+  # Merge the two lists
+  user_classes_with_cross <- bind_rows(cross_enroll_choices_user_classes, original_user_classes_choices) %>%
+    distinct() %>%
+    pull(cross_enroll_choice) %>%
+    sort()
+
+
   # map classes in ascending order
   updateSelectizeInput(
     session,
     'user_classes',
-    choices = classes %>% mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>% select(course_text) %>% distinct() %>% pull() %>% sort(),
+    choices = user_classes_with_cross,
+    # choices = classes %>% mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>% select(course_text) %>% distinct() %>% pull() %>% sort(),
     # choices = unique(sustainability_related$courseID) %>% sort(),
     server = TRUE
   )
-  
-  
+
+
+
+
+
   # disclaimer
   output$disclaimer1 <-
     output$disclaimer2 <-
@@ -829,7 +909,7 @@ server <- function(input, output, session) {
         )
       )
     })
-  
+
   # total sdg keyword frequency label
   output$keyword_freq_axis_title1 <-
     output$keyword_freq_axis_title2 <-
@@ -839,15 +919,15 @@ server <- function(input, output, session) {
     output$keyword_freq_axis_title6 <- renderUI({
       h3(strong("Total SDG Keyword Frequency"), style = "margin-top: 0px")
     })
-  
-  
+
+
   #####
   ##
   ##### tabitem1 -- home(about) and MAPPING THE 17 SDGS ###
   ##
   #####
-  
-  
+
+
   output$visualize_sdg <- renderImage({
     sdg_goal_keyword_df <- classes %>%
       filter(goal %in% as.numeric(substr(input$sdg_goal3, 1, 2))) %>%
@@ -870,7 +950,7 @@ server <- function(input, output, session) {
          width = "100%",
          height = "auto")
   }, deleteFile = TRUE)
-  
+
   #sdg keywords table
   output$keywords_table <- DT::renderDataTable({
     keywords %>%
@@ -881,43 +961,67 @@ server <- function(input, output, session) {
       select(Keyword) %>%
       distinct()
   }, rownames = FALSE)
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   #####
   ##
   ##### tabitem3 -- MAP YOUR CLASSES ###
   ##
   #####
-  
-  
+
+
   # get the courses
   output$personal_classes <- renderText({
     if (length(input$user_classes) > 0) {
-      #first make sure they typed something in
-      
-      class_list <-
-        classes %>% #changed this from master
-        mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-        filter(course_text %in% input$user_classes) %>% #changed from section
-        distinct(course_text, .keep_all = TRUE) %>%
+      # Get regular and cross-enroll classes
+      regular_classes <- classes %>%
+        mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name))
+
+      cross_enroll_classes <- cross_enroll_data %>%
+        rename(courseID = `Course ID.`, cross_enroll_id = `Cross-Enroll`) %>%
+        inner_join(classes, by = "courseID") %>%
+        mutate(
+          course_text = paste0(courseID, " (Cross-Enroll as ",cross_enroll_id , ") - ", course_title, " - ", section_name)
+        )
+
+      # Combine the two and match against user selection
+      all_classes <- bind_rows(regular_classes, cross_enroll_classes) %>%
+        distinct(course_text, .keep_all = TRUE)
+
+      # Filter based on user input
+      class_list <- all_classes %>%
+        filter(course_text %in% input$user_classes) %>%
         select(course_text) %>%
-        unique() %>%
         pull()
       return(paste(class_list, collapse = ", "))
     }
   })
-  
+
+
+
+
+  # Reactive expression to restore user classes
+  user_classes_restored <- reactive({
+    if (!is.null(input$user_classes)) {
+      sapply(input$user_classes, transform_string, USE.NAMES = FALSE)
+    } else {
+      character(0)  # Handle case where input is NULL
+    }
+  })
+
+
   # wordcloud for users classes
   output$users_wordcloud <- renderImage({
-    if (length(input$user_classes) > 0) {
-      
+    user_classes_restored <- user_classes_restored()
+    if (length(user_classes_restored) > 0) {
+
       df = classes %>%
         mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-        filter(course_text %in% input$user_classes) %>%
+        filter(course_text %in% user_classes_restored) %>%
         filter(!is.na(keyword)) %>%
         select(course_text, keyword, goal, color, freq) %>%
         distinct() %>%
@@ -943,7 +1047,7 @@ server <- function(input, output, session) {
         )
       }
       dev.off()
-      
+
     } else {
       png("wordcloud.png")
       ggplot()
@@ -954,18 +1058,21 @@ server <- function(input, output, session) {
          width = "100%",
          height = "auto")
   }, deleteFile = TRUE)
-  
+
   # output for users classes
   output$user_classes_barplot <- renderPlot({
+
     # validate(
     #   need(input$user_classes != "", label = "Course")
     # )
-    if (length(input$user_classes) == 0) {
+    user_classes_restored <- user_classes_restored()
+
+    if (length(user_classes_restored) == 0) {
       return(ggplot())
     }
     df <- classes %>%
       mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-      filter(course_text %in% input$user_classes) %>%
+      filter(course_text %in% user_classes_restored) %>%
       filter(!is.na(keyword)) %>%
       select(course_text, keyword, goal, color, freq) %>%
       distinct() %>%
@@ -985,7 +1092,7 @@ server <- function(input, output, session) {
       )) +
       geom_col() +
       coord_flip() +
-      labs(# title = paste0("All SDG Keywords"),
+      labs( # title = paste0("All SDG Keywords"),
         fill = "SDG",
         x = "SDG Keyword",
         y = "Total SDG Keyword Frequency") +
@@ -1001,25 +1108,27 @@ server <- function(input, output, session) {
             0, (max(x) + 1) * 1.1
           ))))
       ) -> p
-    
+
     if (nrow(df) != 0) {
       p <- p + scale_x_discrete(labels = label_wrap(20))
     }
-    
+
     p
-    
-    
+
+
   })
-  
-  
+
+
   # user to goals barplot
   output$user_to_goals <- renderPlot({
-    if (length(input$user_classes) == 0) {
+
+    user_classes_restored <- user_classes_restored()
+    if (length(user_classes_restored) == 0) {
       return(ggplot())
     }
     df <- classes %>%
       mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-      filter(course_text %in% input$user_classes) %>%
+      filter(course_text %in% user_classes_restored) %>%
       filter(!is.na(keyword)) %>%
       select(course_text, keyword, goal, color, freq) %>%
       distinct() %>%
@@ -1039,7 +1148,7 @@ server <- function(input, output, session) {
       )) +
       geom_col() +
       coord_flip() +
-      labs(# title = paste0("All SDGs Mapped to your Courses"),
+      labs( # title = paste0("All SDGs Mapped to your Courses"),
         fill = "SDG",
         x = "SDG",
         y = "Total SDG Keyword Frequency") +
@@ -1056,50 +1165,60 @@ server <- function(input, output, session) {
           ))))
       ) # integer breaks
   })
-  
-  
-  output$user_table <- DT::renderDataTable({
-    
-    # use this dataframe so the course descriptions still show for unmapped classes
-    # df = sustainability_related[sustainability_related$courseID %in% input$user_classes, ]
-    # need to only grab one instance
-    if (length(input$user_classes) > 0) {
-      classes %>%
-        mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
-        filter(course_text %in% input$user_classes) %>%
-        # distinct(courseID, .keep_all = TRUE) %>%
-        rename(
-          "Course ID" = courseID,
-          "Course Title" = course_title,
-          "Course Description" = course_description,
-          "Section Name" = section_name,
-          "All Goals" = all_goals,
-          "Sustainability Classification" = sustainability_classification
-        ) %>%
-        select("Course ID",
-               "Course Title",
-               "Section Name",
-               "All Goals", 
-               "Sustainability Classification",
-               "Course Description") %>%
-        distinct()
-    } else {
-      NULL
-    }
-  }, rownames = FALSE,
+
+
+output$user_table <- DT::renderDataTable({
+  user_classes_restored <- user_classes_restored()
+  if (length(user_classes_restored) > 0) {
+    classes %>%
+      mutate(course_text = paste0(courseID, " - ", course_title, " - ", section_name)) %>%
+      filter(course_text %in% user_classes_restored) %>%
+      # Join with cross-enroll data to check if Course ID has a cross-enrollment mapping
+      left_join(cross_enroll_mapping, by = "courseID") %>%
+      # Modify Course ID to include cross-enrollment info if available
+      mutate(courseID_display = ifelse(!is.na(cross_enroll_id),
+                         paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+                         courseID)) %>%
+      # Rename columns for the final display
+      rename(
+        "Course ID" = courseID_display,
+        "Course Title" = course_title,
+        "Course Description" = course_description,
+        "Section Name" = section_name,
+        "All Goals" = all_goals,
+        "Sustainability Classification" = sustainability_classification
+      ) %>%
+      select("Course ID",
+             "Course Title",
+             "Section Name",
+             "All Goals",
+             "Sustainability Classification",
+             "Course Description") %>%
+      distinct()
+  } else {
+    NULL
+  }
+}, rownames = FALSE,
   options = list(scrollX = TRUE))
-  
-  
+
+
+
+
+
+
+
   #####
   ##### tabitem4 -- FIND SDGS BY CLASSES ###
   #####
-  
-  
-  
-  #this returns a dataframe with the descriptions of all the classes the user selected
+
+
+
+  # this returns a dataframe with the descriptions of all the classes the user selected
   output$course_desc <- renderText({
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
     recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>% #changed from section
+      filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>% #changed from section
       filter(section_name == input$usc_classes_section) %>%
       select(course_title, section_name, course_description) %>%
       distinct() -> course_info
@@ -1108,20 +1227,22 @@ server <- function(input, output, session) {
     } else {
       paste0(course_info$course_title, " (", course_info$section_name, ") - ", course_info$course_description)
     }
-    
+
   })
-  
+
   # writes out the semesters offered
   output$semesters_offered <- renderText({
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
     sems <- recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>%
       filter(section_name == input$usc_classes_section) %>%
       select(all_semesters) %>%
       distinct() %>%
       pull()
     paste("Semesters offered: ", sems)
   })
-  
+
   #this part filters the classes by the semester chosen in input field
   # observeEvent(input$usc_semester1,
   #              {
@@ -1132,11 +1253,13 @@ server <- function(input, output, session) {
   #                                     selected = "ENST-100")
   #
   #              })
-  
+
   # barplot for sdgs
   output$classes_to_goals <- renderPlot({
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
     df <- recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>%
       filter(section_name == input$usc_classes_section)
     plot_colors <- df %>%
       arrange(goal) %>%
@@ -1176,17 +1299,22 @@ server <- function(input, output, session) {
           ))))
       )
   })
-  
+
   # title
   output$classes_to_goals_title <- renderText({
-    paste0("All SDGs Mapped to ", strsplit(input$usc_classes, " - ")[[1]][1])
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
+    paste0("All SDGs Mapped to ", strsplit(usc_class_main_courseid_input, " - ")[[1]][1])
   })
-  
-  
+
+
   # keyword to sdg barplot
   output$classes_to_keywords <- renderPlot({
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
+
     df <- recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>%
       filter(section_name == input$usc_classes_section)
     plot_colors <- df %>%
       arrange(goal) %>%
@@ -1223,17 +1351,21 @@ server <- function(input, output, session) {
           ))))
       )
   })
-  
+
   # title
   output$classes_to_keywords_title <- renderText({
-    paste0(strsplit(input$usc_classes, " - ")[[1]][1], " SDG Keywords")
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
+    paste0(strsplit(usc_class_main_courseid_input, " - ")[[1]][1], " SDG Keywords")
   })
-  
-  
+
+
   # class to wordcloud
   output$classes_to_wordcloud <- renderImage({
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
     df = recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>%
       filter(section_name == input$usc_classes_section) %>%
       filter(!is.na(keyword)) %>%
       select(keyword, color, freq) %>%
@@ -1261,12 +1393,14 @@ server <- function(input, output, session) {
          width = "100%",
          height = "auto")
   }, deleteFile = TRUE)
-  
-  
+
+
   # data table at bottom
   output$classes_table = DT::renderDataTable({
+      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+
     recent_courses %>%
-      filter(courseID == strsplit(input$usc_classes, " - ")[[1]][1]) %>%
+      filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>%
       filter(section_name == input$usc_classes_section) %>%
       filter(!is.na(keyword)) %>%
       group_by(keyword) %>%
@@ -1277,28 +1411,28 @@ server <- function(input, output, session) {
   },
   rownames = FALSE,
   options = list(language = list(zeroRecords = "Not Related")))
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   #####
   ##### tabitem5 -- FIND CLASSES BY SDGS
   #####
-  
-  
-  
+
+
+
   # trying to get Classes by SDGs table name
   output$sdg_name = renderText({
     paste("All Courses Mapped to SDG", input$sdg_goal1, sep = "")
   })
-  
+
   # title of graph
   output$top_classes = renderText({
     paste0("Top 10 Courses that Map to SDG", input$sdg_goal1)
   })
-  
+
   #this part filters the departments by the semester chosen in input field
   # observeEvent(input$usc_semester3,
   #              {
@@ -1311,13 +1445,13 @@ server <- function(input, output, session) {
   #                                     # selected = "All")
   #
   #              })
-  
+
   # need to filter for these options based on input from input$course_level
   # "All", "Graduate", "Undergrad lower divison", "Undergrad upper division"
   # undergrad lower division
   # undergrad upper division
   # graduate
-  
+
   output$goals_to_classes <- renderPlot({
     df <- recent_courses %>%
       filter(department %in% input$department_input,
@@ -1375,10 +1509,14 @@ server <- function(input, output, session) {
           ))))
       )
   })
-  
+
   # table for sdgs to classes
+
+
+
   output$top_classes_sdg_table <- DT::renderDataTable({
     df <- recent_courses %>%
+      left_join(cross_enroll_mapping, by = "courseID") %>%
       filter(department %in% input$department_input,
              goal %in% as.numeric(substr(input$sdg_goal1, 1, 2)))
     if (input$course_level_input != "All") {
@@ -1386,6 +1524,9 @@ server <- function(input, output, session) {
         filter(course_level == tolower(input$course_level_input))
     }
     df %>%
+      mutate(courseID = ifelse(!is.na(cross_enroll_id),
+                               paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+                               courseID)) %>%
       group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       ungroup() %>%
@@ -1420,30 +1561,40 @@ server <- function(input, output, session) {
   #     autoWidth = TRUE)
   #     # columnDefs = list(list(width = '200px', targets = "_all"))
   # )
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
   #####
   ##### tabitem6 -- GE requirements
   #####
-  
-  
-  
+
+
+
   # stacked bar chart for GEs
   output$ge_bar <- renderPlot({
     # get the top 10 classes and total weights
     df <- ge_data %>%
       filter(full_name == input$ge_category) %>%
       filter(goal %in% input$ge_sdgs) %>%
-      mutate(courseID_section = ifelse(section_name == "", courseID, paste0(courseID, " - ", section_name))) %>%
-      # mutate(courseID_section = paste(courseID, section_name, sep = " - ")) %>%
+      left_join(cross_enroll_mapping, by = "courseID") %>%
+      mutate(courseID_section = ifelse(!is.na(cross_enroll_id),
+                                       paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+                                       courseID)) %>%
+      # mutate(
+      #   courseID_section = ifelse(
+      #     section_name == "",
+      #     courseID_section,
+      #     paste0(courseID_section, " - ", section_name)
+      #   )
+      # )
+      mutate(courseID_section = paste(courseID, section_name, sep = " - ")) %>%
       group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       ungroup()
@@ -1507,29 +1658,34 @@ server <- function(input, output, session) {
             0, (max(x) + 1) * 1.1
           ))))
       )
-    
+
   })
-  
+
   # title above the chart
   output$top_ge_chart = renderText({
     paste("Top 10 Courses that Map to ", input$ge_category)
   })
-  
+
   # trying to get Classes by SDGs table name
   output$ge_name = renderText({
     paste("All GE Courses Mapped to ", input$ge_category, sep = "")
   })
-  
+
   output$ge_table <- DT::renderDataTable({
     ge_data %>%
       filter(full_name == input$ge_category) %>%
       filter(goal %in% input$ge_sdgs) %>%
+      left_join(cross_enroll_mapping, by = "courseID") %>%
+      # Modify Course ID to include cross-enrollment info if available
+      mutate(courseID_display = ifelse(!is.na(cross_enroll_id),
+                         paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+                         courseID)) %>%
       group_by(courseID, section_name) %>%
       mutate(total_freq = sum(freq)) %>%
       arrange(desc(total_freq)) %>%
       ungroup() %>%
       rename(
-        'Course ID' = courseID,
+        'Course ID' = courseID_display,
         "Course Title" = course_title,
         "Section Name" = section_name,
         Semester = semester,
@@ -1554,17 +1710,17 @@ server <- function(input, output, session) {
     language = list(zeroRecords = "No Courses"),
     scrollX = TRUE
   ))
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   #####
   ##### tabitem7 -- ALL SUSTAINABILITY RELATED CLASSES ###
   #####
-  
-  
+
+
   # sustainability related departments pie chart
   output$pie3 <- renderPlotly({
     df <- sustainability_related %>%
@@ -1602,7 +1758,7 @@ server <- function(input, output, session) {
     #     value = df$n,
     #     proportion = round(df$n / total_num * 100, 1)
     #   )
-    
+
     # compute positions of labels
     # pie_data <- pie_data %>%
     #   arrange(desc(group)) %>%
@@ -1647,7 +1803,7 @@ server <- function(input, output, session) {
       )
     )
     fig
-    
+
     # p <- pie(
     #   pie_data$value,
     #   labels = paste0(
@@ -1664,7 +1820,7 @@ server <- function(input, output, session) {
     #   family = "sans"
     # )
   })
-  
+
   # sustainability courses offered pie chart
   output$pie4 <- renderPlotly({
     df <- sustainability_related %>%
@@ -1731,13 +1887,13 @@ server <- function(input, output, session) {
       )
     )
     fig
-    
+
     # compute positions of labels
     # pie_data <- pie_data %>%
     #   arrange(desc(group)) %>%
     #   mutate(prop = value / sum(pie_data$value) * 100) %>%
     #   mutate(ypos = cumsum(prop) - 0.5 * prop)
-    
+
     # pie(
     #   pie_data$value,
     #   labels = paste0(
@@ -1754,7 +1910,7 @@ server <- function(input, output, session) {
     #   family = "sans"
     # )
   })
-  
+
   # sustainability departments table
   output$department_sustainability_table <- DT::renderDataTable({
     df <- sustainability_related %>%
@@ -1798,7 +1954,7 @@ server <- function(input, output, session) {
         "Sustainability-Focused Courses" = courses
       )
   }, rownames = FALSE)
-  
+
   output$courses_sustainability_table <- DT::renderDataTable({
     df <- sustainability_related %>%
       filter(year == input$usc_year)
@@ -1815,14 +1971,20 @@ server <- function(input, output, session) {
     }
     df %>%
       filter(sustainability_classification == "Sustainability-Focused") %>%
-      select(courseID, course_title, section_name, sustainability_classification) %>%
-      rename("Course ID" = courseID,
+      left_join(cross_enroll_mapping, by = "courseID") %>%
+      mutate(courseID_display = ifelse(!is.na(cross_enroll_id),
+             paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+             courseID)) %>%
+      select(courseID_display, course_title, section_name, sustainability_classification) %>%
+
+
+      rename("Course ID" = courseID_display,
              "Course Title" = course_title,
              "Section Name" = section_name,
              "Sustainability Classification" = sustainability_classification) %>%
       distinct()
   }, rownames = FALSE)
-  
+
   output$department_wordcloud <- renderImage({
     df <- sustainability_related %>%
       filter(year == input$usc_year)
@@ -1869,7 +2031,7 @@ server <- function(input, output, session) {
          width = "100%",
          height = "auto")
   }, deleteFile = TRUE)
-  
+
   # title above the chart
   output$department_barchart_title = renderText({
     paste(
@@ -1880,7 +2042,7 @@ server <- function(input, output, session) {
       input$usc_year
     )
   })
-  
+
   output$department_barchart <- renderPlot({
     df <- sustainability_related %>%
       filter(year == input$usc_year) %>%
@@ -1904,10 +2066,10 @@ server <- function(input, output, session) {
     plot_data <- df %>%
       group_by(department, sustainability_classification) %>%
       count()
-    
+
     middle_department <-
       unique(plot_data$department)[length(unique(plot_data$department)) / 2]
-    
+
     plot_data$group <- 1
     if (length(unique(plot_data$department)) > 40) {
       bottom_third <-
@@ -1963,16 +2125,16 @@ server <- function(input, output, session) {
     } else {
       actual_plot
     }
-    
+
   })
-  
+
   # title above the chart
   output$school_barchart_title = renderText({
     paste(input$course_level_pie,
           "Courses by School in",
           input$usc_year)
   })
-  
+
   # set_shiny_plot_height <- function(seesion, output_school_barchart_height) {
   #   print("here")
   #   function() {
@@ -2002,10 +2164,10 @@ server <- function(input, output, session) {
     plot_data <- df %>%
       group_by(school, sustainability_classification) %>%
       count()
-    
+
     middle_school <-
       unique(plot_data$school)[length(unique(plot_data$school)) / 2]
-    
+
     plot_data$group <- 1
     if (length(unique(plot_data$school)) > 20) {
       plot_data <- plot_data %>%
@@ -2076,7 +2238,7 @@ server <- function(input, output, session) {
       guides(fill = guide_legend(nrow = 2, byrow = TRUE)) + # two rows
       coord_flip() +
       scale_x_discrete(labels = scales::label_wrap(50))
-    
+
   })
   output$school_barchart_plotly <- renderPlotly({
     width <- session$clientData$output_school_barchart_width
@@ -2117,7 +2279,7 @@ server <- function(input, output, session) {
     plot_data <- df %>%
       group_by(school, sustainability_classification) %>%
       count()
-    
+
     # middle_school <-
     #   unique(plot_data$school)[length(unique(plot_data$school)) / 2]
     #
@@ -2161,7 +2323,7 @@ server <- function(input, output, session) {
         )
       ) %>%
       arrange(school)
-    
+
     plot_data %>%
       group_by(school) %>%
       mutate(total = sum(n)) %>%
@@ -2175,7 +2337,7 @@ server <- function(input, output, session) {
         values_fill = 0
       )
     # wide_data$school <- stringr::str_wrap(wide_data$school, 30)
-    
+
     fig <- plot_ly(
       wide_data,
       x = ~ `Not Related`,
@@ -2261,9 +2423,9 @@ server <- function(input, output, session) {
         showarrow = FALSE,
         align = 'right'
       )
-    
+
     fig
-    
+
     # fig <- plot_ly(plot_data, x = ~school, y = ~perc,
     #                type = 'bar',
     #                # orientation = 'h',
@@ -2291,12 +2453,12 @@ server <- function(input, output, session) {
     #   scale_x_discrete(labels = scales::label_wrap(50)) -> p
     # ggplot(p)
   })
-  
-  
+
+
   ###
   ### tabitem8 - DOWNLOAD DATA
   ###
-  
+
   # download data page
   # deptChoices <- reactive({
   #   sustainability_related %>%
@@ -2349,7 +2511,7 @@ server <- function(input, output, session) {
         filter(
           school %in% input$school_dl,
           department %in% input$dept_dl,
-          sustainability_classification %in% input$sustainability_dl,  
+          sustainability_classification %in% input$sustainability_dl,
           year %in% input$year_dl,
           goal %in% as.numeric(input$sdg_dl)
         ) %>%
