@@ -1302,17 +1302,15 @@ output$user_table <- DT::renderDataTable({
 
   # title
   output$classes_to_goals_title <- renderText({
-      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+      # usc_class_main_courseid_input <- transform_string(input$usc_classes)
 
-    paste0("All SDGs Mapped to ", strsplit(usc_class_main_courseid_input, " - ")[[1]][1])
+    paste0("All SDGs Mapped to ", strsplit(input$usc_classes, " - ")[[1]][1])
   })
 
 
   # keyword to sdg barplot
   output$classes_to_keywords <- renderPlot({
       usc_class_main_courseid_input <- transform_string(input$usc_classes)
-
-
     df <- recent_courses %>%
       filter(courseID == strsplit(usc_class_main_courseid_input, " - ")[[1]][1]) %>%
       filter(section_name == input$usc_classes_section)
@@ -1354,9 +1352,9 @@ output$user_table <- DT::renderDataTable({
 
   # title
   output$classes_to_keywords_title <- renderText({
-      usc_class_main_courseid_input <- transform_string(input$usc_classes)
+      # usc_class_main_courseid_input <- transform_string(input$usc_classes)
 
-    paste0(strsplit(usc_class_main_courseid_input, " - ")[[1]][1], " SDG Keywords")
+    paste0(strsplit(input$usc_classes, " - ")[[1]][1], " SDG Keywords")
   })
 
 
@@ -2515,6 +2513,10 @@ output$user_table <- DT::renderDataTable({
           year %in% input$year_dl,
           goal %in% as.numeric(input$sdg_dl)
         ) %>%
+        left_join(cross_enroll_mapping, by = "courseID") %>%
+        mutate(courseID = ifelse(!is.na(cross_enroll_id),
+                   paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+                   courseID)) %>%
         ungroup() %>%
         select(
           school,
@@ -2562,11 +2564,16 @@ output$user_table <- DT::renderDataTable({
         goal %in% as.numeric(input$sdg_dl)
       ) %>%
       ungroup() %>%
+      left_join(cross_enroll_mapping, by = "courseID") %>%
+      # Modify Course ID to include cross-enrollment info if available
+      mutate(courseID_display = ifelse(!is.na(cross_enroll_id),
+                         paste0(courseID, " (Cross-Enroll as ", cross_enroll_id, ")"),
+                         courseID)) %>%
       arrange(sustainability_classification, school, courseID, semester) %>%
       select(
         school,
         department,
-        courseID,
+        courseID_display,
         course_title,
         section_name,
         course_description,
@@ -2582,7 +2589,7 @@ output$user_table <- DT::renderDataTable({
       rename(
         School = school,
         Department = department,
-        "Course ID" = courseID,
+        "Course ID" = courseID_display,
         "Course Title" = course_title,
         "Section Name" = section_name,
         "Course Description" = course_description,
