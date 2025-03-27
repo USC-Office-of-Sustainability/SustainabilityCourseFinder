@@ -82,7 +82,7 @@ num_top_classes <- 10
 # data for pie chart
 sustainability_related = read.csv("usc_courses_full.csv") %>%
   filter(year != "AY20") %>%
-  filter((year %in% c("AY21", "AY22", "AY23", "AY24") & total_enrolled > 0) | year %in% c("AY25"))
+  filter((year %in% c("AY21", "AY22", "AY23", "AY24") & total_enrolled > 0) | year %in% c("AY25") | year %in% c("AY26"))
 
 # data for download data and word cloud
 course_sdg_data <- read.csv("course_sdg_data.csv")
@@ -106,11 +106,11 @@ classes$semester <-
 
 # data for GE's
 ge_data = read.csv("ge_data.csv") %>%
-  filter((year %in% c("AY24") & total_enrolled > 0) | year %in% c("AY25"))
+  filter((year %in% c("AY24") & total_enrolled > 0) | year %in% c("AY25") | year %in% c("AY26"))
 
 # data for find classes by sdgs
 recent_courses = read.csv("recent_courses.csv") %>%
-  filter((year %in% c("AY24") & total_enrolled > 0) | year %in% c("AY25"))
+  filter((year %in% c("AY24") & total_enrolled > 0) | year %in% c("AY25") | year %in% c("AY26"))
 
 # for the ordering of GE's in dropdown
 values = c(
