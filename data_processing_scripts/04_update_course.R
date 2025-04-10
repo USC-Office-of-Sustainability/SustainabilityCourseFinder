@@ -29,6 +29,8 @@ courses_to_add$origin <- sapply(courses_to_add$semester, function(x) {
   }
 })
 courses_to_add$section <- gsub("[^0-9]", "", courses_to_add$section)
+courses_to_add$section[is.na(courses_to_add$section)] <- ""
+
 courses_to_add$total_enrolled <- 0
 courses_to_add$all_semesters <- courses_to_add$semester
 courses_to_add$course_desc <- paste(courses_to_add$course_title,
@@ -76,7 +78,9 @@ courses_new <- courses_new %>%
 
 write.csv(courses_new,
           S_04_update_course_OUTPUT_FILE_PATH,
-          row.names = FALSE)
+          row.names = FALSE,
+          na = "")
+
 
 # remove duplicates
 which(duplicated(courses_new))

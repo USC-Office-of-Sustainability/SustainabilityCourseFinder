@@ -66,7 +66,9 @@ clean_data = function (raw_data){
   # get number of sections
   data_clean %>%
     group_by(COURSE_CODE, COURSE_TITLE, SECTION_NAME, origin) %>%
-    mutate(total_enrolled = sum(TOTAL_ENR),
+    mutate(
+            TOTAL_ENR = as.numeric(TOTAL_ENR),
+            total_enrolled = sum(TOTAL_ENR),
            N.Sections = n()) %>%
     filter(row_number()==1)
 }

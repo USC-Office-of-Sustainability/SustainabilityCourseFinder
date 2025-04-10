@@ -3,6 +3,7 @@
 # require(devtools)
 # install_github("lchiffon/wordcloud2")
 # library(wordcloud2)
+options(shiny.error = browser)
 
 # Run App with the Run App button at the top of the screen
 library(dplyr)
@@ -828,7 +829,9 @@ server <- function(input, output, session) {
       select(section_name) %>%
       distinct()
 
-    if (nrow(section_choices) == 1 & section_choices$section_name[1] == "") {
+    print(section_choices)
+
+    if (nrow(section_choices) == 1 && !is.na(section_choices$section_name[1]) && section_choices$section_name[1] == "") {
       disable("usc_classes_section")
     } else {
       enable("usc_classes_section")
