@@ -10,44 +10,65 @@ library(stringr)
 ## clean SOC plain text files
 ## ............................................................................
 # list of plain text files
-ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH, 
+ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH,
                  full.names = TRUE)
 # check column names -> no deptownername column
 lapply(ff, function(x) {
   readLines(x, n = 1)
 })
+
 readOneFile <- function(filename) {
+  print(filename)
   # get header
   header <- readLines(filename, n = 1)
   # split by 4 spaces
   headerNames <- strsplit(header, "    ")[[1]]
-  
+
   widths <- sapply(headerNames, function(x) {
-    nchar(x)+4 # 4 spaces
+    nchar(x) + 4 # 4 spaces
   })
-  
+
   # clean ......
   headerNames <- gsub("\\.", "", headerNames)
-  
-  d <- read.fwf(filename, widths = widths, skip = 1, 
+
+  d <- read.fwf(filename, widths = widths, skip = 1,
                 col.names = headerNames, strip.white = TRUE,
                 colClasses = "character")
   # replace "" with NA
-  d <- d %>% mutate(across(everything(), ~na_if(.,"")))
+  d <- d %>% mutate(across(everything(), ~na_if(., "")))
   # remove rows that are all NA
-  df <- d[rowSums(!is.na(d)) != 0, ]
+  df <- d[rowSums(!is.na(d)) != 0,]
   # remove last row
   if (grepl("listed", df$SCHOOL[nrow(df)])) {
-    df <- head(df, - 1)
+    df <- head(df, -1)
   }
-  
+
   # fill empty columns based on above column
   df2 <- df %>%
     tidyr::fill(SECTION, COURSE_CODE, .direction = "down")
-  
+
   # uppercase to make them consistent
   names(df2) <- toupper(names(df2))
-  
+
+  print(names(df2))
+
+  if (!("TOTAL_ENR" %in% names(df2)) && "SEATS" %in% names(df2)) {
+    df2$TOTAL_ENR <- df2$SEATS
+  }
+
+  # ensure optional columns exist (to avoid missing column errors)
+  for (col in c("ASSIGNED_ROOM", "COURSE_DESCRIPTION", "INSTRUCTOR_NAME",
+                "DAYS", "START_TIME", "END_TIME", "MODE", "MODALITY")) {
+    if (!(col %in% names(df2))) {
+      df2[[col]] <- ""
+      message("Added missing column: ", col, " in file: ", basename(filename))
+    }
+  }
+
+
+  if (!"SECTION.NAME" %in% names(df2)) df2$SECTION.NAME <- NA
+  print(names(df2))
+
   df3 <- df2 %>%
     group_by(SECTION, COURSE_CODE) %>%
     summarize(SCHOOL = paste(SCHOOL[!is.na(SCHOOL)], collapse = " "),
@@ -98,7 +119,7 @@ lapply(ff, readOneFile)
 ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH,
                  pattern = "xlsx", full.names = TRUE)
 # check column names -> no deptownername column
-lapply(ff, function(x) {names(read_excel(x))})
+lapply(ff, function(x) { names(read_excel(x)) })
 # clean 1 excel file
 readOneFileExcel <- function(filename) {
   d <- read_excel(filename, col_types = "text")
@@ -111,12 +132,12 @@ readOneFileExcel <- function(filename) {
   }
 
   # replace "" with NA
-  d <- d %>% mutate(across(everything(), ~na_if(.,"")))
+  d <- d %>% mutate(across(everything(), ~na_if(., "")))
   # remove rows that are all NA
-  df <- d[rowSums(!is.na(d)) != 0, ]
+  df <- d[rowSums(!is.na(d)) != 0,]
   # remove last row
   if (grepl("listed", df$SCHOOL[nrow(df)])) {
-    df <- head(df, - 1)
+    df <- head(df, -1)
   }
 
   # convert time
@@ -141,6 +162,28 @@ readOneFileExcel <- function(filename) {
   # fill empty columns based on above column
   df2 <- df %>%
     tidyr::fill(SECTION, COURSE_CODE, .direction = "down")
+
+  # uppercase to make them consistent
+  names(df2) <- toupper(names(df2))
+
+  print(names(df2))
+
+  if (!("TOTAL_ENR" %in% names(df2)) && "SEATS" %in% names(df2)) {
+    df2$TOTAL_ENR <- df2$SEATS
+  }
+
+  # ensure optional columns exist (to avoid missing column errors)
+  for (col in c("ASSIGNED_ROOM", "COURSE_DESCRIPTION", "INSTRUCTOR_NAME",
+                "DAYS", "START_TIME", "END_TIME", "MODE", "MODALITY")) {
+    if (!(col %in% names(df2))) {
+      df2[[col]] <- ""
+      message("Added missing column: ", col, " in file: ", basename(filename))
+    }
+  }
+
+
+  if (!"SECTION.NAME" %in% names(df2)) df2$SECTION.NAME <- NA
+  print(names(df2))
 
   # check number of values in each column
   # df4 <- df2 %>%
@@ -200,6 +243,7 @@ readOneFileExcel <- function(filename) {
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }
+
 # clean all excel files
 lapply(ff, readOneFileExcel)
 
@@ -210,7 +254,7 @@ lapply(ff, readOneFileExcel)
 ff <- list.files(S_00_parse_SOC_INPUT_FILE_PATH,
                  pattern = "csv", full.names = TRUE)
 # check column names
-lapply(ff, function(x) {names(read.csv(x))})
+lapply(ff, function(x) { names(read.csv(x)) })
 # clean 1 csv file
 readOneFileCSV <- function(filename) {
   d <- read.csv(filename)
@@ -223,12 +267,12 @@ readOneFileCSV <- function(filename) {
   d <- d %>%
     mutate_if(is.character, str_trim)
   # replace "" with NA
-  d <- d %>% mutate(across(everything() & where(is.character), ~na_if(.,"")))
+  d <- d %>% mutate(across(everything() & where(is.character), ~na_if(., "")))
   # remove rows that are all NA
-  df <- d[rowSums(!is.na(d)) != 0, ]
+  df <- d[rowSums(!is.na(d)) != 0,]
   # remove last row
   if (grepl("listed", df$SCHOOL[nrow(df)])) {
-    df <- head(df, - 1)
+    df <- head(df, -1)
   }
 
   # fix some COURSE_CODE (-CHE 490.00)
@@ -242,6 +286,28 @@ readOneFileCSV <- function(filename) {
   # fill empty columns based on above column
   df2 <- df %>%
     tidyr::fill(SECTION, COURSE_CODE, .direction = "down")
+
+  # uppercase to make them consistent
+  names(df2) <- toupper(names(df2))
+
+  print(names(df2))
+
+  if (!("TOTAL_ENR" %in% names(df2)) && "SEATS" %in% names(df2)) {
+    df2$TOTAL_ENR <- df2$SEATS
+  }
+
+  # ensure optional columns exist (to avoid missing column errors)
+  for (col in c("ASSIGNED_ROOM", "COURSE_DESCRIPTION", "INSTRUCTOR_NAME",
+                "DAYS", "START_TIME", "END_TIME", "MODE", "MODALITY")) {
+    if (!(col %in% names(df2))) {
+      df2[[col]] <- ""
+      message("Added missing column: ", col, " in file: ", basename(filename))
+    }
+  }
+
+
+  if (!"SECTION.NAME" %in% names(df2)) df2$SECTION.NAME <- NA
+  print(names(df2))
 
   # check number of values in each column
   # df4 <- df2 %>%
@@ -324,5 +390,6 @@ readOneFileCSV <- function(filename) {
   write.csv(df3, cleanfile, row.names = FALSE)
   return(cleanfile)
 }
+
 # clean all csv files
 lapply(ff, readOneFileCSV)
