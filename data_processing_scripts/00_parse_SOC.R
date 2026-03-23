@@ -54,6 +54,8 @@ readOneFile <- function(filename) {
 
   if (!("TOTAL_ENR" %in% names(df2)) && "SEATS" %in% names(df2)) {
     df2$TOTAL_ENR <- df2$SEATS
+  } else if (!("TOTAL_ENR" %in% names(df2))) {
+    df2$TOTAL_ENR <- "0"
   }
 
   # ensure optional columns exist (to avoid missing column errors)

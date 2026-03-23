@@ -70,7 +70,7 @@ courses_new$semester <- factor(courses_new$semester,
                                           "SP23","SU23","F23",
                                           "SP24","SU24","F24",
                                           "SP25","SU25","F25",
-                                          "SP26"))
+                                          "SP26","SU26","F26"))
 courses_new <- courses_new %>%
   arrange(courseID, semester) %>%
   group_by(courseID) %>%
