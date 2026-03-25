@@ -1,4 +1,4 @@
-# USC SHINY WEB APP updated 10/4/24
+# USC SHINY WEB APP updated 3/25/26
 
 # require(devtools)
 # install_github("lchiffon/wordcloud2")
@@ -737,13 +737,13 @@ ui <- dashboardPage(
         "or",
         a(
           "",
-          href = "https://twitter.com/GreenUSC",
-          class = "fa fa-twitter",
+          href = "https://bsky.app/profile/sustainability.usc.edu",
+          class = "fa fa-Bluesky",
           target = "_blank"
         ),
         a(
-          "Twitter",
-          href = "https://twitter.com/GreenUSC",
+          "Bluesky",
+          href = "https://bsky.app/profile/sustainability.usc.edu",
           .noWS = "after",
           target = "_blank"
         ),
