@@ -738,7 +738,7 @@ ui <- dashboardPage(
         a(
           "",
           href = "https://bsky.app/profile/sustainability.usc.edu",
-          class = "fa fa-Bluesky",
+          class = "fa fa-bluesky",
           target = "_blank"
         ),
         a(
