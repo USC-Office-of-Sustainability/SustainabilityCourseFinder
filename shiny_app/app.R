@@ -29,7 +29,7 @@ library(shinyjs)
 
 
 keywords = read.csv("usc_keywords.csv")
-
+year_choices <- c("AY21", "AY22", "AY23", "AY24", "AY25", "AY26", "AY27")
 sdg_colors <-
   c(
     '#e5243b',
@@ -76,14 +76,10 @@ sdg_choices <- c(1:17, NA)
 names(sdg_choices) <- c(goals, "None")
 num_top_classes <- 10
 
-# exclude AY20
-# AY21-24 with total enrolled > 0
-# AY25 all
-
 # data for pie chart
 sustainability_related = read.csv("usc_courses_full.csv") %>%
   filter(year != "AY20") %>%
-  filter((year %in% c("AY21", "AY22", "AY23", "AY24") & total_enrolled > 0) | year %in% c("AY25") | year %in% c("AY26") | year %in% c("AY27"))
+  filter((year %in% c("AY21", "AY22", "AY23", "AY24", "AY25", "AY26") & total_enrolled > 0) | year %in% c("AY27"))
 
 # data for download data and word cloud
 course_sdg_data <- read.csv("course_sdg_data.csv")
@@ -107,11 +103,11 @@ classes$semester <-
 
 # data for GE's
 ge_data = read.csv("ge_data.csv") %>%
-  filter((year %in% c("AY24") & total_enrolled > 0) | year %in% c("AY25") | year %in% c("AY26") | year %in% c("AY27"))
+  filter((year %in% c("AY26") & total_enrolled > 0) | year %in% c("AY27"))
 
 # data for find classes by sdgs
 recent_courses = read.csv("recent_courses.csv") %>%
-  filter((year %in% c("AY24") & total_enrolled > 0) | year %in% c("AY25") | year %in% c("AY26") | year %in% c("AY27"))
+  filter((year %in% c("AY26") & total_enrolled > 0) | year %in% c("AY27"))
 
 # for the ordering of GE's in dropdown
 values = c(
@@ -590,13 +586,13 @@ ui <- dashboardPage(
           ),
           uiOutput("disclaimer6"),
           h4(
-            "Academic year determined by the year of the Spring semester and includes Summer and Fall terms of the previous calendar year. (AY23 = SU22, F22, SP23)"
-          ),
+            "Academic year determined by the year of the Spring semester and includes Summer and Fall terms of the previous calendar year (AY26 = SU25, F25, SP26). *Note that AY27 is not complete yet"
+          ), 
           selectInput(
             inputId = "usc_year",
             label = "Choose USC Academic Year",
-            selected = "AY23",
-            choices = unique(sustainability_related$year)
+            selected = "AY26",
+            choices = year_choices[year_choices %in% unique(sustainability_related$year)]
           ),
           pickerInput(
             inputId = "course_level_pie",
@@ -944,13 +940,13 @@ server <- function(input, output, session) {
       max.words = 50,
       random.order = FALSE,
       rot.per = 0,
-      scale = c(8, 1),
+      scale = c(4, 1),
       colors = sdg_colors[as.numeric(substr(input$sdg_goal3, 1, 2))]
     )
     dev.off()
     filename <- normalizePath(file.path("wordcloud.png"))
     list(src = filename,
-         width = "100%",
+         width = "auto",
          height = "auto")
   }, deleteFile = TRUE)
 
