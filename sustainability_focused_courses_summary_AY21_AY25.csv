@@ -1,0 +1,61 @@
+"sustainability_classification","year","course_level","sections","courses","enrollment"
+"Not Related","AY21","graduate",2723,1491,49724
+"Not Related","AY21","undergraduate",5375,1948,107618
+"Not Related","AY21","combined",8098,3439,157342
+"Not Related","AY22","graduate",2869,1554,56435
+"Not Related","AY22","undergraduate",5454,2001,116934
+"Not Related","AY22","combined",8323,3555,173369
+"Not Related","AY23","graduate",2850,1589,56281
+"Not Related","AY23","undergraduate",5620,2046,121810
+"Not Related","AY23","combined",8470,3635,178091
+"Not Related","AY24","graduate",2893,1616,51877
+"Not Related","AY24","undergraduate",5711,2046,120909
+"Not Related","AY24","combined",8604,3662,172786
+"Not Related","AY25","graduate",2896,1641,52117
+"Not Related","AY25","undergraduate",5688,2013,120050
+"Not Related","AY25","combined",8584,3654,172167
+"SDG-Related","AY21","graduate",4430,1983,79740
+"SDG-Related","AY21","undergraduate",3371,1301,90129
+"SDG-Related","AY21","combined",7801,3284,169869
+"SDG-Related","AY22","graduate",4481,2053,86983
+"SDG-Related","AY22","undergraduate",3445,1391,92997
+"SDG-Related","AY22","combined",7926,3444,179980
+"SDG-Related","AY23","graduate",4135,2043,80778
+"SDG-Related","AY23","undergraduate",3365,1403,87358
+"SDG-Related","AY23","combined",7500,3446,168136
+"SDG-Related","AY24","graduate",3997,2076,75747
+"SDG-Related","AY24","undergraduate",3464,1432,90553
+"SDG-Related","AY24","combined",7461,3508,166300
+"SDG-Related","AY25","graduate",3974,2076,74480
+"SDG-Related","AY25","undergraduate",3417,1419,90161
+"SDG-Related","AY25","combined",7391,3495,164641
+"Sustainability-Focused","AY21","graduate",88,62,1281
+"Sustainability-Focused","AY21","undergraduate",292,102,6778
+"Sustainability-Focused","AY21","combined",380,164,8059
+"Sustainability-Focused","AY22","graduate",96,68,1510
+"Sustainability-Focused","AY22","undergraduate",294,119,6816
+"Sustainability-Focused","AY22","combined",390,187,8326
+"Sustainability-Focused","AY23","graduate",98,71,1558
+"Sustainability-Focused","AY23","undergraduate",305,119,6822
+"Sustainability-Focused","AY23","combined",403,190,8380
+"Sustainability-Focused","AY24","graduate",87,68,1373
+"Sustainability-Focused","AY24","undergraduate",332,136,6676
+"Sustainability-Focused","AY24","combined",419,204,8049
+"Sustainability-Focused","AY25","graduate",118,90,1508
+"Sustainability-Focused","AY25","undergraduate",334,129,6595
+"Sustainability-Focused","AY25","combined",452,219,8103
+"Sustainability-Inclusive","AY21","graduate",2232,902,36973
+"Sustainability-Inclusive","AY21","undergraduate",1566,678,42745
+"Sustainability-Inclusive","AY21","combined",3798,1580,79718
+"Sustainability-Inclusive","AY22","graduate",2214,925,39232
+"Sustainability-Inclusive","AY22","undergraduate",1556,693,43204
+"Sustainability-Inclusive","AY22","combined",3770,1618,82436
+"Sustainability-Inclusive","AY23","graduate",2027,949,36178
+"Sustainability-Inclusive","AY23","undergraduate",1610,713,42631
+"Sustainability-Inclusive","AY23","combined",3637,1662,78809
+"Sustainability-Inclusive","AY24","graduate",1831,915,31804
+"Sustainability-Inclusive","AY24","undergraduate",1582,718,42639
+"Sustainability-Inclusive","AY24","combined",3413,1633,74443
+"Sustainability-Inclusive","AY25","graduate",1837,919,31243
+"Sustainability-Inclusive","AY25","undergraduate",1565,713,43058
+"Sustainability-Inclusive","AY25","combined",3402,1632,74301

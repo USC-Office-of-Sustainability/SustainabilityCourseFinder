@@ -66,7 +66,7 @@ USC Keywords (Work in Progress) | `usc_keywords` | <a href="https://github.com/U
 <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a> | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a>
 <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a> | `sdsn_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a>
 <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a> | `cmu250_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a>
-<a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` |
+<a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` | 
 <a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` | 
 
 Additional keywords can be accessed via [text2sdg](https://www.text2sdg.io/reference/detect_sdg_systems.html){target="_blank"}.
@@ -86,14 +86,37 @@ In the data_processing_scripts directory's file `06_cleaning_keywords.R`, notice
 ```{r, code = readLines("data_processing_scripts/06_cleaning_keywords.R"), eval=F}
 ```
 
+## Configuration File
+
+All file paths used across the data processing pipeline are centralized in a single configuration file: `data_processing_scripts/config.R`. Each script in the pipeline sources this file at the top, so if a file is ever renamed or moved, you only need to update it in one place rather than editing every script individually.
+
+```{r, eval=FALSE}
+# example of how config.R is sourced at the top of each script
+source("data_processing_scripts/config.R")
+```
+
+For example, the path to the USC keyword file is defined in `config.R` as:
+
+```{r, eval=FALSE}
+S_06_cleaning_keywords_INPUT_USC_PWG_E_Keywords_FILE_PATH <- "data_raw/USC_PWG-E_Keywords_11_5_24.csv"
+```
+
+And then used in `06_cleaning_keywords.R` simply as:
+
+```{r, eval=FALSE}
+usc_pwg_keywords_origin <- read.csv(S_06_cleaning_keywords_INPUT_USC_PWG_E_Keywords_FILE_PATH)
+```
+
+When adding new data (e.g. a new semester's keyword file), update the relevant path in `config.R` and all scripts will automatically use the new file.
+
 ## Cleaning Course Data
 
 While we do not expect another school's data to be of the same format as the raw files at USC, we are still including some details on how we cleaned the files in hopes that it may address some common problems others might have with their data.  
 
 Please note: our current data processing pipelines use the txt files and those are our most updated data files. The excel and csv files in the raw data folder are only for other institutions to practice with in case they have similar file types as they may not be the most recent versions.
 
-<!-- add link to a file? -->
-Course data was retrieved from the USC’s Office of Academic Records and Registrar can be found in the data_raw/raw_SOC_txt_files folder. The R scripts to clean them is `data_processing_scripts/00_parse_SOC.R` [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/data_processing_scripts/00_parse_SOC.R){target='_blank'}.
+<!-- add link to a file? not needed as file is already mentioned below --> 
+Course data was retrieved from the USC’s Office of Academic Records and Registrar can be found in the data_raw/pending_SOC_txt_files folder. The R scripts to clean them is `data_processing_scripts/00_parse_SOC.R` [here](https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/data_processing_scripts/00_parse_SOC.R){target='_blank'}.
 The raw data files had lots of problems with spacing and column names, and we addressed these issues in `00_parse_SOC.R`.  
 
 The main problem was that one course's description was sometimes spread over two cells instead of one row per course. This occurred in multiple columns. For instance, the data looked like this:
@@ -191,6 +214,25 @@ data_clean <- raw_data %>%
 
 In the same directory, there is an R script `optional_adding_course.R` that shows you how to add a course to the dataframe. It is important that you include ALL COLUMNS when adding new entries -- otherwise the data will get messy. 
 
+## Standardizing School and Department Names
+
+Because the same course can appear under different department codes across SOC files, we added a manual normalization step in `data_processing_scripts/03_fix_school.R` to ensure consistent school and department naming throughout the app. For example, courses listed under both `ACAD` and `IDSN` are mapped to the Jimmy Iovine and Andre Young Academy, and courses listed under `ACCT` are mapped to the Elaine and Kenneth Leventhal School of Accounting:
+
+```{r, eval=FALSE}
+# ACAD and IDSN to Iovine/Young
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "ACAD" | department == "IDSN",
+                         "Jimmy Iovine and Andre Young Academy",
+                         school))
+
+# ACCT to Leventhal
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "ACCT",
+                         "Elaine and Kenneth Leventhal School of Accounting",
+                         school))
+```
+
+If you find that a course is being assigned to the wrong school, you can add or update the mapping rules in `03_fix_school.R`. Following this, `data_processing_scripts/04_update_course.R` allows you to manually add, update, or correct course entries using the template file `Template_for_Adding_Courses_to_Sustainability_Course_Finder.xlsx` found in `data_raw/`.
 
 ## Cleaning Course Descriptions
 
