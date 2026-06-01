@@ -326,7 +326,7 @@ courses with course IDs ending in 490, 790, and 594 are all removed. You
 can add additional rules to the clean_data function:
 
 ``` r
-# a snippet of code from 02_cleaning_2020-2023.R
+# a snippet of code from 02_formatting.R
 titles_containing = c("Directed Research",
                         "Individual Instruction")
 titles_matching = c("Advanced Research Experience",
@@ -414,11 +414,11 @@ remove_punctuation <- function(tt) {
 
 The `apply_context_dependency` function uses `stri_replace_all_regex` to
 replace advertising ecosystem with advertising domain in all course
-descriptions. There is a file called `context_dependencies.csv` which
-lists all the replacements to be made as two columns: before and after.
-You can use regex capture groups for more generic matches. Warning: the
-more context dependencies in the csv file, the slower this function will
-run.
+descriptions. There is a file called `context_dependencies_05_16_24.csv`
+which lists all the replacements to be made as two columns: before and
+after. You can use regex capture groups for more generic matches.
+Warning: the more context dependencies in the csv file, the slower this
+function will run.
 
 ## Mapping Course Descriptions with text2sdg
 
@@ -521,7 +521,7 @@ keyword in the course description using `str_count`.
 
 ## General Education
 
-We were given completely a different set of data for USC’s general
+We were given a completely different set of data for USC’s general
 education requirements. Code for obtaining the GE categories and course
 titles is found in `data_processing_scripts/08_general_education.R`. In
 this script, we join the GE data with the course and sustainability data
@@ -541,17 +541,9 @@ If you follow along with the code in the `app.R` file in the “shiny_app”
 directory, you will understand the structure and functionality of a
 shiny app.
 
-One important tip for making various plots in the dashboard is that it
-is often helpful to create a new R script to generate a dataframe that
-is easier to work with for the purposes of that plot / function. In the
-`data_processing_scripts` directory, the file
-`test_sustainability_related_classes.R` containts code to generate
-`classes_by_sdgs.csv` which is used for one of the barcharts in the
-dashboard. We found it incredibly helpful to write code to generate
-plots in another file so you can quickly go through trial and error
-instead of opening the dashboard every time. Lastly, **Google, ChatGPT
-and stackOverflow are your coding friends**… Plenty of people out there
-are struggling with the same things you struggle with in R and Rshiny.
+Lastly, **Google, ChatGPT and stackOverflow are your coding friends**…
+Plenty of people out there are struggling with the same things you
+struggle with in R and Rshiny.
 
 ## Creating a Github Repo
 
@@ -581,10 +573,10 @@ this original readme file.
 
 When the keywords or course data are updated, the way we have been
 updating the shiny app is by rerunning all of the files in order with
-the new data. When doing so, we remove the old files from the `Data`
-folder and the `shiny_app` folder, but we recommend storing them in a
-backup folder elsewhere in the case that the new run of code doesn’t
-work.
+the new data. When doing so, we remove the old files from the
+`data_processed` folder and the `shiny_app` folder, but we recommend
+storing them in a backup folder elsewhere in the case that the new run
+of code doesn’t work.
 
 Which files you will have to rerun is determined by what data you are
 updating. If the raw course data is updated, you will need to start from
