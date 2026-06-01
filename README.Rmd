@@ -21,7 +21,7 @@ library(knitr)
 ## Introduction
 
 Peter Wu at Carnegie Mellon wrote the initial code that inspired this project, and his original R package can be found on [Github](https://github.com/pwu97/SDGmapR){target='_blank'}. 
-At USC, Brian Tinsley, Alison Chen, Feiyang Wang, and Dr. Julie Hopper in the Office of Sustainability switched to using the new [text2sdg](https://www.text2sdg.io/){target='_blank'} package to raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
+At USC, Brian Tinsley, Alison Chen, Feiyang Wang, Ishita Joshi and Dr. Julie Hopper in the Office of Sustainability switched to using the new [text2sdg](https://www.text2sdg.io/){target='_blank'} package to raise sustainability awareness in higher education by mapping USC course descriptions to the [United Nations Sustainability Development Goals](https://sdgs.un.org/goals){target='_blank'}.
 
 Check out the [Sustainability Course Finder](https://usc-sustainability.shinyapps.io/Sustainability-Course-Finder/){target="_blank"} to see the the product of our work! Also find an article about our web app [here](https://news.usc.edu/207748/new-usc-sustainability-course-finder/){target="_blank"}!
 
