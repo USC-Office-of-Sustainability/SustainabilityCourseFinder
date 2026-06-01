@@ -3,6 +3,7 @@ source("data_processing_scripts/config.R")
 # map course description using text2sdg
 # add sustainability classification
 # get most recent course data
+
 library(text2sdg)
 library(dplyr)
 library(stringr)
@@ -150,13 +151,22 @@ master_manual <- master_manual %>%
 master_course_sdg_data <- master_manual %>%
   mutate(sustainability_classification = final_sustainability_classification) %>%
   select(-Corrected_Sustainability_Classification, -final_sustainability_classification)
-
+sum(is.na(master_course_sdg_data$text))
+sum(is.na(master_course_sdg_data$keyword))
 # count the number of times the keyword appears in the text (clean course desc)
-master_course_sdg_data$freq <- str_count(master_course_sdg_data$text, master_course_sdg_data$keyword)
+master_course_sdg_data$freq <- NA_integer_
+valid_rows <- !is.na(master_course_sdg_data$text) & 
+  !is.na(master_course_sdg_data$keyword)
+
+master_course_sdg_data$freq[valid_rows] <- stringr::str_count(
+  master_course_sdg_data$text[valid_rows],
+  master_course_sdg_data$keyword[valid_rows])
+
 # save for shiny app data
 # there are some duplicate keywords
 master_course_sdg_data <- master_course_sdg_data %>%
   distinct()
+names(master_course_sdg_data)
 course_sdg_data <- master_course_sdg_data %>%
   select(document, courseID, semester, year, keyword, goal, color, freq)
 write.csv(course_sdg_data, S_07_using_text2sdg_OUTPUT_COURSE_SDG_DATA_FILE_PATH, row.names = FALSE)
