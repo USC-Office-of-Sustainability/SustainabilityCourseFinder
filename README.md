@@ -95,8 +95,8 @@ these keyword lists do not have keywords for SDG 17.
 | <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a> | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a> |
 | <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a> | `sdsn_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a> |
 | <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a> | `cmu250_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a> |
-| <a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` |  |
-| <a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` |  |
+| <a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` | <a href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fbpb-ap-se2.wpmucdn.com%2Fblogs.auckland.ac.nz%2Fdist%2F8%2F761%2Ffiles%2F2020%2F10%2FUoA-SDG-Keyword-List-Ver.-1.1.xlsx&wdOrigin=BROWSELINK" target="_blank">Link</a> |
+| <a href="https://archive.sustainability.utoronto.ca/inventories/sustainable-development-goals-sdgs-keywords/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` |  |
 
 Additional keywords can be accessed via
 <a href="https://www.text2sdg.io/reference/detect_sdg_systems.html"
@@ -226,8 +226,6 @@ those are our most updated data files. The excel and csv files in the
 raw data folder are only for other institutions to practice with in case
 they have similar file types as they may not be the most recent
 versions.
-
-<!-- add link to a file? not needed as file is already mentioned below -->
 
 Course data was retrieved from the USC’s Office of Academic Records and
 Registrar can be found in the data_raw/pending_SOC_txt_files folder. The
