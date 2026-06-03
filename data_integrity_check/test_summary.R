@@ -1,8 +1,12 @@
 library(plyr)
 library(tidyverse)
 library(dplyr)
+
+source("data_processing_scripts/config.R")
+
 ### new. counts for Evan and everyone else based on the new section names and categorization
-AC1courses=read.csv("/Users/fy916/Documents/Projects/Dev_R/SustainabilityCourseFinder/shiny_app/usc_courses_full.csv", header=TRUE)
+# S_07_using_text2sdg_OUTPUT_USC_COURSES_FULL_FILE_PATH <-variable declared in config.R (it points to the file usc_courses_full.csv using relative path)
+AC1courses=read.csv(S_07_using_text2sdg_OUTPUT_USC_COURSES_FULL_FILE_PATH, header=TRUE)
 names(AC1courses)
 levels(as.factor(AC1courses$course_level))
 ##need to filter enrollment to >0!

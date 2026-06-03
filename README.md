@@ -4,7 +4,10 @@ USC Sustainability Course Finder
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Keyword List](#keyword-list)
+- [Configuration File](#configuration-file)
 - [Cleaning Course Data](#cleaning-course-data)
+- [Standardizing School and Department
+  Names](#standardizing-school-and-department-names)
 - [Cleaning Course Descriptions](#cleaning-course-descriptions)
 - [Mapping Course Descriptions with
   text2sdg](#mapping-course-descriptions-with-text2sdg)
@@ -23,11 +26,11 @@ USC Sustainability Course Finder
 Peter Wu at Carnegie Mellon wrote the initial code that inspired this
 project, and his original R package can be found on
 <a href="https://github.com/pwu97/SDGmapR" target="_blank">Github</a>.
-At USC, Brian Tinsley, Alison Chen, Feiyang Wang, and Dr. Julie Hopper
-in the Office of Sustainability switched to using the new
-<a href="https://www.text2sdg.io/" target="_blank">text2sdg</a> package
-to raise sustainability awareness in higher education by mapping USC
-course descriptions to the
+At USC, Brian Tinsley, Alison Chen, Feiyang Wang, Ishita Joshi and
+Dr. Julie Hopper in the Office of Sustainability switched to using the
+new <a href="https://www.text2sdg.io/" target="_blank">text2sdg</a>
+package to raise sustainability awareness in higher education by mapping
+USC course descriptions to the
 <a href="https://sdgs.un.org/goals" target="_blank">United Nations
 Sustainability Development Goals</a>.
 
@@ -85,15 +88,15 @@ Some of the lists have weights associated with every keyword based on
 their relevance to the SDG, while some do not. Also note that some of
 these keyword lists do not have keywords for SDG 17.
 
-| Source                                                                                                                                                        | Dataset                | CSV                                                                                                                                                |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| USC Keywords (Work in Progress)                                                                                                                               | `usc_keywords`         | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a> |
-| <a href="https://data.mendeley.com/datasets/87txkw7khs/1" target="_blank">Core Elsevier (Work in Progress)</a>                                                | `elsevier_keywords`    | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv" target="_blank">Link</a>                               |
-| <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a>                                                       | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a>                            |
-| <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a>                                                              | `sdsn_keywords`        | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a>                                   |
-| <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a>  | `cmu250_keywords`      | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a>                                 |
-| <a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a>                                                | `auckland_keywords`    |                                                                                                                                                    |
-| <a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords`     |                                                                                                                                                    |
+| Source | Dataset | CSV |
+|----|----|----|
+| USC Keywords (Work in Progress) | `usc_keywords` | <a href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/blob/main/shiny_app/usc_keywords.csv" target="_blank">Link</a> |
+| <a href="https://data.mendeley.com/datasets/87txkw7khs/1" target="_blank">Core Elsevier (Work in Progress)</a> | `elsevier_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier_keywords_cleaned.csv" target="_blank">Link</a> |
+| <a href="https://data.mendeley.com/datasets/9sxdykm8s4/2" target="_blank">Improved Elsevier Top 100</a> | `elsevier100_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/elsevier100_keywords_cleaned.csv" target="_blank">Link</a> |
+| <a href="https://ap-unsdsn.org/regional-initiatives/universities-sdgs/" target="_blank">SDSN</a> | `sdsn_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/sdsn_keywords_cleaned.csv" target="_blank">Link</a> |
+| <a href="https://www.cmu.edu/leadership/the-provost/provost-priorities/sustainability-initiative/sdg-definitions.html" target="_blank">CMU Top 250 Words</a> | `cmu250_keywords` | <a href="https://github.com/pwu97/SDGmapR/blob/main/datasets/cmu250_keywords_cleaned.csv" target="_blank">Link</a> |
+| <a href="https://www.sdgmapping.auckland.ac.nz/" target="_blank">University of Auckland (Work in Progress)</a> | `auckland_keywords` |  |
+| <a href="https://data.utoronto.ca/sustainable-development-goals-sdg-report/sdg-report-appendix/" target="_blank">University of Toronto (Work in Progress)</a> | `toronto_keywords` |  |
 
 Additional keywords can be accessed via
 <a href="https://www.text2sdg.io/reference/detect_sdg_systems.html"
@@ -105,11 +108,11 @@ keywords, are shown below.
 | goal | keyword             | color    |
 |-----:|:--------------------|:---------|
 |    1 | access to clothing  | \#E5243B |
+|    1 | housing stability   | \#E5243B |
 |    1 | access to housing   | \#E5243B |
 |    1 | access to resources | \#E5243B |
 |    1 | access to shelter   | \#E5243B |
 |    1 | affluence           | \#E5243B |
-|    1 | affluent            | \#E5243B |
 
 The USC keyword list has been modified many times from feedback provided
 by students, staff and faculty, including those in the USC Presidential
@@ -144,7 +147,32 @@ missing_rows <- usc_pwg_keywords_origin[!usc_pwg_keywords_origin$keyword %in% us
 print(missing_rows)
 
 # remove punctuation
-usc_pwg_keywords_without_errors$keyword <- gsub("[^[:alnum:][:space:]]", " ", usc_pwg_keywords_without_errors$keyword)
+#usc_pwg_keywords_without_errors$keyword <- gsub("[^[:alnum:][:space:]]", " ", usc_pwg_keywords_without_errors$keyword)
+# Initialize a vector to store problematic indices
+problematic_indices <- c()
+
+# Loop through each keyword and try to apply the gsub function
+for (i in seq_along(usc_pwg_keywords_without_errors$keyword)) {
+  keyword <- usc_pwg_keywords_without_errors$keyword[i]
+  
+  # Try to apply gsub to each keyword, and catch any error
+  tryCatch({
+    usc_pwg_keywords_without_errors$keyword[i] <- gsub("[^[:alnum:][:space:]]", " ", keyword)
+  }, error = function(e) {
+    # If there's an error, save the index and print it
+    problematic_indices <<- c(problematic_indices, i)
+    cat("Error at index", i, "with keyword:", keyword, "\n")
+  })
+}
+
+# Output problematic indices for further investigation
+if (length(problematic_indices) > 0) {
+  cat("Problematic keywords found at indices:", problematic_indices, "\n")
+} else {
+  cat("No problematic keywords found.\n")
+}
+
+
 # lowercase
 usc_pwg_keywords_without_errors$keyword <- tolower(usc_pwg_keywords_without_errors$keyword)
 # remove duplicates bc otherwise text2sdg will count the word twice
@@ -155,6 +183,36 @@ write.csv(usc_pwg_keywords_removed_duplicates,
           S_06_cleaning_keywords_OUTPUT_FILE_PATH,
           row.names = FALSE)
 ```
+
+## Configuration File
+
+All file paths used across the data processing pipeline are centralized
+in a single configuration file: `data_processing_scripts/config.R`. Each
+script in the pipeline sources this file at the top, so if a file is
+ever renamed or moved, you only need to update it in one place rather
+than editing every script individually.
+
+``` r
+# example of how config.R is sourced at the top of each script
+source("data_processing_scripts/config.R")
+```
+
+For example, the path to the USC keyword file is defined in `config.R`
+as:
+
+``` r
+S_06_cleaning_keywords_INPUT_USC_PWG_E_Keywords_FILE_PATH <- "data_raw/USC_PWG-E_Keywords_11_5_24.csv"
+```
+
+And then used in `06_cleaning_keywords.R` simply as:
+
+``` r
+usc_pwg_keywords_origin <- read.csv(S_06_cleaning_keywords_INPUT_USC_PWG_E_Keywords_FILE_PATH)
+```
+
+When adding new data (e.g. a new semester’s keyword file), update the
+relevant path in `config.R` and all scripts will automatically use the
+new file.
 
 ## Cleaning Course Data
 
@@ -169,11 +227,11 @@ raw data folder are only for other institutions to practice with in case
 they have similar file types as they may not be the most recent
 versions.
 
-<!-- add link to a file? -->
+<!-- add link to a file? not needed as file is already mentioned below -->
 
 Course data was retrieved from the USC’s Office of Academic Records and
-Registrar can be found in the data_raw/raw_SOC_txt_files folder. The R
-scripts to clean them is `data_processing_scripts/00_parse_SOC.R` <a
+Registrar can be found in the data_raw/pending_SOC_txt_files folder. The
+R scripts to clean them is `data_processing_scripts/00_parse_SOC.R` <a
 href="https://github.com/USC-Office-of-Sustainability/SustainabilityCourseFinder/tree/main/data_processing_scripts/00_parse_SOC.R"
 target="_blank">here</a>. The raw data files had lots of problems with
 spacing and column names, and we addressed these issues in
@@ -183,14 +241,14 @@ The main problem was that one course’s description was sometimes spread
 over two cells instead of one row per course. This occurred in multiple
 columns. For instance, the data looked like this:
 
-| SECTION | SCHOOL | COURSE_CODE | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME          | END_TIME            | DAYS | TOTAL_ENR1 | MODALITY | INSTRUCTOR_NAME      | ASSIGNED_ROOM | TOTAL_ENR2 | COURSE_DESCRIPTION                                              |
-|:--------|:-------|:------------|:--------|:----------|:----------|:-------------|:-----|:-----|:--------|:--------------------|:--------------------|:-----|:-----------|:---------|:---------------------|:--------------|:-----------|:----------------------------------------------------------------|
-| 34170   | ACAD   | IDSN-585    | 68      | 3         | 3         | Capstone     | C    | NA   | Y       | 0.72916666666666663 | 0.79513888888888884 | T    | 13         | NA       | Clewis, Jay          | ONLINE        | 13         | Faculty-mentored, applied project with individual and team      |
-| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | components. Implement a prototype solution to a problem. Deploy |
-| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | relevant tools, methods and processes learned throughout the    |
-| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | program. Recommended preparation: all other required courses    |
-| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | (excluding concurrent courses).                                 |
-| NA      | NA     | NA          | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | Arnoult, Jean-Michel | NA            | NA         | NA                                                              |
+| SECTION | SCHOOL | COURSE_CODE | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME | END_TIME | DAYS | TOTAL_ENR1 | MODALITY | INSTRUCTOR_NAME | ASSIGNED_ROOM | TOTAL_ENR2 | COURSE_DESCRIPTION |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 34170 | ACAD | IDSN-585 | 68 | 3 | 3 | Capstone | C | NA | Y | 0.72916666666666663 | 0.79513888888888884 | T | 13 | NA | Clewis, Jay | ONLINE | 13 | Faculty-mentored, applied project with individual and team |
+| NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | components. Implement a prototype solution to a problem. Deploy |
+| NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | relevant tools, methods and processes learned throughout the |
+| NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | program. Recommended preparation: all other required courses |
+| NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | (excluding concurrent courses). |
+| NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | Arnoult, Jean-Michel | NA | NA | NA |
 
 An example of raw data for course IDSN-585 spread over multiple rows.
 
@@ -206,23 +264,23 @@ df2 <- df %>%
 By filling in the SECTION and COURSE_CODE columns with the previous row,
 the dataframe looks like this:
 
-| SECTION | SCHOOL | COURSE_CODE | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME          | END_TIME            | DAYS | TOTAL_ENR1 | MODALITY | INSTRUCTOR_NAME      | ASSIGNED_ROOM | TOTAL_ENR2 | COURSE_DESCRIPTION                                              |
-|:--------|:-------|:------------|:--------|:----------|:----------|:-------------|:-----|:-----|:--------|:--------------------|:--------------------|:-----|:-----------|:---------|:---------------------|:--------------|:-----------|:----------------------------------------------------------------|
-| 34170   | ACAD   | IDSN-585    | 68      | 3         | 3         | Capstone     | C    | NA   | Y       | 0.72916666666666663 | 0.79513888888888884 | T    | 13         | NA       | Clewis, Jay          | ONLINE        | 13         | Faculty-mentored, applied project with individual and team      |
-| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | components. Implement a prototype solution to a problem. Deploy |
-| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | relevant tools, methods and processes learned throughout the    |
-| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | program. Recommended preparation: all other required courses    |
-| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | NA                   | NA            | NA         | (excluding concurrent courses).                                 |
-| 34170   | NA     | IDSN-585    | NA      | NA        | NA        | NA           | NA   | NA   | NA      | NA                  | NA                  | NA   | NA         | NA       | Arnoult, Jean-Michel | NA            | NA         | NA                                                              |
+| SECTION | SCHOOL | COURSE_CODE | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME | END_TIME | DAYS | TOTAL_ENR1 | MODALITY | INSTRUCTOR_NAME | ASSIGNED_ROOM | TOTAL_ENR2 | COURSE_DESCRIPTION |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 34170 | ACAD | IDSN-585 | 68 | 3 | 3 | Capstone | C | NA | Y | 0.72916666666666663 | 0.79513888888888884 | T | 13 | NA | Clewis, Jay | ONLINE | 13 | Faculty-mentored, applied project with individual and team |
+| 34170 | NA | IDSN-585 | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | components. Implement a prototype solution to a problem. Deploy |
+| 34170 | NA | IDSN-585 | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | relevant tools, methods and processes learned throughout the |
+| 34170 | NA | IDSN-585 | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | program. Recommended preparation: all other required courses |
+| 34170 | NA | IDSN-585 | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | (excluding concurrent courses). |
+| 34170 | NA | IDSN-585 | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | NA | Arnoult, Jean-Michel | NA | NA | NA |
 
 SECTION and COURSE_CODE columns are filled in based on the first row.
 
 Now, we simply group by SECTION and COURSE_CODE and combine all the text
 in each column to end up with one row for one course:
 
-| SECTION | COURSE_CODE | SCHOOL | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME          | END_TIME            | DAYS | TOTAL_ENR | MODALITY | INSTRUCTOR_NAME                  | ASSIGNED_ROOM | TOTAL_ENR1 | COURSE_DESCRIPTION                                                                                                                                                                                                                                                                   |
-|:--------|:------------|:-------|:--------|:----------|:----------|:-------------|:-----|:-----|:--------|:--------------------|:--------------------|:-----|:----------|:---------|:---------------------------------|:--------------|:-----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 34170   | IDSN-585    | ACAD   | 68      | 3         | 3         | Capstone     | C    | NA   | Y       | 0.72916666666666663 | 0.79513888888888884 | T    | 13        | NA       | Clewis, Jay;Arnoult, Jean-Michel | ONLINE        | 13         | Faculty-mentored, applied project with individual and team components. Implement a prototype solution to a problem. Deploy relevant tools, methods and processes learned throughout the program. Recommended preparation: all other required courses (excluding concurrent courses). |
+| SECTION | COURSE_CODE | SCHOOL | SESSION | MIN_UNITS | MAX_UNITS | COURSE_TITLE | MODE | Link | PUBLISH | START_TIME | END_TIME | DAYS | TOTAL_ENR | MODALITY | INSTRUCTOR_NAME | ASSIGNED_ROOM | TOTAL_ENR1 | COURSE_DESCRIPTION |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 34170 | IDSN-585 | ACAD | 68 | 3 | 3 | Capstone | C | NA | Y | 0.72916666666666663 | 0.79513888888888884 | T | 13 | NA | Clewis, Jay;Arnoult, Jean-Michel | ONLINE | 13 | Faculty-mentored, applied project with individual and team components. Implement a prototype solution to a problem. Deploy relevant tools, methods and processes learned throughout the program. Recommended preparation: all other required courses (excluding concurrent courses). |
 
 Final row for course IDSN-585.
 
@@ -268,7 +326,7 @@ courses with course IDs ending in 490, 790, and 594 are all removed. You
 can add additional rules to the clean_data function:
 
 ``` r
-# a snippet of code from 02_cleaning_2020-2023.R
+# a snippet of code from 02_formatting.R
 titles_containing = c("Directed Research",
                         "Individual Instruction")
 titles_matching = c("Advanced Research Experience",
@@ -286,6 +344,37 @@ In the same directory, there is an R script `optional_adding_course.R`
 that shows you how to add a course to the dataframe. It is important
 that you include ALL COLUMNS when adding new entries – otherwise the
 data will get messy.
+
+## Standardizing School and Department Names
+
+Because the same course can appear under different department codes
+across SOC files, we added a manual normalization step in
+`data_processing_scripts/03_fix_school.R` to ensure consistent school
+and department naming throughout the app. For example, courses listed
+under both `ACAD` and `IDSN` are mapped to the Jimmy Iovine and Andre
+Young Academy, and courses listed under `ACCT` are mapped to the Elaine
+and Kenneth Leventhal School of Accounting:
+
+``` r
+# ACAD and IDSN to Iovine/Young
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "ACAD" | department == "IDSN",
+                         "Jimmy Iovine and Andre Young Academy",
+                         school))
+
+# ACCT to Leventhal
+usc_courses_with_school <- usc_courses_with_school %>%
+  mutate(school = ifelse(department == "ACCT",
+                         "Elaine and Kenneth Leventhal School of Accounting",
+                         school))
+```
+
+If you find that a course is being assigned to the wrong school, you can
+add or update the mapping rules in `03_fix_school.R`. Following this,
+`data_processing_scripts/04_update_course.R` allows you to manually add,
+update, or correct course entries using the template file
+`Template_for_Adding_Courses_to_Sustainability_Course_Finder.xlsx` found
+in `data_raw/`.
 
 ## Cleaning Course Descriptions
 
@@ -325,11 +414,11 @@ remove_punctuation <- function(tt) {
 
 The `apply_context_dependency` function uses `stri_replace_all_regex` to
 replace advertising ecosystem with advertising domain in all course
-descriptions. There is a file called `context_dependencies.csv` which
-lists all the replacements to be made as two columns: before and after.
-You can use regex capture groups for more generic matches. Warning: the
-more context dependencies in the csv file, the slower this function will
-run.
+descriptions. There is a file called `context_dependencies_05_16_24.csv`
+which lists all the replacements to be made as two columns: before and
+after. You can use regex capture groups for more generic matches.
+Warning: the more context dependencies in the csv file, the slower this
+function will run.
 
 ## Mapping Course Descriptions with text2sdg
 
@@ -432,7 +521,7 @@ keyword in the course description using `str_count`.
 
 ## General Education
 
-We were given completely a different set of data for USC’s general
+We were given a completely different set of data for USC’s general
 education requirements. Code for obtaining the GE categories and course
 titles is found in `data_processing_scripts/08_general_education.R`. In
 this script, we join the GE data with the course and sustainability data
@@ -452,17 +541,9 @@ If you follow along with the code in the `app.R` file in the “shiny_app”
 directory, you will understand the structure and functionality of a
 shiny app.
 
-One important tip for making various plots in the dashboard is that it
-is often helpful to create a new R script to generate a dataframe that
-is easier to work with for the purposes of that plot / function. In the
-`data_processing_scripts` directory, the file
-`test_sustainability_related_classes.R` containts code to generate
-`classes_by_sdgs.csv` which is used for one of the barcharts in the
-dashboard. We found it incredibly helpful to write code to generate
-plots in another file so you can quickly go through trial and error
-instead of opening the dashboard every time. Lastly, **Google, ChatGPT
-and stackOverflow are your coding friends**… Plenty of people out there
-are struggling with the same things you struggle with in R and Rshiny.
+Lastly, **Google, ChatGPT and stackOverflow are your coding friends**…
+Plenty of people out there are struggling with the same things you
+struggle with in R and Rshiny.
 
 ## Creating a Github Repo
 
@@ -492,10 +573,10 @@ this original readme file.
 
 When the keywords or course data are updated, the way we have been
 updating the shiny app is by rerunning all of the files in order with
-the new data. When doing so, we remove the old files from the `Data`
-folder and the `shiny_app` folder, but we recommend storing them in a
-backup folder elsewhere in the case that the new run of code doesn’t
-work.
+the new data. When doing so, we remove the old files from the
+`data_processed` folder and the `shiny_app` folder, but we recommend
+storing them in a backup folder elsewhere in the case that the new run
+of code doesn’t work.
 
 Which files you will have to rerun is determined by what data you are
 updating. If the raw course data is updated, you will need to start from
