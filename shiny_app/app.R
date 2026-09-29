@@ -29,7 +29,8 @@ library(shinyjs)
 
 
 keywords = read.csv("usc_keywords.csv")
-year_choices <- c("AY21", "AY22", "AY23", "AY24", "AY25", "AY26", "AY27")
+sustainability_related <- read.csv("usc_courses_shiny.csv")
+year_choices <- sort(unique(sustainability_related$year))
 sdg_colors <-
   c(
     '#e5243b',
@@ -77,9 +78,11 @@ names(sdg_choices) <- c(goals, "None")
 num_top_classes <- 10
 
 # data for pie chart
-sustainability_related = read.csv("usc_courses_full.csv") %>%
-  filter(year != "AY20") %>%
-  filter((year %in% c("AY21", "AY22", "AY23", "AY24", "AY25", "AY26") & total_enrolled > 0) | year %in% c("AY27"))
+# sustainability_related = read.csv("usc_courses_full.csv") %>%
+#   filter(year != "AY20") %>%
+#   filter((year %in% c("AY21", "AY22", "AY23", "AY24", "AY25", "AY26") & total_enrolled > 0) | year %in% c("AY27"))
+
+sustainability_related <- read.csv("usc_courses_shiny.csv")
 
 # data for download data and word cloud
 course_sdg_data <- read.csv("course_sdg_data.csv")
