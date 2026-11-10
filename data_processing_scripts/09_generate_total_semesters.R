@@ -4,7 +4,7 @@ source("data_processing_scripts/config.R")
 # get unique values of the value in the column "semester"
 library(dplyr)
 
-data = read.csv(S_07_using_text2sdg_OUTPUT_USC_COURSES_FULL_FILE_PATH)
+data <- read.csv(S_07b_create_usc_courses_shiny_OUTPUT_FILE_PATH)
 res = unique(data$semester)
 # Data input
 semesters <- res

@@ -13,6 +13,7 @@ scripts <- c(
   "05_cleaning_course_descriptions.R",
   "06_cleaning_keywords.R",
   "07_using_text2sdg.R",
+  "07b_create_usc_courses_shiny.R",
   "08_general_education.R",
   "09_generate_total_semesters.R"
 )
